@@ -19,7 +19,11 @@ let package = Package(
 		.package(
 			url: "https://github.com/apple/swift-numerics",
 			from: "1.0.0"
-		)
+		),
+		.package(
+			url: "https://github.com/attaswift/BigInt.git",
+			.upToNextMinor(from: "5.4.1")
+		),
 	],
 	targets: [
 		.target(
@@ -28,7 +32,8 @@ let package = Package(
 				.product(
 					name: "RealModule",
 					package: "swift-numerics"
-				)
+				),
+				"BigInt",
 			]
 		),
 		.testTarget(
