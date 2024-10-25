@@ -6,26 +6,12 @@
 //
 
 import Foundation
-import XCTest
+import Testing
+import RationalModule
 
-@testable import RationalModule
+struct RationalTests {
 
-final class RationalTests: XCTestCase {
-	func test_min_returns_min_integer_value_of_associated_type() {
-		XCTAssertEqual(Rational<Int8>.min, -128)
-		XCTAssertEqual(Rational<Int16>.min, -32768)
-		XCTAssertEqual(Rational<Int32>.min, -2_147_483_648)
-		XCTAssertEqual(Rational<Int>.min, -9_223_372_036_854_775_808)
-	}
-
-	func test_max_returns_max_integer_value_of_associated_type() {
-		XCTAssertEqual(Rational<Int8>.max, 127)
-		XCTAssertEqual(Rational<Int16>.max, 32767)
-		XCTAssertEqual(Rational<Int32>.max, 2_147_483_647)
-		XCTAssertEqual(Rational<Int>.max, 9_223_372_036_854_775_807)
-	}
-
-	func test_quotient() {
+	@Test func test_quotient() {
 		let testCases = [
 			(Rational(5, 4), 1),
 			(Rational(-5, 4), -1),
@@ -35,11 +21,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.quotient, expected)
+			#expect(rational.quotient == expected)
 		}
 	}
 
-	func test_remainder() {
+	@Test func test_remainder() {
 		let testCases = [
 			(Rational(5, 4), 1),
 			(Rational(-5, 4), -1),
@@ -50,11 +36,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.remainder, expected)
+			#expect(rational.remainder == expected)
 		}
 	}
 
-	func test_quotientAndRemainder() {
+	@Test func test_quotientAndRemainder() {
 		let testCases = [
 			(Rational(5, 4), 1, 1),
 			(Rational(-5, 4), -1, -1),
@@ -66,12 +52,12 @@ final class RationalTests: XCTestCase {
 
 		for (rational, expectedQuotient, expectedRemainder) in testCases {
 			let (quotient, remainder) = rational.quotientAndRemainder
-			XCTAssertEqual(quotient, expectedQuotient)
-			XCTAssertEqual(remainder, expectedRemainder)
+			#expect(quotient == expectedQuotient)
+			#expect(remainder == expectedRemainder)
 		}
 	}
 
-	func test_isNegative() {
+	@Test func test_isNegative() {
 		let testCases = [
 			(Rational(5, 4), false),
 			(Rational(-5, 4), true),
@@ -82,11 +68,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.isNegative, expected)
+			#expect(rational.isNegative == expected)
 		}
 	}
 
-	func test_isPositive() {
+	@Test func test_isPositive() {
 		let testCases = [
 			(Rational(5, 4), true),
 			(Rational(-5, 4), false),
@@ -97,11 +83,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.isPositive, expected)
+			#expect(rational.isPositive == expected)
 		}
 	}
 
-	func test_isInteger() {
+	@Test func test_isInteger() {
 		let testCases = [
 			(Rational(5, 4), false),
 			(Rational(-5, 4), false),
@@ -112,11 +98,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.isInteger, expected)
+			#expect(rational.isInteger == expected)
 		}
 	}
 
-	func test_isProperFaction() {
+	@Test func test_isProperFaction() {
 		let testCases = [
 			(Rational(5, 4), false),
 			(Rational(-5, 4), false),
@@ -128,12 +114,12 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.isProperFraction, expected)
+			#expect(rational.isProperFraction == expected)
 		}
 	}
 
-	func test_signum_int8() {
-		let testCases: [(Rational<Int8>, Int8)] = [
+	@Test func test_signum_int8() {
+		let testCases: [(Rational, Int8)] = [
 			(Rational(1, 4), 1),
 			(Rational(0, 4), 0),
 			(Rational(-1, 7), -1),
@@ -141,12 +127,12 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.signum(), expected)
+			#expect(rational.signum() == expected)
 		}
 	}
 
-	func test_signum_int16() {
-		let testCases: [(Rational<Int16>, Int16)] = [
+	@Test func test_signum_int16() {
+		let testCases: [(Rational, Int16)] = [
 			(Rational(1, 4), 1),
 			(Rational(0, 4), 0),
 			(Rational(-1, 7), -1),
@@ -154,12 +140,12 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.signum(), expected)
+			#expect(rational.signum() == expected)
 		}
 	}
 
-	func test_signum_int32() {
-		let testCases: [(Rational<Int32>, Int32)] = [
+	@Test func test_signum_int32() {
+		let testCases: [(Rational, Int32)] = [
 			(Rational(1, 4), 1),
 			(Rational(0, 4), 0),
 			(Rational(-1, 7), -1),
@@ -167,12 +153,12 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.signum(), expected)
+			#expect(rational.signum() == expected)
 		}
 	}
 
-	func test_signum_int64() {
-		let testCases: [(Rational<Int>, Int)] = [
+	@Test func test_signum_int64() {
+		let testCases: [(Rational, Int)] = [
 			(Rational(1, 4), 1),
 			(Rational(0, 4), 0),
 			(Rational(-1, 7), -1),
@@ -180,11 +166,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.signum(), expected)
+			#expect(rational.signum() == expected)
 		}
 	}
 
-	func test_toRatio() {
+	@Test func test_toRatio() {
 		let testCases = (0..<50).map { _ in
 			Rational(
 				Int.random(in: -1_000_000_000...1_000_000_000),
@@ -194,12 +180,12 @@ final class RationalTests: XCTestCase {
 
 		for rational in testCases {
 			let ratio = rational.toRatio()
-			XCTAssertEqual(ratio.numerator, rational.numerator)
-			XCTAssertEqual(ratio.denominator, rational.denominator)
+			#expect(ratio.numerator == rational.numerator)
+			#expect(ratio.denominator == rational.denominator)
 		}
 	}
 
-	func test_limitDenominator_when_denominator_is_less_than_max() {
+	@Test func test_limitDenominator_when_denominator_is_less_than_max() {
 		let testCases = (0..<50).map { _ in
 			Rational(
 				Int.random(in: -1_000_000...1_000_000),
@@ -208,11 +194,11 @@ final class RationalTests: XCTestCase {
 		}
 
 		for rational in testCases {
-			XCTAssertEqual(rational.limitDenominator(to: 1_000_000), rational)
+			#expect(rational.limitDenominator(to: 1_000_000) == rational)
 		}
 	}
 
-	func test_limitDenominator_when_denominator_is_larger_than_max() {
+	@Test func test_limitDenominator_when_denominator_is_larger_than_max() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -280,11 +266,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.limitDenominator(to: 10_000_000), expected)
+			#expect(rational.limitDenominator(to: 10_000_000) == expected)
 		}
 	}
 
-	func test_floor() {
+	@Test func test_floor() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -353,11 +339,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.floor, expected)
+			#expect(rational.floor == expected)
 		}
 	}
 
-	func test_ceil() {
+	@Test func test_ceil() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -425,11 +411,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.ceil, expected)
+			#expect(rational.ceil == expected)
 		}
 	}
 
-	func test_rounded() {
+	@Test func test_rounded() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -498,11 +484,11 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.rounded, expected)
+			#expect(rational.rounded == expected)
 		}
 	}
 
-	func test_roundedAwayFromZero() {
+	@Test func test_roundedAwayFromZero() {
 		let testCases = [
 			(Rational(262_145_157, 855_776_251), 1),
 			(Rational(511_358_916, 557_170_961), 1),
@@ -526,7 +512,7 @@ final class RationalTests: XCTestCase {
 		]
 
 		for (rational, expected) in testCases {
-			XCTAssertEqual(rational.roundedAwayFromZero, expected)
+			#expect(rational.roundedAwayFromZero == expected)
 		}
 	}
 }
