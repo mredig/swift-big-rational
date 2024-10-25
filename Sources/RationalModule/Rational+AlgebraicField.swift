@@ -2,13 +2,9 @@ import RealModule
 import BigInt
 
 extension Rational: AlgebraicField {
-	/// The multiplicative inverse of this value, if it can be represented.
-	///
-	/// If the numerator is either `0` or `T.min`, this property is `nil`.
 	@inlinable
 	public var reciprocal: Self? {
-		// The reciprocal of `T.min/d` is `-d/-T.min`, which overflows.
-		guard !isZero && numerator != T.min else { return nil }
+		guard !isZero else { return nil }
 
 		var numerator = self.denominator
 		var denominator = self.numerator

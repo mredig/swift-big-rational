@@ -1,25 +1,18 @@
-public struct Rational<T: FixedWidthInteger & SignedInteger>: Hashable {
+import BigInt
+
+public struct Rational: Hashable {
 	/// The numerator of this value.
-	///
-	/// This value is normalized so that it has no
-	/// common factors with the denominator.
-	public let numerator: T
+	public let numerator: BigInt
 
 	/// The denominator of this value.
-	///
-	/// This value is normalized so that it's positive and
-	/// has no common factors with the numerator.
-	public let denominator: T
+	public let denominator: BigInt
+
+	public typealias T = BigInt
 
 	/// Creates a rational value with the given numerator and denominator.
-	///
-	/// The given values must be noramlized, that is:
-	/// 1. `numerator` and `denominator` have no common factors.
-	/// 2. `denominator` is positive.
 	@inlinable
 	internal init(numerator: T, denominator: T) {
-		assert(denominator > 0, "The denominator must be positive")
-		assert(gcd(numerator, denominator) == 1, "The fraction must normalized")
+		assert(denominator != 0, "The denominator must not be 0")
 
 		self.numerator = numerator
 		self.denominator = denominator
@@ -40,50 +33,28 @@ extension Rational {
 	///
 	/// - Precondition: `denominator != 0`
 	@inlinable
-	public init(_ numerator: T, _ denominator: T) {
+	public init(_ numerator: T, _ denominator: T, reduced: Bool = false, normalizedSign: Bool = false) {
 		precondition(denominator != 0, "The denominator must not be zero")
 
-		// We cannot compute `gcd(0, T.min)` and `gcd(T.min, T.min)` due to overflow,
-		// so we must handle these cases separately.
-		if numerator == 0 {
-			self.init(numerator: 0, denominator: 1)
-			return
-		}
-
-		if numerator == denominator {
-			self.init(numerator: 1, denominator: 1)
-			return
-		}
-
-		let g = gcd(numerator, denominator)
-		var numerator = numerator / g
-		var denominator = denominator / g
-
-		if denominator < 0 {
-			numerator.negate()
-			denominator.negate()
-		}
-
 		self.init(numerator: numerator, denominator: denominator)
+		if reduced {
+			self = self.reduced
+		}
+		if normalizedSign {
+			self = self.normalizedSign
+		}
+	}
+
+	@inlinable
+	public init<N: FixedWidthInteger>(_ numerator: N, _ denominator: N, reduced: Bool = false, normalizedSign: Bool = false) {
+		let num = BigInt(numerator)
+		let den = BigInt(denominator)
+		self.init(num, den, reduced: reduced, normalizedSign: normalizedSign)
 	}
 }
 
 // MARK: - Properties
 extension Rational {
-	/// The minimum representible rational value,
-	/// with numerator `T.min` and denominator `1`.
-	@inlinable
-	public static var min: Self {
-		Self(T.min)
-	}
-
-	/// The maximum representible rational value,
-	/// with numerator `T.max` and denominator `1`.
-	@inlinable
-	public static var max: Self {
-		Self(T.max)
-	}
-
 	/// The quotient of the numerator divided by the denominator.
 	@inlinable
 	public var quotient: T {
@@ -102,6 +73,23 @@ extension Rational {
 		numerator.quotientAndRemainder(dividingBy: denominator)
 	}
 
+	/// A copy of this value where the denominator is always positive.
+	@inlinable
+	public var normalizedSign: Self {
+		var numerator = numerator
+		var denominator = denominator
+		if denominator < 0 {
+			denominator.negate()
+			numerator.negate()
+		}
+		return Self(numerator: numerator, denominator: denominator)
+	}
+
+	@inlinable
+	public var isSignNormalized: Bool {
+		denominator > 0
+	}
+
 	/// Whether or not this value is equal to `0`.
 	@inlinable
 	public var isZero: Bool {
@@ -111,19 +99,43 @@ extension Rational {
 	/// Whether or not this value is negative.
 	@inlinable
 	public var isNegative: Bool {
-		numerator < 0
+		normalizedSign.numerator < 0
 	}
 
 	/// Whether or not this value is positive.
 	@inlinable
 	public var isPositive: Bool {
-		numerator > 0
+		normalizedSign.numerator > 0
+	}
+
+	/// An equal copy of this value, but where the components are a reduced fraction.
+	@inlinable
+	public var reduced: Self {
+		guard numerator != denominator else {
+			return Self(numerator: 1, denominator: 1)
+		}
+
+		guard numerator != 0 else {
+			return Self(numerator: 0, denominator: 1)
+		}
+
+		let g = gcd(numerator, denominator)
+		let numerator = numerator / g
+		let denominator = denominator / g
+
+		return Self(numerator: numerator, denominator: denominator)
+	}
+
+	/// An equal copy of this value, but where the components are a reduced fraction with a positive denominator.
+	@inlinable
+	public var normalized: Self {
+		reduced.normalizedSign
 	}
 
 	/// Whether or not this value represents an integer.
 	@inlinable
 	public var isInteger: Bool {
-		denominator == 1
+		normalized.denominator == 1
 	}
 
 	/// Whether or not the magnitude of this value is less than `1`.
@@ -139,7 +151,7 @@ extension Rational {
 	/// otherwise, `0`.
 	@inlinable
 	public func signum() -> T {
-		numerator.signum()
+		normalizedSign.numerator.signum()
 	}
 
 	/// Returns the numerator and denominator as a tuple.

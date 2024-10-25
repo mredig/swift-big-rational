@@ -16,6 +16,6 @@ extension Rational: CustomDebugStringConvertible {
 	public var debugDescription: String {
 		let n = String(reflecting: numerator)
 		let d = String(reflecting: denominator)
-		return "Rational<\(T.self)>(\(n), \(d))"
+		return "Rational(\(n), \(d))"
 	}
 }
