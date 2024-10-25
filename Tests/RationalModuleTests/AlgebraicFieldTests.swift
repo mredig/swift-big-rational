@@ -1,45 +1,37 @@
-//
-//  AlgebraicFieldTests.swift
-//
-//
-//  Created by Maarten Engels on 13/01/2024.
-//
-
 import Foundation
-import XCTest
+import Testing
+import RationalModule
 
-@testable import RationalModule
-
-final class AlgebraicFieldTests: XCTestCase {
-	func test_reciprocal_swaps_numerator_and_denominator() throws {
+struct AlgebraicFieldTests {
+	@Test func test_reciprocal_swaps_numerator_and_denominator() throws {
 		let rational = Rational(234, 1253)
-		let reciprocal = try XCTUnwrap(rational.reciprocal)
+		let reciprocal = try #require(rational.reciprocal)
 
-		XCTAssertEqual(reciprocal.numerator, 1253)
-		XCTAssertEqual(reciprocal.denominator, 234)
+		#expect(reciprocal.numerator == 1253)
+		#expect(reciprocal.denominator == 234)
 	}
 
-	func test_reciprocal_swaps_signs_for_negative_rationals() throws {
+	@Test func test_reciprocal_swaps_signs_for_negative_rationals() throws {
 		let rational = Rational(-234, 1253)
-		let reciprocal = try XCTUnwrap(rational.reciprocal)
+		let reciprocal = try #require(rational.reciprocal)
 
-		XCTAssertEqual(reciprocal.numerator, -1253)
-		XCTAssertEqual(reciprocal.denominator, 234)
+		#expect(reciprocal.numerator == -1253)
+		#expect(reciprocal.denominator == 234)
 	}
 
-	func test_reciprocal_returns_nil_when_numerator_equals_zero() {
+	@Test func test_reciprocal_returns_nil_when_numerator_equals_zero() {
 		let rational = Rational(0, 1253)
-		XCTAssertNil(rational.reciprocal)
+		#expect(rational.reciprocal == nil)
 	}
 
-	func test_reciprocal_returns_nil_when_numerator_equals_min() {
-		XCTAssertNil(Rational(Int8.min, Int8(123)).reciprocal)
-		XCTAssertNil(Rational(Int16.min, Int16(12001)).reciprocal)
-		XCTAssertNil(Rational(Int32.min, Int32(2_434_345)).reciprocal)
-		XCTAssertNil(Rational(Int.min, 33_948_759_038_475).reciprocal)
+	@Test func test_reciprocal_returns_value_when_numerator_equals_min() {
+		#expect(Rational(Int8.min, Int8(123)).reciprocal == Rational("-123/128"))
+		#expect(Rational(Int16.min, Int16(12001)).reciprocal == Rational("-12001/\(Int16.min.magnitude)"))
+		#expect(Rational(Int32.min, Int32(2_434_345)).reciprocal == Rational("-2434345/\(Int32.min.magnitude)"))
+		#expect(Rational(Int.min, 33_948_759_038_475).reciprocal == Rational("-33948759038475/\(Int.min.magnitude)"))
 	}
 
-	func test_random_divisions() {
+	@Test func test_random_divisions() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -183,11 +175,11 @@ final class AlgebraicFieldTests: XCTestCase {
 		]
 
 		for (f1, f2, result) in testCases {
-			XCTAssertEqual(f1 / f2, result)
+			#expect(f1 / f2 == result)
 		}
 	}
 
-	func test_random_assign_divisions() {
+	@Test func test_random_assign_divisions() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -331,7 +323,7 @@ final class AlgebraicFieldTests: XCTestCase {
 		for (f1, f2, result) in testCases {
 			var f1 = f1
 			f1 /= f2
-			XCTAssertEqual(f1, result)
+			#expect(f1 == result)
 		}
 	}
 }
