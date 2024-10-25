@@ -1,41 +1,94 @@
-import XCTest
+import Testing
+import RationalModule
 
-@testable import RationalModule
-
-final class FractionTests: XCTestCase {
-	func test_2_over_4_returns_1_over_2() throws {
+struct FractionTests {
+	@Test func test_2_over_4_returns_2_over_4_when_not_reduced_by_default() throws {
 		let r = Rational(2, 4)
-		XCTAssertEqual(r.numerator, 1)
-		XCTAssertEqual(r.denominator, 2)
+		#expect(r.numerator == 2)
+		#expect(r.denominator == 4)
 	}
 
-	func test_2_over_2_returns_1_over_1() throws {
+	@Test func test_2_over_4_reduced_returns_1_over_2() throws {
+		let r = Rational(2, 4, reduced: true)
+		#expect(r.numerator == 1)
+		#expect(r.denominator == 2)
+	}
+
+	@Test func test_2_over_2_returns_2_over_2_when_not_reduced_by_default() throws {
 		let r = Rational(2, 2)
-		XCTAssertEqual(r.numerator, 1)
-		XCTAssertEqual(r.denominator, 1)
+		#expect(r.numerator == 2)
+		#expect(r.denominator == 2)
 	}
 
-	func test_1_over_negative_3_returns_negative_1_over_3() throws {
+	@Test func test_2_over_2_reduced_returns_1_over_1() throws {
+		let r = Rational(2, 2, reduced: true)
+		#expect(r.numerator == 1)
+		#expect(r.denominator == 1)
+	}
+
+	@Test func test_1_over_negative_3_returns_1_over_negative_3_when_not_normalized_by_default() throws {
 		let r = Rational(1, -3)
-		XCTAssertEqual(r.numerator, -1)
-		XCTAssertEqual(r.denominator, 3)
+		#expect(r.numerator == 1)
+		#expect(r.denominator == -3)
 	}
 
-	func test_6_over_3_returns_2_over_1() throws {
+	@Test func test_1_over_negative_3_normalized_returns_negative_1_over_3() throws {
+		let r = Rational(1, -3, normalizedSign: true)
+		#expect(r.numerator == -1)
+		#expect(r.denominator == 3)
+	}
+
+	@Test func test_6_over_3_returns_6_over_3_when_not_reduced_by_default() throws {
 		let r = Rational(6, 3)
-		XCTAssertEqual(r.numerator, 2)
-		XCTAssertEqual(r.denominator, 1)
+		#expect(r.numerator == 6)
+		#expect(r.denominator == 3)
 	}
 
-	func test_0_over_int_min_returns_0_over_1() throws {
+	@Test func test_6_over_3_reduced_returns_2_over_1() throws {
+		let r = Rational(6, 3, reduced: true)
+		#expect(r.numerator == 2)
+		#expect(r.denominator == 1)
+	}
+
+	@Test func test_0_over_int_min_returns_0_over_int_min_when_not_normalized_by_default() throws {
 		let r = Rational(0, Int.min)
-		XCTAssertEqual(r.numerator, 0)
-		XCTAssertEqual(r.denominator, 1)
+		#expect(r.numerator == 0)
+		#expect(r.denominator == Int.min)
 	}
 
-	func test_int_min_over_int_min_returns_1_over_1() throws {
+	@Test func test_0_over_int_min_normalized_returns_0_over_int_min_magnitude() throws {
+		let r = Rational(0, Int.min, normalizedSign: true)
+		#expect(r.numerator == 0)
+		#expect(r.denominator == Int.min.magnitude)
+	}
+
+	@Test func test_int_min_over_int_min_returns_int_min_over_int_min_when_not_reduced_by_default() throws {
 		let r = Rational(Int.min, Int.min)
-		XCTAssertEqual(r.numerator, 1)
-		XCTAssertEqual(r.denominator, 1)
+		#expect(r.numerator == Int.min)
+		#expect(r.denominator == Int.min)
+	}
+
+	@Test func test_int_min_over_int_min_reduced_returns_1_over_1() throws {
+		let r = Rational(Int.min, Int.min, reduced: true)
+		#expect(r.numerator == 1)
+		#expect(r.denominator == 1)
+	}
+
+	@Test func test_int_min_over_negative_two_returns_int_min_over_negative_two_when_not_normalized_by_default() throws {
+		let r = Rational(Int.min, -2)
+		#expect(r.numerator == Int.min)
+		#expect(r.denominator == -2)
+	}
+
+	@Test func test_int_min_over_negative_two_normalized_returns_negative_int_min_over_two() throws {
+		let r = Rational(Int.min, -2, normalizedSign: true)
+		#expect(r.numerator == Int.min.magnitude)
+		#expect(r.denominator == 2)
+	}
+
+	@Test func test_int_min_over_negative_four_reduced_normalized_returns_negative_int_min_over_4() throws {
+		let r = Rational(Int.min, -4, reduced: true, normalizedSign: true)
+		#expect(r.numerator == Int.min.magnitude / 4)
+		#expect(r.denominator == 1)
 	}
 }
