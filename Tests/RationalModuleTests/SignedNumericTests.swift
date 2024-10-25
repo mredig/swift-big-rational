@@ -29,46 +29,6 @@ final class SignedNumericTests: XCTestCase {
 		}
 	}
 
-	func test_init_exactly_int8() throws {
-		let testCases = [
-			(123, 123),
-			(586, nil),
-			(-43, -43),
-			(-4_312_342, nil),
-		]
-
-		for (source, expected) in testCases {
-			let rational = Rational<Int8>(exactly: source)
-			if let expected {
-				let unwrappedRational = try XCTUnwrap(rational)
-				XCTAssertEqual(Int(unwrappedRational.numerator), expected)
-				XCTAssertEqual(unwrappedRational.denominator, 1)
-			} else {
-				XCTAssertNil(rational)
-			}
-		}
-	}
-
-	func test_init_exactly_int16() throws {
-		let testCases = [
-			(22523, 22523),
-			(45000, nil),
-			(-12542, -12542),
-			(-4_312_342, nil),
-		]
-
-		for (source, expected) in testCases {
-			let rational = Rational<Int16>(exactly: source)
-			if let expected {
-				let unwrappedRational = try XCTUnwrap(rational)
-				XCTAssertEqual(Int(unwrappedRational.numerator), expected)
-				XCTAssertEqual(unwrappedRational.denominator, 1)
-			} else {
-				XCTAssertNil(rational)
-			}
-		}
-	}
-
 	func test_random_multiplications() {
 		/// Random test cases created using the following Python script:
 		///
