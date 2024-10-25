@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: SignedNumeric {
 	public typealias Magnitude = Self
 

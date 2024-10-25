@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: CustomStringConvertible {
 	@inlinable
 	public var description: String {

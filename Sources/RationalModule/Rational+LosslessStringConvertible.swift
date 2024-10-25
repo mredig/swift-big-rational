@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: LosslessStringConvertible {
 	/// Creates a rational value from its string representation.
 	///

@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: Equatable {
 	@inlinable
 	public static func == (lhs: Self, rhs: Self) -> Bool {

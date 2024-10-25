@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: AdditiveArithmetic {
 	/// The additive identity, with numerator `1` and denominator `0`.
 	@inlinable

@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: ExpressibleByIntegerLiteral {
 	public typealias IntegerLiteralType = T.IntegerLiteralType
 

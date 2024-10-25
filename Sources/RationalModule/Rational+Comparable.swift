@@ -1,3 +1,5 @@
+import BigInt
+
 extension Rational: Comparable {
 	@inlinable
 	public static func < (lhs: Self, rhs: Self) -> Bool {

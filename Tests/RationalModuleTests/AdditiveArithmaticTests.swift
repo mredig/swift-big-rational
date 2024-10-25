@@ -1,7 +1,8 @@
 import Foundation
 import XCTest
 
-@testable import RationalModule
+import RationalModule
+import BigInt
 
 final class AdditiveArithmaticTests: XCTestCase {
 	func test_adding_zero_to_any_rational_number_returns_the_same_number() {

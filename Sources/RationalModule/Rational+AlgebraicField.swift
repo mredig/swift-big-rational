@@ -1,4 +1,5 @@
 import RealModule
+import BigInt
 
 extension Rational: AlgebraicField {
 	/// The multiplicative inverse of this value, if it can be represented.
