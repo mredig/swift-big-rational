@@ -1,5 +1,5 @@
 import XCTest
-import RationalModule
+import BigRationalModule
 
 final class StringConvertibleTests: XCTestCase {
 	func test_fraction_string_conversion() throws {

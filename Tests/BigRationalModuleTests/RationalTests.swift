@@ -1,7 +1,7 @@
 import BigInt
 import Foundation
 import Testing
-import RationalModule
+import BigRationalModule
 
 struct RationalTests {
 

@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "689612DA-44E0-41E2-AC2E-3CA575A323A5",
+      "id" : "4C629411-DD95-4E44-BA54-03D8A93114DE",
       "name" : "Test Scheme Action",
       "options" : {
 
@@ -13,8 +13,8 @@
       "targets" : [
         {
           "containerPath" : "container:",
-          "identifier" : "RationalModule",
-          "name" : "RationalModule"
+          "identifier" : "BigRationalModule",
+          "name" : "BigRationalModule"
         }
       ]
     }
@@ -23,8 +23,8 @@
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "RationalModuleTests",
-        "name" : "RationalModuleTests"
+        "identifier" : "BigRationalModuleTests",
+        "name" : "BigRationalModuleTests"
       }
     }
   ],

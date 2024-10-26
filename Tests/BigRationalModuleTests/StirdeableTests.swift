@@ -1,5 +1,5 @@
 import XCTest
-import RationalModule
+import BigRationalModule
 
 final class StrideableTests: XCTestCase {
 	func test_stride_0_to_1_step_1_over_4() throws {

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-import RationalModule
+import BigRationalModule
 
 struct EquatableTests {
 	@Test func test_basic_equatable() throws {

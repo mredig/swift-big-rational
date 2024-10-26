@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-import RationalModule
+import BigRationalModule
 import BigInt
 
 final class AdditiveArithmaticTests: XCTestCase {

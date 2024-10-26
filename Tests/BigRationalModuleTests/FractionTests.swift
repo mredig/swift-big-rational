@@ -1,5 +1,5 @@
 import Testing
-import RationalModule
+import BigRationalModule
 
 struct FractionTests {
 	@Test func test_2_over_4_returns_2_over_4_when_not_reduced_by_default() throws {

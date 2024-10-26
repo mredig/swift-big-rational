@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-import RationalModule
+import BigRationalModule
 
 struct AlgebraicFieldTests {
 	@Test func test_reciprocal_swaps_numerator_and_denominator() throws {

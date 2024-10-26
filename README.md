@@ -1,10 +1,10 @@
-# Swift Rational
+# Swift Big Rational
 
 ## Introduction
 
 Swift Rational provides the `RationalModule` module for working with rational numbers in Swift.
 ```swift
-import RationalModule
+import BigRationalModule
 
 let half = Rational<Int>(1, 2)
 ```
@@ -32,7 +32,7 @@ To use Swift Rational in a SwiftPM project:
 )
 ```
 
-3. Add `import RationalModule` in your source code.
+3. Add `import BigRationalModule` in your source code.
 
 ## API
 

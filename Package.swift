@@ -4,11 +4,11 @@
 import PackageDescription
 
 let package = Package(
-	name: "swift-rational",
+	name: "swift-big-rational",
 	products: [
 		.library(
-			name: "RationalModule",
-			targets: ["RationalModule"]
+			name: "BigRationalModule",
+			targets: ["BigRationalModule"]
 		)
 	],
 	dependencies: [
@@ -27,7 +27,7 @@ let package = Package(
 	],
 	targets: [
 		.target(
-			name: "RationalModule",
+			name: "BigRationalModule",
 			dependencies: [
 				.product(
 					name: "RealModule",
@@ -37,8 +37,8 @@ let package = Package(
 			]
 		),
 		.testTarget(
-			name: "RationalModuleTests",
-			dependencies: ["RationalModule"]
+			name: "BigRationalModuleTests",
+			dependencies: ["BigRationalModule"]
 		)
 	]
 )
