@@ -46,7 +46,8 @@ final class SignedNumericTests: XCTestCase {
 
 		let testCases = [
 			(
-				Rational(-1_392_130, 1_686_001), Rational(816_177_760, 340_819_527),
+				Rational(-1_392_130, 1_686_001),
+				Rational(816_177_760, 340_819_527),
 				Rational(-1_136_225_545_028_800, 574_622_063_341_527)
 			),
 			(
@@ -80,7 +81,8 @@ final class SignedNumericTests: XCTestCase {
 				Rational(-13_606_904_407_762_377, 80_798_493_584_809_339)
 			),
 			(
-				Rational(352317, 28_517_536), Rational(5_773_813, 8_383_986),
+				Rational(352317, 28_517_536),
+				Rational(5_773_813, 8_383_986),
 				Rational(678_070_824_907, 79_696_874_192_832)
 			),
 			(
@@ -94,7 +96,8 @@ final class SignedNumericTests: XCTestCase {
 				Rational(-13_108_557_176_343_965, 19_105_572_493_653_942)
 			),
 			(
-				Rational(-4_501_781, 1_065_364), Rational(86_687_000, 60_745_357),
+				Rational(-4_501_781, 1_065_364),
+				Rational(86_687_000, 60_745_357),
 				Rational(-97_561_472_386_750, 16_178_979_128_737)
 			),
 			(
@@ -163,7 +166,8 @@ final class SignedNumericTests: XCTestCase {
 				Rational(-1_523_484_165_147_421, 2_470_415_212_365_928)
 			),
 			(
-				Rational(49_295_768, 102_060_745), Rational(-82_318_233, 4_334_290),
+				Rational(49_295_768, 102_060_745),
+				Rational(-82_318_233, 4_334_290),
 				Rational(-2_028_970_258_068_972, 221_180_433_223_025)
 			),
 		]
@@ -171,5 +175,12 @@ final class SignedNumericTests: XCTestCase {
 		for (f1, f2, result) in testCases {
 			XCTAssertEqual(f1 * f2, result)
 		}
+	}
+
+	func testMultiplyInPlace() throws {
+		var value = Rational(1234, sign: .positive)
+		value *= 2
+
+		XCTAssertEqual(value, Rational(2468))
 	}
 }

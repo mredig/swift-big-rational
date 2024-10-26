@@ -1,10 +1,4 @@
-//
-//  RationalTests.swift
-//
-//
-//  Created by Maarten Engels on 14/01/2024.
-//
-
+import BigInt
 import Foundation
 import Testing
 import RationalModule
@@ -144,20 +138,29 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_signum_int32() {
-		let testCases: [(Rational, Int32)] = [
-			(Rational(1, 4), 1),
-			(Rational(0, 4), 0),
-			(Rational(-1, 7), -1),
-			(Rational(-0, 7), 0),
+	@Test func test_sign() {
+		let testCases: [(Rational, Rational.Sign)] = [
+			(Rational(1, 4), .positive),
+			(Rational(0, 4), .zero),
+			(Rational(-1, 7), .negative),
+			(Rational(-0, 7), .zero),
+			(Rational(-1, -7), .positive),
+			(Rational(1, -7), .negative),
+			(Rational(-0, 7) * Rational(1, 15), .zero),
+			(Rational(1, 15) * Rational(-0, 7), .zero),
+			(Rational(-1, 7) + Rational(1, 7), .zero),
+			(Rational(1, 7) - Rational(1, 7), .zero),
+			(Rational(1, 7) / Rational(1, 7), .positive),
+			(Rational(1, 7) / Rational(-1, 7), .negative),
+			(-Rational(1, 7) / Rational(-1, 7), .positive),
 		]
 
 		for (rational, expected) in testCases {
-			#expect(rational.signum() == expected)
+			#expect(rational.sign == expected)
 		}
 	}
 
-	@Test func test_signum_int64() {
+	@Test func test_signum() {
 		let testCases: [(Rational, Int)] = [
 			(Rational(1, 4), 1),
 			(Rational(0, 4), 0),
@@ -514,5 +517,20 @@ struct RationalTests {
 		for (rational, expected) in testCases {
 			#expect(rational.roundedAwayFromZero == expected)
 		}
+	}
+
+	@Test func initFromBigUInt() throws {
+		let new = Rational(BigUInt(1234), sign: .positive)
+		#expect(new == Rational(1234, 1, sign: .positive))
+	}
+
+	@Test func initNegativeFromBigUInt() throws {
+		let new = Rational(BigUInt(1234), sign: .negative)
+		#expect(new == Rational(1234, 1, sign: .negative))
+	}
+
+	@Test func initExactlyFromBinaryInteger() throws {
+		let new = Rational(exactly: 1234)
+		#expect(new == Rational(1234, 1, sign: .positive))
 	}
 }
