@@ -7,38 +7,59 @@ extension Rational: LosslessStringConvertible {
 	/// one or more digits (0-9), optionally followed by a / character
 	/// and one or more digits.
 	///
-	/// 	Rational<Int>("2")      // Rational(2, 1)
-	/// 	Rational<Int>("2/4")    // Rational(1, 2)
+	/// 	Rational("2")      // Rational(2, 1)
+	/// 	Rational("2/4")    // Rational(1, 2)
+	///     Rational("128/2")    // Rational(128, 2)
+	///     Rational("2 / 3")     // Rational(2, 3)
+	///     Rational("2_000_000 / 3")     // Rational(2000000, 3)
 	///
 	/// If the string is in an invalid format, or it describes a value that
 	/// cannot be represented within this type, `nil` is returned.
 	///
-	///     Rational<Int>("2 / 3")     // Whitespace
-	///     Rational<Int>("2/")        // Missing denominator
-	///     Rational<Int>("1/0")       // Division by zero
-	///     Rational<Int8>("128/2")    // 128 is out of bounds for Int8
+	///     Rational("2/")        // Missing denominator
+	///     Rational("1/0")       // Division by zero
 	///
 	@inlinable
 	public init?(_ description: String) {
 		self.init(description, reduced: false)
 	}
 
-	@inlinable
 	public init?(_ description: String, reduced: Bool = false) {
-		guard let slash = description.firstIndex(of: "/") else {
-			guard let value = BigInt(description) else { return nil }
-			self.init(value)
-			return
+		var numeratorAccumulator = ""
+		var denominatorAccumulator = ""
+		var numeratorFinished = false
+		for character in description {
+			guard character != "/" else {
+				guard numeratorFinished == false else {
+					return nil
+				}
+				numeratorFinished = true
+				continue
+			}
+			switch character {
+			case "_":
+				continue
+			case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", " ":
+				break
+			default: return nil
+			}
+
+			if numeratorFinished {
+				denominatorAccumulator.append(character)
+			} else {
+				numeratorAccumulator.append(character)
+			}
 		}
 
-		let afterSlash = description.index(after: slash)
-		guard afterSlash != description.endIndex else { return nil }
+		if denominatorAccumulator.isEmpty, numeratorFinished == false {
+			denominatorAccumulator = "1"
+		}
 
-		let lhs = String(description[..<slash])
-		let rhs = String(description[afterSlash...])
-		guard let numerator = BigInt(lhs), let denominator = BigInt(rhs) else { return nil }
-
-		guard denominator != 0 else { return nil }
+		guard
+			let numerator = BigInt(numeratorAccumulator.trimmingCharacters(in: .whitespacesAndNewlines)),
+			let denominator = BigInt(denominatorAccumulator.trimmingCharacters(in: .whitespacesAndNewlines)),
+			denominator != 0
+		else { return nil }
 
 		self.init(numerator, denominator, reduced: reduced)
 	}
