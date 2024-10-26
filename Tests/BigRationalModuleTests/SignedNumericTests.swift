@@ -224,4 +224,79 @@ final class SignedNumericTests: XCTestCase {
 
 		XCTAssertEqual(value, Rational(2468))
 	}
+
+	func testUnsignedMultiplyInPlace() throws {
+		var value = Rational(1234, sign: .positive)
+		value *= UInt(2)
+
+		XCTAssertEqual(value, Rational(2468))
+	}
+
+	func testSignedMultiplyInPlace() throws {
+		var value = Rational(1234, sign: .positive)
+		value *= Int(-2)
+
+		XCTAssertEqual(value, -Rational(2468))
+	}
+
+	func testDivideByEquivalentFraction() throws {
+		let start = Rational(15, 20)
+		let equivalentFraction = Rational(5, 5)
+
+		let product = start / equivalentFraction
+
+		XCTAssertEqual(product.numerator, 3)
+		XCTAssertEqual(product.denominator, 4)
+	}
+
+	func testDivideByInt() throws {
+		let start = Rational(3, 4)
+
+		let product = start / 5
+
+		XCTAssertEqual(product.numerator, 3)
+		XCTAssertEqual(product.denominator, 20)
+		XCTAssertEqual(product, Rational(3, 20))
+	}
+
+	func testDivideByBigInt() throws {
+		let start = Rational(3, 4)
+		let five = BigInt(5)
+		let product = start / five
+
+		XCTAssertEqual(product.numerator, 3)
+		XCTAssertEqual(product.denominator, 20)
+		XCTAssertEqual(product, Rational(3, 20))
+	}
+
+	func testDivideByBigUInt() throws {
+		let start = Rational(3, 4)
+		let five = BigUInt(5)
+		let product = start / five
+
+		XCTAssertEqual(product.numerator, 3)
+		XCTAssertEqual(product.denominator, 20)
+		XCTAssertEqual(product, Rational(3, 20))
+	}
+
+	func testDivideInPlace() throws {
+		var value = Rational(1234, sign: .positive)
+		value /= 2
+
+		XCTAssertEqual(value, Rational(617))
+	}
+
+	func testUnsignedDivideInPlace() throws {
+		var value = Rational(1234, sign: .positive)
+		value /= UInt(2)
+
+		XCTAssertEqual(value, Rational(617))
+	}
+
+	func testSignedDivideInPlace() throws {
+		var value = Rational(1234, sign: .positive)
+		value /= Int(-2)
+
+		XCTAssertEqual(value, -Rational(617))
+	}
 }
