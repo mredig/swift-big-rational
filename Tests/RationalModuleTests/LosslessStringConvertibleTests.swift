@@ -1,6 +1,5 @@
 import XCTest
-
-@testable import RationalModule
+import RationalModule
 
 final class LosslessStringConvertibleTests: XCTestCase {
 	func test_2_returns_2_over_1() throws {

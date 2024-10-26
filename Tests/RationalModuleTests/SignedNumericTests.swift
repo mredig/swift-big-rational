@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
-
-@testable import RationalModule
+import RationalModule
 
 final class SignedNumericTests: XCTestCase {
 	func test_magnitude_for_any_positive_rational_returns_the_same_value() {
