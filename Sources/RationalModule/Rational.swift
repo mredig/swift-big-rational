@@ -19,9 +19,9 @@ public struct Rational: Sendable, Codable, Hashable {
 		@inlinable
 		public static func multiplicationOutput(lhs: Sign, rhs: Sign) -> Sign {
 			switch (lhs, rhs) {
-			case (.negative, .negative), (.positive, .positive), (.positive, .zero), (.zero, .positive):
+			case (.negative, .negative), (.positive, .positive):
 				.positive
-			case (.zero, .zero):
+			case (.zero, .zero), (_, .zero), (.zero, _):
 				.zero
 			default:
 				.negative

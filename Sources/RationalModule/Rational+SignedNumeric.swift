@@ -25,17 +25,18 @@ extension Rational: SignedNumeric {
 
 	@inlinable
 	public static func * (lhs: Self, rhs: Self) -> Self {
-		let n1 = lhs.numerator
+		let n1 = lhs.numerator * lhs.sign.rawValue
 		let d1 = lhs.denominator
-		let n2 = rhs.numerator
+		let n2 = rhs.numerator * rhs.sign.rawValue
 		let d2 = rhs.denominator
 
 		let g1 = gcd(n1, d2)
 		let g2 = gcd(n2, d1)
 
-		let sign = Sign.multiplicationOutput(lhs: lhs.sign, rhs: rhs.sign)
+		let numerator = (n1 / g1) * (n2 / g2)
+		let denominator = (d1 / g2) * (d2 / g1)
 
-		return Self(numerator: (n1 / g1) * (n2 / g2), denominator: (d1 / g2) * (d2 / g1), sign: sign)
+		return Self(numerator, denominator)
 	}
 
 	@inlinable

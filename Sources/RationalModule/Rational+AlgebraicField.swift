@@ -16,9 +16,9 @@ extension Rational: AlgebraicField {
 	public static func / (lhs: Self, rhs: Self) -> Self {
 		guard !rhs.isZero else { fatalError("Cannot divide by zero") }
 
-		let n1 = lhs.numerator
+		let n1 = lhs.numerator * lhs.sign.rawValue
 		let d1 = lhs.denominator
-		let n2 = rhs.numerator
+		let n2 = rhs.numerator * rhs.sign.rawValue
 		let d2 = rhs.denominator
 
 		let g1 = gcd(n1, n2)
@@ -26,9 +26,7 @@ extension Rational: AlgebraicField {
 		let numerator = (n1 / g1) * (d2 / g2)
 		let denominator = (d1 / g2) * (n2 / g1)
 
-		let sign = Sign.multiplicationOutput(lhs: lhs.sign, rhs: rhs.sign)
-
-		return Self(numerator: numerator, denominator: denominator, sign: sign)
+		return Self(numerator, denominator)
 	}
 
 	@inlinable
