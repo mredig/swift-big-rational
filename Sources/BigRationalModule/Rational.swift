@@ -1,6 +1,6 @@
 import BigInt
 
-public struct Rational: Sendable, Codable, Hashable {
+public struct Rational: Sendable, Codable {
 	/// The numerator of this value.
 	public let numerator: BigInt
 

@@ -12,3 +12,13 @@ extension Rational: Equatable {
 		return reducedEqual(lhs: a, rhs: b)
 	}
 }
+
+extension Rational: Hashable {
+	@inlinable
+	public func hash(into hasher: inout Hasher) {
+		let reduced = reduced
+		hasher.combine(reduced.numerator)
+		hasher.combine(reduced.denominator)
+		hasher.combine(reduced.sign)
+	}
+}
