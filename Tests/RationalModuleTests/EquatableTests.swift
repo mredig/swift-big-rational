@@ -17,14 +17,14 @@ struct EquatableTests {
 		#expect(a == b)
 	}
 
-	@Test func test_unnormalized_equatable() throws {
+	@Test func test_negative_equatable() throws {
 		let a = Rational("-1/2")
 		let b = Rational(1, -2)
 
 		#expect(a == b)
 	}
 
-	@Test func test_unreduced_unnormalized_equatable() throws {
+	@Test func test_unreduced_negative2_equatable() throws {
 		let a = Rational("-1/2")
 		let b = Rational(2, -4)
 

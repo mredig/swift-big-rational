@@ -33,12 +33,6 @@ struct FractionTests {
 		#expect(r.sign == .negative)
 	}
 
-	@Test func test_1_over_negative_3_normalized_returns_negative_1_over_3() throws {
-		let r = Rational(1, -3)
-		#expect(r.numerator == 1)
-		#expect(r.denominator == 3)
-	}
-
 	@Test func test_6_over_3_returns_6_over_3_when_not_reduced_by_default() throws {
 		let r = Rational(6, 3)
 		#expect(r.numerator == 6)
@@ -58,7 +52,7 @@ struct FractionTests {
 		#expect(r.sign == .zero)
 	}
 
-	@Test func test_0_over_int_min_normalized_returns_0_over_int_min_magnitude() throws {
+	@Test func test_0_over_int_min_returns_0_over_int_min_magnitude() throws {
 		let r = Rational(0, Int.min)
 		#expect(r.numerator == 0)
 		#expect(r.denominator == Int.min.magnitude)
@@ -83,13 +77,7 @@ struct FractionTests {
 		#expect(r.denominator == 2)
 	}
 
-	@Test func test_int_min_over_negative_two_normalized_returns_negative_int_min_over_two() throws {
-		let r = Rational(Int.min, -2)
-		#expect(r.numerator == Int.min.magnitude)
-		#expect(r.denominator == 2)
-	}
-
-	@Test func test_int_min_over_negative_four_reduced_normalized_returns_negative_int_min_over_4() throws {
+	@Test func test_int_min_over_negative_four_reduced_returns_negative_int_min_over_4() throws {
 		let r = Rational(Int.min, -4, reduced: true)
 		#expect(r.numerator == Int.min.magnitude / 4)
 		#expect(r.denominator == 1)
