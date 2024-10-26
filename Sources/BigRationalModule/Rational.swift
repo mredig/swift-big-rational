@@ -9,8 +9,6 @@ public struct Rational: Sendable, Codable {
 
 	public let sign: Sign
 
-	public typealias T = BigInt
-
 	public enum Sign: BigInt, Sendable, Hashable, Codable {
 		case negative = -1
 		case zero = 0
@@ -55,7 +53,7 @@ public struct Rational: Sendable, Codable {
 
 	/// Creates a rational value with the given numerator and denominator.
 	@inlinable
-	internal init(numerator: T, denominator: T, sign: Sign) {
+	internal init(numerator: BigInt, denominator: BigInt, sign: Sign) {
 		assert(denominator != 0, "The denominator must not be 0")
 
 		self.numerator = numerator
@@ -118,7 +116,7 @@ extension Rational {
 
 	/// The quotient and remainder of the numerator divided by the denominator.
 	@inlinable
-	public var quotientAndRemainder: (quotient: T, remainder: T) {
+	public var quotientAndRemainder: (quotient: BigInt, remainder: BigInt) {
 		let result = numerator.quotientAndRemainder(dividingBy: denominator)
 		return (result.quotient * sign.rawValue, result.remainder * sign.rawValue)
 	}
@@ -183,7 +181,7 @@ extension Rational {
 
 	/// Returns the numerator and denominator as a tuple.
 	@inlinable
-	public func toRatio() -> (numerator: T, denominator: T) {
+	public func toRatio() -> (numerator: BigInt, denominator: BigInt) {
 		(numerator, denominator)
 	}
 
@@ -192,15 +190,15 @@ extension Rational {
 	///
 	/// - Precondition: `max >= 1`
 	@inlinable
-	public func limitDenominator(to max: T) -> Self {
+	public func limitDenominator(to max: BigInt) -> Self {
 		precondition(max >= 1, "The value of `max` should be at least 1")
 
 		guard denominator > max else { return self }
 
-		var p0: T = 0
-		var q0: T = 1
-		var p1: T = 1
-		var q1: T = 0
+		var p0: BigInt = 0
+		var q0: BigInt = 1
+		var p1: BigInt = 1
+		var q1: BigInt = 0
 		var n = numerator
 		var d = denominator
 
@@ -237,7 +235,7 @@ internal func floorDivision<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 extension Rational {
 	/// The greatest integer less than or equal to this value.
 	@inlinable
-	public var floor: T {
+	public var floor: BigInt {
 		guard !isInteger else { return numerator }
 		return if isNegative {
 			quotient - 1
@@ -248,7 +246,7 @@ extension Rational {
 
 	/// The smallest integer greater than or equal to this value.
 	@inlinable
-	public var ceil: T {
+	public var ceil: BigInt {
 		guard !isInteger else { return numerator }
 		return if isNegative {
 			quotient
@@ -260,7 +258,7 @@ extension Rational {
 	/// The closest integer to this value, or the one with
 	/// greater magnitude if two values are equally close.
 	@inlinable
-	public var rounded: T {
+	public var rounded: BigInt {
 		guard !isInteger else { return numerator }
 		// If the magnitude of the fractional part
 		// is less than 1/2, round towards zero.
@@ -278,7 +276,7 @@ extension Rational {
 	/// The closest integer whose magnitude is greater than
 	/// or equal to this value.
 	@inlinable
-	public var roundedAwayFromZero: T {
+	public var roundedAwayFromZero: BigInt {
 		guard !isInteger else { return numerator }
 		return if isNegative {
 			quotient - 1
