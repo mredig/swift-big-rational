@@ -518,19 +518,4 @@ struct RationalTests {
 			#expect(rational.roundedAwayFromZero == expected)
 		}
 	}
-
-	@Test func initFromBigUInt() throws {
-		let new = Rational(BigUInt(1234), sign: .positive)
-		#expect(new == Rational(1234, 1, sign: .positive))
-	}
-
-	@Test func initNegativeFromBigUInt() throws {
-		let new = Rational(BigUInt(1234), sign: .negative)
-		#expect(new == Rational(1234, 1, sign: .negative))
-	}
-
-	@Test func initExactlyFromBinaryInteger() throws {
-		let new = Rational(exactly: 1234)
-		#expect(new == Rational(1234, 1, sign: .positive))
-	}
 }

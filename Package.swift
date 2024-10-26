@@ -22,7 +22,7 @@ let package = Package(
 		),
 		.package(
 			url: "https://github.com/attaswift/BigInt.git",
-			.upToNextMinor(from: "5.4.1")
+			.upToNextMajor(from: "5.4.1")
 		),
 	],
 	targets: [

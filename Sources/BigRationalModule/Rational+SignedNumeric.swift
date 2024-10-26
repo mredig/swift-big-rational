@@ -40,6 +40,16 @@ extension Rational: SignedNumeric {
 	}
 
 	@inlinable
+	public static func * <SN: SignedInteger>(lhs: Self, rhs: SN) -> Self {
+		lhs * Rational(rhs, 1)
+	}
+
+	@inlinable
+	public static func * <UN: UnsignedInteger>(lhs: Self, rhs: UN) -> Self {
+		lhs * BigInt(rhs)
+	}
+
+	@inlinable
 	public static func *= (lhs: inout Self, rhs: Self) {
 		lhs = lhs * rhs
 	}

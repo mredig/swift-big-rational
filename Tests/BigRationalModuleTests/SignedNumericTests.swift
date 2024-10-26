@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import BigRationalModule
+import BigInt
 
 final class SignedNumericTests: XCTestCase {
 	func test_magnitude_for_any_positive_rational_returns_the_same_value() {
@@ -175,6 +176,46 @@ final class SignedNumericTests: XCTestCase {
 		for (f1, f2, result) in testCases {
 			XCTAssertEqual(f1 * f2, result)
 		}
+	}
+
+	func testMultiplyByEquivalentFraction() throws {
+		let start = Rational(3, 4)
+		let equivalentFraction = Rational(5, 5)
+
+		let product = start * equivalentFraction
+
+		XCTAssertEqual(product.numerator, 15)
+		XCTAssertEqual(product.denominator, 20)
+	}
+
+	func testMultiplyByInt() throws {
+		let start = Rational(3, 4)
+
+		let product = start * 5
+
+		XCTAssertEqual(product.numerator, 15)
+		XCTAssertEqual(product.denominator, 4)
+		XCTAssertEqual(product, Rational(15, 4))
+	}
+
+	func testMultiplyByBigInt() throws {
+		let start = Rational(3, 4)
+		let five = BigInt(5)
+		let product = start * five
+
+		XCTAssertEqual(product.numerator, 15)
+		XCTAssertEqual(product.denominator, 4)
+		XCTAssertEqual(product, Rational(15, 4))
+	}
+
+	func testMultiplyByBigUInt() throws {
+		let start = Rational(3, 4)
+		let five = BigUInt(5)
+		let product = start * five
+
+		XCTAssertEqual(product.numerator, 15)
+		XCTAssertEqual(product.denominator, 4)
+		XCTAssertEqual(product, Rational(15, 4))
 	}
 
 	func testMultiplyInPlace() throws {
