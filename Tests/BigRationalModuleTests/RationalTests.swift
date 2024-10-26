@@ -339,6 +339,8 @@ struct RationalTests {
 			(Rational(-265_512_059, 218_875_992), -2),
 			(Rational(-154_540_399, 278_286_079), -1),
 			(Rational(-573_054_023, 1_858_939), -309),
+			(Rational(4, 1), 4),
+			(Rational(-4, 1), -4),
 		]
 
 		for (rational, expected) in testCases {
@@ -411,6 +413,8 @@ struct RationalTests {
 			(Rational(26_753_831, 116_792_127), 1),
 			(Rational(-72_969_618, 86_104_715), 0),
 			(Rational(370_348_661, 960_606_899), 1),
+			(Rational(4, 1), 4),
+			(Rational(-4, 1), -4),
 		]
 
 		for (rational, expected) in testCases {
@@ -484,6 +488,8 @@ struct RationalTests {
 			(Rational(-634_324_370, 945_168_363), -1),
 			(Rational(61_419_539, 391_130_885), 0),
 			(Rational(-227_065_415, 193_646_176), -1),
+			(Rational(4, 1), 4),
+			(Rational(-4, 1), -4),
 		]
 
 		for (rational, expected) in testCases {
@@ -512,6 +518,8 @@ struct RationalTests {
 			(Rational(-666702, 156_567_307), -1),
 			(Rational(-869_265_084, 47_563_579), -19),
 			(Rational(-987_442_149, 769_441_060), -2),
+			(Rational(4, 1), 4),
+			(Rational(-4, 1), -4),
 		]
 
 		for (rational, expected) in testCases {

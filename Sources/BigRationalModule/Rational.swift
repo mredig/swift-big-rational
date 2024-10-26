@@ -227,6 +227,7 @@ internal func floorDivision<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 	return if a >= 0 {
 		quotient
 	} else {
+		// I don't think it's actually possible to get here after the refactor to BigInt.
 		quotient - 1
 	}
 }
@@ -236,7 +237,7 @@ extension Rational {
 	/// The greatest integer less than or equal to this value.
 	@inlinable
 	public var floor: BigInt {
-		guard !isInteger else { return numerator }
+		guard !isInteger else { return numerator * sign.rawValue }
 		return if isNegative {
 			quotient - 1
 		} else {
@@ -247,7 +248,7 @@ extension Rational {
 	/// The smallest integer greater than or equal to this value.
 	@inlinable
 	public var ceil: BigInt {
-		guard !isInteger else { return numerator }
+		guard !isInteger else { return numerator * sign.rawValue }
 		return if isNegative {
 			quotient
 		} else {
@@ -259,7 +260,7 @@ extension Rational {
 	/// greater magnitude if two values are equally close.
 	@inlinable
 	public var rounded: BigInt {
-		guard !isInteger else { return numerator }
+		guard !isInteger else { return numerator * sign.rawValue }
 		// If the magnitude of the fractional part
 		// is less than 1/2, round towards zero.
 		//
@@ -277,7 +278,7 @@ extension Rational {
 	/// or equal to this value.
 	@inlinable
 	public var roundedAwayFromZero: BigInt {
-		guard !isInteger else { return numerator }
+		guard !isInteger else { return numerator * sign.rawValue }
 		return if isNegative {
 			quotient - 1
 		} else {
