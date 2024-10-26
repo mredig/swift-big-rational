@@ -19,7 +19,7 @@ extension Rational: SignedNumeric {
 	///
 	@inlinable
 	public init?(exactly source: some BinaryInteger) {
-		guard let value = T(exactly: source) else { return nil }
+		guard let value = BigInt(exactly: source) else { return nil }
 		self.init(value)
 	}
 
@@ -45,8 +45,9 @@ extension Rational: SignedNumeric {
 
 	@inlinable
 	public static prefix func - (operand: Self) -> Self {
-		var new = operand
-		new.negate()
-		return new
+		Rational(
+			numerator: operand.numerator,
+			denominator: operand.denominator,
+			sign: operand.sign.opposite)
 	}
 }

@@ -4,9 +4,9 @@ extension Rational: CustomStringConvertible {
 	@inlinable
 	public var description: String {
 		if denominator == 1 {
-			"\(numerator)"
+			"\(sign)\(numerator)"
 		} else {
-			"\(numerator)/\(denominator)"
+			"\(sign)\(numerator)/\(denominator)"
 		}
 	}
 }
@@ -16,6 +16,18 @@ extension Rational: CustomDebugStringConvertible {
 	public var debugDescription: String {
 		let n = String(reflecting: numerator)
 		let d = String(reflecting: denominator)
-		return "Rational(\(n), \(d))"
+		return "Rational(\(sign)\(n), \(d))"
+	}
+}
+
+extension Rational.Sign: CustomStringConvertible {
+	@inlinable
+	public var description: String {
+		switch self {
+		case .negative:
+			"-"
+		case .zero, .positive:
+			""
+		}
 	}
 }

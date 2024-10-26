@@ -18,7 +18,7 @@ final class LosslessStringConvertibleTests: XCTestCase {
 	}
 
 	func test_2_over_4_returns_1_over_2() throws {
-		let r = Rational("2/4", reduced: true, normalizedSign: false)
+		let r = Rational("2/4", reduced: true)
 		XCTAssertNotNil(r)
 		XCTAssertEqual(r?.numerator, 1)
 		XCTAssertEqual(r?.denominator, 2)

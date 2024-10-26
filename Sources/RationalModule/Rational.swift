@@ -11,10 +11,10 @@ public struct Rational: Sendable, Codable, Hashable {
 
 	public typealias T = BigInt
 
-	public enum Sign: Sendable, Hashable, Codable {
-		case negative
-		case zero
-		case positive
+	public enum Sign: BigInt, Sendable, Hashable, Codable {
+		case negative = -1
+		case zero = 0
+		case positive = 1
 
 		@inlinable
 		public static func multiplicationOutput(lhs: Sign, rhs: Sign) -> Sign {
@@ -39,6 +39,18 @@ public struct Rational: Sendable, Codable, Hashable {
 					self = .negative
 				}
 		}
+
+		@inlinable
+		public var opposite: Sign {
+			switch self {
+			case .negative:
+					.positive
+			case .zero:
+					.zero
+			case .positive:
+					.negative
+			}
+		}
 	}
 
 	/// Creates a rational value with the given numerator and denominator.
@@ -48,6 +60,10 @@ public struct Rational: Sendable, Codable, Hashable {
 
 		self.numerator = numerator
 		self.denominator = denominator
+		guard numerator != 0 else {
+			self.sign = .zero
+			return
+		}
 		self.sign = sign
 	}
 }
@@ -66,24 +82,25 @@ extension Rational {
 	///
 	/// - Precondition: `denominator != 0`
 	@inlinable
-	public init(_ numerator: BigInt, _ denominator: BigInt, reduced: Bool = false) {
+	public init(_ numerator: BigUInt, _ denominator: BigUInt, sign: Sign = .positive, reduced: Bool = false) {
+		precondition(denominator != 0, "The denominator must not be zero")
+
+		self.init(numerator: BigInt(numerator), denominator: BigInt(denominator), sign: sign)
+		guard reduced else { return }
+		self = self.reduced
+	}
+
+	@inlinable
+	public init<SN: SignedInteger>(_ numerator: SN, _ denominator: SN, reduced: Bool = false) {
 		precondition(denominator != 0, "The denominator must not be zero")
 
 		let numSign = Sign(numerator)
 		let denSign = Sign(denominator)
 		let sign = Sign.multiplicationOutput(lhs: numSign, rhs: denSign)
 
-		self.init(numerator: numerator, denominator: denominator, sign: sign)
-		if reduced {
-			self = self.reduced
-		}
-	}
-
-	@inlinable
-	public init<N: FixedWidthInteger>(_ numerator: N, _ denominator: N, reduced: Bool = false) {
-		let num = BigInt(numerator)
-		let den = BigInt(denominator)
-		self.init(num, den, reduced: reduced)
+		self.init(BigUInt(numerator.magnitude), BigUInt(denominator.magnitude), sign: sign, reduced: reduced)
+		guard reduced else { return }
+		self = self.reduced
 	}
 }
 
@@ -91,33 +108,22 @@ extension Rational {
 extension Rational {
 	/// The quotient of the numerator divided by the denominator.
 	@inlinable
-	public var quotient: T {
-		numerator / denominator
+	public var quotient: BigInt {
+		(numerator / denominator) * sign.rawValue
 	}
 
 	/// The remainder of the numerator divided by the denominator.
 	@inlinable
-	public var remainder: T {
-		numerator % denominator
+	public var remainder: BigInt {
+		(numerator % denominator) * sign.rawValue
 	}
 
 	/// The quotient and remainder of the numerator divided by the denominator.
 	@inlinable
 	public var quotientAndRemainder: (quotient: T, remainder: T) {
-		numerator.quotientAndRemainder(dividingBy: denominator)
+		let result = numerator.quotientAndRemainder(dividingBy: denominator)
+		return (result.quotient * sign.rawValue, result.remainder * sign.rawValue)
 	}
-
-	/// A copy of this value where the denominator is always positive.
-//	@inlinable
-//	public var normalizedSign: Self {
-//		var numerator = numerator
-//		var denominator = denominator
-//		if denominator < 0 {
-//			denominator.negate()
-//			numerator.negate()
-//		}
-//		return Self(numerator: numerator, denominator: denominator)
-//	}
 
 	@inlinable
 	public var isSignNormalized: Bool {
@@ -133,14 +139,12 @@ extension Rational {
 	/// Whether or not this value is negative.
 	@inlinable
 	public var isNegative: Bool {
-//		normalizedSign.numerator < 0
 		sign == .negative
 	}
 
 	/// Whether or not this value is positive.
 	@inlinable
 	public var isPositive: Bool {
-//		normalizedSign.numerator > 0
 		sign == .positive
 	}
 
@@ -162,12 +166,6 @@ extension Rational {
 		return Self(numerator: numerator, denominator: denominator, sign: sign)
 	}
 
-	/// An equal copy of this value, but where the components are a reduced fraction with a positive denominator.
-//	@inlinable
-//	public var normalized: Self {
-//		reduced.normalizedSign
-//	}
-
 	/// Whether or not this value represents an integer.
 	@inlinable
 	public var isInteger: Bool {
@@ -186,12 +184,8 @@ extension Rational {
 	/// Returns `-1` if this value is negative and `1` if it's positive;
 	/// otherwise, `0`.
 	@inlinable
-	public func signum() -> T {
-		switch sign {
-		case .negative: -1
-		case .zero: 0
-		case .positive: 1
-		}
+	public func signum() -> BigInt {
+		sign.rawValue
 	}
 
 	/// Returns the numerator and denominator as a tuple.

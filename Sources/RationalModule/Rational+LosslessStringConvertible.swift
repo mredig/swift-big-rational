@@ -26,7 +26,7 @@ extension Rational: LosslessStringConvertible {
 	@inlinable
 	public init?(_ description: String, reduced: Bool = false) {
 		guard let slash = description.firstIndex(of: "/") else {
-			guard let value = T(description) else { return nil }
+			guard let value = BigInt(description) else { return nil }
 			self.init(value)
 			return
 		}
@@ -36,7 +36,7 @@ extension Rational: LosslessStringConvertible {
 
 		let lhs = String(description[..<slash])
 		let rhs = String(description[afterSlash...])
-		guard let numerator = T(lhs), let denominator = T(rhs) else { return nil }
+		guard let numerator = BigInt(lhs), let denominator = BigInt(rhs) else { return nil }
 
 		guard denominator != 0 else { return nil }
 

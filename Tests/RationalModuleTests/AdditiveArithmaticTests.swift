@@ -8,7 +8,8 @@ final class AdditiveArithmaticTests: XCTestCase {
 	func test_adding_zero_to_any_rational_number_returns_the_same_number() {
 		for _ in 0..<20 {
 			let r = Rational(Int.random(in: -100...100), Int.random(in: 1...100))
-			XCTAssertEqual(r + .zero, r)
+			let sum = r + .zero
+			XCTAssertEqual(sum, r)
 		}
 	}
 

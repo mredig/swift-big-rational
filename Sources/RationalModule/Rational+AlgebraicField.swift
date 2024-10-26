@@ -6,13 +6,8 @@ extension Rational: AlgebraicField {
 	public var reciprocal: Self? {
 		guard !isZero else { return nil }
 
-		var numerator = self.denominator
-		var denominator = self.numerator
-
-		if denominator < 0 {
-			numerator.negate()
-			denominator.negate()
-		}
+		let numerator = self.denominator
+		let denominator = self.numerator
 
 		return Self(numerator: numerator, denominator: denominator, sign: sign)
 	}
@@ -28,13 +23,8 @@ extension Rational: AlgebraicField {
 
 		let g1 = gcd(n1, n2)
 		let g2 = gcd(d2, d1)
-		var numerator = (n1 / g1) * (d2 / g2)
-		var denominator = (d1 / g2) * (n2 / g1)
-
-		if denominator < 0 {
-			numerator.negate()
-			denominator.negate()
-		}
+		let numerator = (n1 / g1) * (d2 / g2)
+		let denominator = (d1 / g2) * (n2 / g1)
 
 		let sign = Sign.multiplicationOutput(lhs: lhs.sign, rhs: rhs.sign)
 

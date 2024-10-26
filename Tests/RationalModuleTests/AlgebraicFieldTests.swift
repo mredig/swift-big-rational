@@ -9,14 +9,16 @@ struct AlgebraicFieldTests {
 
 		#expect(reciprocal.numerator == 1253)
 		#expect(reciprocal.denominator == 234)
+		#expect(reciprocal.sign == .positive)
 	}
 
-	@Test func test_reciprocal_swaps_signs_for_negative_rationals() throws {
+	@Test func test_reciprocal_keeps_sign_for_negative_rationals() throws {
 		let rational = Rational(-234, 1253)
 		let reciprocal = try #require(rational.reciprocal)
 
-		#expect(reciprocal.numerator == -1253)
+		#expect(reciprocal.numerator == 1253)
 		#expect(reciprocal.denominator == 234)
+		#expect(reciprocal.sign == .negative)
 	}
 
 	@Test func test_reciprocal_returns_nil_when_numerator_equals_zero() {
