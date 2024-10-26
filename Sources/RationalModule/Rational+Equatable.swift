@@ -7,8 +7,8 @@ extension Rational: Equatable {
 			lhs.numerator == rhs.numerator && lhs.denominator == rhs.denominator
 		}
 
-		let a = lhs.normalized
-		let b = rhs.normalized
+		let a = lhs.reduced
+		let b = rhs.reduced
 		return basicEquatable(lhs: a, rhs: b)
 	}
 }

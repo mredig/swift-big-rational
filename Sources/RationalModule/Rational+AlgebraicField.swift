@@ -14,7 +14,7 @@ extension Rational: AlgebraicField {
 			denominator.negate()
 		}
 
-		return Self(numerator: numerator, denominator: denominator)
+		return Self(numerator: numerator, denominator: denominator, sign: sign)
 	}
 
 	@inlinable
@@ -36,7 +36,9 @@ extension Rational: AlgebraicField {
 			denominator.negate()
 		}
 
-		return Self(numerator: numerator, denominator: denominator)
+		let sign = Sign.multiplicationOutput(lhs: lhs.sign, rhs: rhs.sign)
+
+		return Self(numerator: numerator, denominator: denominator, sign: sign)
 	}
 
 	@inlinable

@@ -20,11 +20,11 @@ extension Rational: LosslessStringConvertible {
 	///
 	@inlinable
 	public init?(_ description: String) {
-		self.init(description, reduced: false, normalizedSign: false)
+		self.init(description, reduced: false)
 	}
 
 	@inlinable
-	public init?(_ description: String, reduced: Bool = false, normalizedSign: Bool = false) {
+	public init?(_ description: String, reduced: Bool = false) {
 		guard let slash = description.firstIndex(of: "/") else {
 			guard let value = T(description) else { return nil }
 			self.init(value)
@@ -40,6 +40,6 @@ extension Rational: LosslessStringConvertible {
 
 		guard denominator != 0 else { return nil }
 
-		self.init(numerator, denominator, reduced: reduced, normalizedSign: normalizedSign)
+		self.init(numerator, denominator, reduced: reduced)
 	}
 }

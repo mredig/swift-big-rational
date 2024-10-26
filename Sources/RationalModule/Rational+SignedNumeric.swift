@@ -8,7 +8,7 @@ extension Rational: SignedNumeric {
 	/// If the numerator is `T.min`, this property overflows.
 	@inlinable
 	public var magnitude: Self {
-		Self(numerator: abs(numerator), denominator: denominator)
+		Self(numerator: numerator, denominator: denominator, sign: .positive)
 	}
 
 	/// Converts the given integer to a rational value,
@@ -32,7 +32,10 @@ extension Rational: SignedNumeric {
 
 		let g1 = gcd(n1, d2)
 		let g2 = gcd(n2, d1)
-		return Self(numerator: (n1 / g1) * (n2 / g2), denominator: (d1 / g2) * (d2 / g1))
+
+		let sign = Sign.multiplicationOutput(lhs: lhs.sign, rhs: rhs.sign)
+
+		return Self(numerator: (n1 / g1) * (n2 / g2), denominator: (d1 / g2) * (d2 / g1), sign: sign)
 	}
 
 	@inlinable
@@ -42,6 +45,8 @@ extension Rational: SignedNumeric {
 
 	@inlinable
 	public static prefix func - (operand: Self) -> Self {
-		Self(numerator: -operand.numerator, denominator: operand.denominator)
+		var new = operand
+		new.negate()
+		return new
 	}
 }

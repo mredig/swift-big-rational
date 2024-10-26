@@ -16,6 +16,7 @@ extension Rational {
 	/// equal to `value` and denominator `1`.
 	@inlinable
 	public init(_ value: T) {
-		self.init(numerator: value, denominator: 1)
+		let sign = Sign(value)
+		self.init(numerator: value, denominator: 1, sign: sign)
 	}
 }
