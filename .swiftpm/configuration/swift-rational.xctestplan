@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "689612DA-44E0-41E2-AC2E-3CA575A323A5",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "RationalModule",
+          "name" : "RationalModule"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "RationalModuleTests",
+        "name" : "RationalModuleTests"
+      }
+    }
+  ],
+  "version" : 1
+}
