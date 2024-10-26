@@ -31,3 +31,17 @@ extension Rational.Sign: CustomStringConvertible {
 		}
 	}
 }
+
+extension Rational.Sign: CustomDebugStringConvertible {
+	@inlinable
+	public var debugDescription: String {
+		switch self {
+		case .negative:
+			"-"
+		case .zero:
+			""
+		case .positive:
+			"+"
+		}
+	}
+}
