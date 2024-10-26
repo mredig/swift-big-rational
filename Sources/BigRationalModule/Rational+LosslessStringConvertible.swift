@@ -21,10 +21,10 @@ extension Rational: LosslessStringConvertible {
 	///
 	@inlinable
 	public init?(_ description: String) {
-		self.init(description, reduced: false)
+		self.init(description, radix: 10, reduced: false)
 	}
 
-	public init?(_ description: String, reduced: Bool = false) {
+	public init?(_ description: String, radix: Int = 10, reduced: Bool = false) {
 		var numeratorAccumulator = ""
 		var denominatorAccumulator = ""
 		var numeratorFinished = false
@@ -39,9 +39,7 @@ extension Rational: LosslessStringConvertible {
 			switch character {
 			case "_":
 				continue
-			case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", " ":
-				break
-			default: return nil
+			default: break
 			}
 
 			if numeratorFinished {
@@ -55,9 +53,28 @@ extension Rational: LosslessStringConvertible {
 			denominatorAccumulator = "1"
 		}
 
+		numeratorAccumulator = numeratorAccumulator.trimmingCharacters(in: .whitespacesAndNewlines)
+		denominatorAccumulator = denominatorAccumulator.trimmingCharacters(in: .whitespacesAndNewlines)
+
+		if radix == 16 {
+			if numeratorAccumulator.lowercased().hasPrefix("0x") {
+				numeratorAccumulator.removeFirst(2)
+			}
+			if denominatorAccumulator.lowercased().hasPrefix("0x") {
+				denominatorAccumulator.removeFirst(2)
+			}
+		} else if radix == 2 {
+			if numeratorAccumulator.lowercased().hasPrefix("0b") {
+				numeratorAccumulator.removeFirst(2)
+			}
+			if denominatorAccumulator.lowercased().hasPrefix("0b") {
+				denominatorAccumulator.removeFirst(2)
+			}
+		}
+
 		guard
-			let numerator = BigInt(numeratorAccumulator.trimmingCharacters(in: .whitespacesAndNewlines)),
-			let denominator = BigInt(denominatorAccumulator.trimmingCharacters(in: .whitespacesAndNewlines)),
+			let numerator = BigInt(numeratorAccumulator, radix: radix),
+			let denominator = BigInt(denominatorAccumulator, radix: radix),
 			denominator != 0
 		else { return nil }
 

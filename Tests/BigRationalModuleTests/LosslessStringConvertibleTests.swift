@@ -62,4 +62,40 @@ struct LosslessStringConvertibleTests {
 		let r = Rational("5 / s")
 		#expect(r == nil)
 	}
+
+	@Test func binary() throws {
+		let r = Rational("1001 / 100001", radix: 2)
+		#expect(r == Rational(9, 33))
+	}
+
+	@Test func binaryWithPrefix() throws {
+		let r = Rational("0b1001 / 0b100001", radix: 2)
+		#expect(r == Rational(9, 33))
+	}
+
+	@Test func binaryInvalidReturnsNil() throws {
+		let r = Rational("1001 / 100021", radix: 2)
+		#expect(r == nil)
+	}
+
+	@Test func hex() throws {
+		let r = Rational("f5 / 5f5", radix: 16)
+		#expect(r == Rational(245, 1525))
+	}
+
+	@Test func hexWithPrefix() throws {
+		let r = Rational("0xf5 / 0x5f5", radix: 16)
+		#expect(r == Rational(245, 1525))
+	}
+
+	@Test func hexWithPrefix2() throws {
+		let r = Rational("f5 / 0x5f5", radix: 16)
+		#expect(r == Rational(245, 1525))
+	}
+
+	@Test func hexInvalidReturnsNil() throws {
+		let r = Rational("f5z / 5f5", radix: 16)
+		#expect(r == nil)
+	}
+
 }
