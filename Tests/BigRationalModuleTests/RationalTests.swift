@@ -273,6 +273,10 @@ struct RationalTests {
 		}
 	}
 
+	@Test func limitedDenominatorAt0IsNan() {
+		#expect(Rational(10).limitDenominator(to: 0) == .nan)
+	}
+
 	@Test func test_floor() {
 		/// Random test cases created using the following Python script:
 		///

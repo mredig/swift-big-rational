@@ -199,8 +199,9 @@ extension Rational {
 	///
 	/// - Precondition: `max >= 1`
 	@inlinable
-	public func limitDenominator(to max: BigInt) -> Self {
-		precondition(max >= 1, "The value of `max` should be at least 1")
+	public func limitDenominator(to max: BigUInt) -> Self {
+		guard max != 0 else { return .nan }
+		let max = BigInt(max)
 
 		guard denominator > max else { return self }
 
@@ -233,11 +234,14 @@ extension Rational {
 @usableFromInline
 internal func floorDivision<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 	let quotient = a / b
-	return if a >= 0 {
-		quotient
-	} else {
-		// I don't think it's actually possible to get here after the refactor to BigInt.
-		quotient - 1
+	let remainder = a % b
+
+	guard remainder != 0 else { return quotient }
+	switch (a.signum(), b.signum()) {
+	case (-1, -1), (1, 1):
+		return quotient
+	default:
+		return quotient - 1
 	}
 }
 
