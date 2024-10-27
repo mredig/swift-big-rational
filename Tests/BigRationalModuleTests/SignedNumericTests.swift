@@ -178,6 +178,40 @@ final class SignedNumericTests: XCTestCase {
 		}
 	}
 
+	func testMultiplyByNan() async throws {
+		let testCases: [(Rational, Rational, Rational)] = [
+			(
+				Rational(123, 0),
+				Rational(451_917_501, 20_276_771),
+				.nan
+			),
+			(
+				Rational(451_917_501, 20_276_771),
+				Rational(123, 0),
+				.nan
+			),
+			(
+				.nan,
+				Rational(451_917_501, 20_276_771),
+				.nan
+			),
+			(
+				Rational(451_917_501, 20_276_771),
+				.nan,
+				.nan
+			),
+			(
+				.nan,
+				.nan,
+				.nan
+			),
+		]
+
+		for (f1, f2, result) in testCases {
+			XCTAssertEqual(f1 * f2, result)
+		}
+	}
+
 	func testMultiplyByEquivalentFraction() throws {
 		let start = Rational(3, 4)
 		let equivalentFraction = Rational(5, 5)

@@ -3,10 +3,13 @@ import BigInt
 extension Rational: CustomStringConvertible {
 	@inlinable
 	public var description: String {
+		guard isNaN == false else {
+			return "NaN"
+		}
 		if denominator == 1 {
-			"\(sign)\(numerator)"
+			return "\(sign)\(numerator)"
 		} else {
-			"\(sign)\(numerator)/\(denominator)"
+			return "\(sign)\(numerator)/\(denominator)"
 		}
 	}
 }
@@ -14,9 +17,12 @@ extension Rational: CustomStringConvertible {
 extension Rational: CustomDebugStringConvertible {
 	@inlinable
 	public var debugDescription: String {
+		guard isNaN == false else {
+			return "Rational(NaN)"
+		}
 		let n = String(reflecting: numerator)
 		let d = String(reflecting: denominator)
-		return "Rational(\(sign)\(n), \(d))"
+		return "Rational(\(sign.debugDescription)\(n), \(d))"
 	}
 }
 

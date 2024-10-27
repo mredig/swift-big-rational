@@ -37,4 +37,17 @@ struct EquatableTests {
 
 		#expect(a != b)
 	}
+
+	@Test func nanEqual() throws {
+		let a = Rational.nan
+		let b = Rational.nan
+		let c = Rational(5, 0, sign: .positive)
+
+		#expect(a == b)
+		#expect(a == c)
+		#expect(b == c)
+		#expect(b == a)
+		#expect(c == a)
+		#expect(c == b)
+	}
 }

@@ -4,7 +4,12 @@ import BigInt
 extension Rational: AlgebraicField {
 	@inlinable
 	public var reciprocal: Self? {
-		guard !isZero else { return nil }
+		getReciprocal()
+	}
+
+	@inlinable
+	public func getReciprocal() -> Self {
+		guard !isZero else { return .nan }
 
 		let numerator = self.denominator
 		let denominator = self.numerator

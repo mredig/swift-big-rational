@@ -43,6 +43,19 @@ struct HashableTests {
 		#expect(Set([a!, b]).count == 2)
 	}
 
+	@Test func nanHashEqual() throws {
+		let a = Rational.nan.hashValue
+		let b = Rational.nan.hashValue
+		let c = Rational(5, 0, sign: .positive).hashValue
+
+		#expect(a == b)
+		#expect(a == c)
+		#expect(b == c)
+		#expect(b == a)
+		#expect(c == a)
+		#expect(c == b)
+	}
+
 	@Test func signHashesCorrect() throws {
 		let allCases: Set<Rational.Sign> = [.negative, .zero, .positive]
 

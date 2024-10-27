@@ -80,4 +80,28 @@ final class AdditiveArithmaticTests: XCTestCase {
 			XCTAssertEqual(f1 - f2, result)
 		}
 	}
+
+	func testAddWithNan() {
+		let testCases: [(Rational, Rational, Rational)] = [
+			(.nan, Rational(1, 4), .nan),
+			(Rational(1, 4), .nan, .nan),
+			(.nan, .nan, .nan),
+		]
+
+		for (f1, f2, result) in testCases {
+			XCTAssertEqual(f1 + f2, result)
+		}
+	}
+
+	func testSubtractWithNan() {
+		let testCases: [(Rational, Rational, Rational)] = [
+			(.nan, Rational(1, 4), .nan),
+			(Rational(1, 4), .nan, .nan),
+			(.nan, .nan, .nan),
+		]
+
+		for (f1, f2, result) in testCases {
+			XCTAssertEqual(f1 - f2, result)
+		}
+	}
 }

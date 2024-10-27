@@ -23,7 +23,7 @@ struct AlgebraicFieldTests {
 
 	@Test func test_reciprocal_returns_nil_when_numerator_equals_zero() {
 		let rational = Rational(0, 1253)
-		#expect(rational.reciprocal == nil)
+		#expect(rational.reciprocal == .nan)
 	}
 
 	@Test func test_reciprocal_returns_value_when_numerator_equals_min() {
@@ -173,6 +173,54 @@ struct AlgebraicFieldTests {
 				Rational(-632_361_076, 210_214_219),
 				Rational(451_917_501, 20_276_771),
 				Rational(-12_822_240_727_365_596, 94_999_484_525_146_719)
+			),
+		]
+
+		for (f1, f2, result) in testCases {
+			#expect(f1 / f2 == result)
+		}
+	}
+
+	@Test func divideWithNan() async throws {
+		let testCases: [(Rational, Rational, Rational)] = [
+			(
+				Rational(123, 0),
+				Rational(451_917_501, 20_276_771),
+				.nan
+			),
+			(
+				Rational(451_917_501, 20_276_771),
+				Rational(123, 0),
+				.nan
+			),
+			(
+				.nan,
+				Rational(451_917_501, 20_276_771),
+				.nan
+			),
+			(
+				Rational(451_917_501, 20_276_771),
+				.nan,
+				.nan
+			),
+		]
+
+		for (f1, f2, result) in testCases {
+			#expect(f1 / f2 == result)
+		}
+	}
+
+	@Test func divideWithZero() async throws {
+		let testCases: [(Rational, Rational, Rational)] = [
+			(
+				.zero,
+				Rational(451_917_501, 20_276_771),
+				.zero
+			),
+			(
+				Rational(451_917_501, 20_276_771),
+				.zero,
+				.nan
 			),
 		]
 

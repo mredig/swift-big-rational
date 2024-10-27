@@ -16,6 +16,13 @@ extension Rational: Equatable {
 extension Rational: Hashable {
 	@inlinable
 	public func hash(into hasher: inout Hasher) {
+		guard isNaN == false else {
+			hasher.combine(0 as BigInt)
+			hasher.combine(0 as BigInt)
+			hasher.combine(Rational.Sign.zero)
+			return
+		}
+
 		let reduced = reduced
 		hasher.combine(reduced.numerator)
 		hasher.combine(reduced.denominator)

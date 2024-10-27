@@ -36,7 +36,7 @@ struct LosslessStringConvertibleTests {
 
 	@Test func test_division_by_0_returns_nil() throws {
 		let r = Rational("1/0")
-		#expect(r == nil)
+		#expect(r == .nan)
 	}
 
 	@Test func test_multiple_slash_returns_nil() throws {

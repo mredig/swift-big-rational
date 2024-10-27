@@ -4,6 +4,11 @@ extension Rational {
 	// MARK: - Multiplication
 	@inlinable
 	public static func * (lhs: Self, rhs: Self) -> Self {
+		guard
+			lhs.isNaN == false,
+			rhs.isNaN == false
+		else { return .nan }
+
 		let n1 = lhs.numerator * lhs.sign.rawValue
 		let d1 = lhs.denominator
 		let n2 = rhs.numerator * rhs.sign.rawValue
@@ -46,7 +51,8 @@ extension Rational {
 	// MARK: - Division
 	@inlinable
 	public static func / (lhs: Self, rhs: Self) -> Self {
-		guard !rhs.isZero else { fatalError("Cannot divide by zero") }
+		guard rhs.isZero == false else { return .nan }
+		guard rhs.isNaN == false, lhs.isNaN == false else { return .nan }
 
 		let n1 = lhs.numerator * lhs.sign.rawValue
 		let d1 = lhs.denominator

@@ -9,6 +9,10 @@ public struct Rational: Sendable, Codable {
 
 	public let sign: Sign
 
+	public var isNaN: Bool { denominator == 0 }
+
+	public static let nan = Rational(numerator: 0, denominator: 0, sign: .zero)
+
 	public enum Sign: BigInt, Sendable, Hashable, Codable {
 		case negative = -1
 		case zero = 0
@@ -54,7 +58,14 @@ public struct Rational: Sendable, Codable {
 	/// Creates a rational value with the given numerator and denominator.
 	@inlinable
 	internal init(numerator: BigInt, denominator: BigInt, sign: Sign) {
-		assert(denominator != 0, "The denominator must not be 0")
+		guard
+			denominator != 0
+		else {
+			self.denominator = 0
+			self.numerator = 0
+			self.sign = .zero
+			return
+		}
 
 		self.numerator = numerator
 		self.denominator = denominator
@@ -79,8 +90,6 @@ extension Rational {
 	/// - Precondition: `denominator != 0`
 	@inlinable
 	public init(_ numerator: BigUInt, _ denominator: BigUInt, sign: Sign = .positive, reduced: Bool = false) {
-		precondition(denominator != 0, "The denominator must not be zero")
-
 		self.init(numerator: BigInt(numerator), denominator: BigInt(denominator), sign: sign)
 		guard reduced else { return }
 		self = self.reduced
@@ -88,8 +97,6 @@ extension Rational {
 
 	@inlinable
 	public init<SN: SignedInteger>(_ numerator: SN, _ denominator: SN, reduced: Bool = false) {
-		precondition(denominator != 0, "The denominator must not be zero")
-
 		let numSign = Sign(numerator)
 		let denSign = Sign(denominator)
 		let sign = Sign.multiplicationOutput(lhs: numSign, rhs: denSign)
@@ -124,7 +131,7 @@ extension Rational {
 	/// Whether or not this value is equal to `0`.
 	@inlinable
 	public var isZero: Bool {
-		numerator == 0
+		numerator == 0 && isNaN == false
 	}
 
 	/// Whether or not this value is negative.
@@ -142,6 +149,8 @@ extension Rational {
 	/// An equal copy of this value, but where the components are a reduced fraction.
 	@inlinable
 	public var reduced: Self {
+		guard isNaN == false else { return .nan }
+
 		guard numerator != denominator else {
 			return Self(numerator: 1, denominator: 1, sign: sign)
 		}

@@ -3,6 +3,11 @@ import BigInt
 extension Rational: Comparable {
 	@inlinable
 	public static func < (lhs: Self, rhs: Self) -> Bool {
+		guard
+			lhs.isNaN == false,
+			rhs.isNaN == false
+		else { return false }
+
 		let n1 = lhs.numerator
 		let d1 = lhs.denominator
 		let n2 = rhs.numerator

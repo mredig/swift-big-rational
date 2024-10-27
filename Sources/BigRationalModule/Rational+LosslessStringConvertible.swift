@@ -74,9 +74,12 @@ extension Rational: LosslessStringConvertible {
 
 		guard
 			let numerator = BigInt(numeratorAccumulator, radix: radix),
-			let denominator = BigInt(denominatorAccumulator, radix: radix),
-			denominator != 0
+			let denominator = BigInt(denominatorAccumulator, radix: radix)
 		else { return nil }
+		guard denominator != 0 else {
+			self = .nan
+			return
+		}
 
 		self.init(numerator, denominator, reduced: reduced)
 	}

@@ -9,6 +9,8 @@ extension Rational: AdditiveArithmetic {
 
 	@inlinable
 	public static func + (lhs: Self, rhs: Self) -> Self {
+		guard lhs.isNaN == false, rhs.isNaN == false else { return .nan }
+
 		let n1 = lhs.numerator * lhs.sign.rawValue
 		let d1 = lhs.denominator
 		let n2 = rhs.numerator * rhs.sign.rawValue
