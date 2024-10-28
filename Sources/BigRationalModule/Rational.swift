@@ -125,14 +125,69 @@ extension Rational {
 	}
 
 	@inlinable
+	public init(_ numerator: Rational, _ denominator: Rational, reduced: Bool = false) {
+		self.init(numerator: .rational(numerator), denominator: .rational(denominator), sign: .positive)
+		guard reduced else { return }
+		self = self.reduced
+	}
+
+	@inlinable
+	public init(_ numerator: BigInt, _ denominator: Rational, reduced: Bool = false) {
+		let sign = Sign(numerator)
+		let numerator = BigInt(numerator.magnitude)
+		self.init(numerator: .bigInt(numerator), denominator: .rational(denominator), sign: sign)
+		guard reduced else { return }
+		self = self.reduced
+	}
+
+	@inlinable
+	public init(_ numerator: Rational, _ denominator: BigInt, reduced: Bool = false) {
+		let sign = Sign(denominator)
+		let denominator = BigInt(denominator.magnitude)
+		self.init(numerator: .rational(numerator), denominator: .bigInt(denominator), sign: sign)
+		guard reduced else { return }
+		self = self.reduced
+	}
+
+	/// Creates a `Rational` equal to `1/value`. Obviously, `value` must be greater than `0`.
+	///
+	/// Example:
+	/// `Rational.oneOver(1234) // 1/1234`
+	/// `Rational.oneOver(0) // NaN`
+	@inlinable
 	public static func oneOver(_ value: BigInt) -> Rational {
 		Rational(1, value)
 	}
 
+	/// Creates a `Rational` equal to `1/value`. Obviously, `value` must be greater than `0`.
 	///
+	/// Example:
+	/// `Rational.oneOver(Rational(5, 6)) // 1/(5/6))`
+	/// `Rational.oneOver(Rational(-7, 8)) // 1/(-7/8))`
+	/// `Rational.oneOver(0) // NaN`
+	@inlinable
+	public static func oneOver(_ value: Rational) -> Rational {
+		Rational(numerator: .bigInt(1), denominator: .rational(value), sign: .positive)
+	}
+
+	/// Creates a `Rational` equal to `1`, but with a value of `value/value`. Obviously, `value` must be greater than `0`.
+	///
+	/// Example:
+	/// `Rational.identityFraction(of: 1234) // 1234/1234`
+	/// `Rational.identityFraction(of: 0) // NaN`
 	@inlinable
 	public static func identityFraction(of value: BigInt) -> Rational {
 		Rational(value, value)
+	}
+
+	/// Creates a `Rational` equal to `1`, but with a value of `value/value`. Obviously, `value` must be greater than `0`.
+	///
+	/// Example:
+	/// `Rational.identityFraction(of: 1234) // 1234/1234`
+	/// `Rational.identityFraction(of: 0) // NaN`
+	@inlinable
+	public static func identityFraction(of value: Rational) -> Rational {
+		Rational(numerator: .rational(value), denominator: .rational(value), sign: .positive)
 	}
 }
 
