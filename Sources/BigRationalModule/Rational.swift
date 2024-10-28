@@ -55,6 +55,11 @@ public struct Rational: Sendable, Codable {
 		}
 	}
 
+	@inlinable
+	internal init(numerator: Storage, denominator: Storage, sign: Sign) {
+		fatalError()
+	}
+
 	/// Creates a rational value with the given numerator and denominator.
 	@inlinable
 	internal init(numerator: BigInt, denominator: BigInt, sign: Sign) {
