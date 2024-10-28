@@ -60,11 +60,12 @@ extension Rational.Storage: Hashable {
 	public static func == (lhs: Self, rhs: Self) -> Bool {
 		switch (lhs, rhs) {
 		case (.bigInt(let lBigInt), .bigInt(let rBigInt)):
-			lBigInt == rBigInt
+			return lBigInt == rBigInt
 		case (.bigInt(let a), .rational(let b)), (.rational(let b), .bigInt(let a)):
-			Rational(a) == b
+			guard b.isInteger else { return false }
+			return a == b.reduced.simplifiedValues.numerator
 		case (.rational(let lRat), .rational(let rRat)):
-			lRat == rRat
+			return lRat == rRat
 		}
 	}
 
