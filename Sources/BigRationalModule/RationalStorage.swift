@@ -3,7 +3,7 @@ import BigInt
 public extension Rational {
 	enum Storage: Sendable, Codable {
 		case bigInt(BigInt)
-		case rational(Rational)
+		indirect case rational(Rational)
 
 		public var isZero: Bool {
 			switch self {
@@ -67,10 +67,18 @@ extension Rational.Storage: Hashable {
 		hasher.combine(String(describing: Self.self))
 		switch self {
 		case .bigInt(let bigInt):
-			hasher.combine(Rational(bigInt))
+			hasher.combine(bigInt)
 		case .rational(let rational):
-			hasher.combine(rational)
+			if rational.isInteger {
+				hasher.combine(rational.reduced.simplifiedValues.numerator)
+			} else {
+				hasher.combine(rational)
+			}
 		}
+	}
+
+	public static func == <I: FixedWidthInteger>(lhs: Self, rhs: I) -> Bool {
+		lhs == BigInt(rhs)
 	}
 }
 
@@ -93,5 +101,35 @@ extension Rational.Storage: Comparable {
 		}
 
 		return leftRat < rightRat
+	}
+}
+
+extension Optional where Wrapped == Rational.Storage {
+	public static func == <I: FixedWidthInteger>(lhs: Self, rhs: I) -> Bool {
+		switch lhs {
+		case .some(let storage):
+			storage == rhs
+		case .none: false
+		}
+	}
+}
+
+extension Rational.Storage: CustomStringConvertible, CustomDebugStringConvertible {
+	public var description: String {
+		switch self {
+		case .bigInt(let bigInt):
+			bigInt.description
+		case .rational(let rational):
+			"(\(rational.description))"
+		}
+	}
+
+	public var debugDescription: String {
+		switch self {
+		case .bigInt(let bigInt):
+			bigInt.description
+		case .rational(let rational):
+			"Rational.Storage\(description)"
+		}
 	}
 }

@@ -11,10 +11,12 @@ extension Rational: AdditiveArithmetic {
 	public static func + (lhs: Self, rhs: Self) -> Self {
 		guard lhs.isNaN == false, rhs.isNaN == false else { return .nan }
 
-		let n1 = lhs.numerator * lhs.sign.rawValue
-		let d1 = lhs.denominator
-		let n2 = rhs.numerator * rhs.sign.rawValue
-		let d2 = rhs.denominator
+		let lhsSimplified = lhs.simplifiedValues
+		let rhsSimplified = rhs.simplifiedValues
+		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
+		let d1 = lhsSimplified.denominator
+		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
+		let d2 = rhsSimplified.denominator
 
 		let g = gcd(d1, d2)
 		guard g != 1 else {

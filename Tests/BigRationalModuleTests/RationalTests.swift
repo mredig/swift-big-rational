@@ -183,8 +183,8 @@ struct RationalTests {
 
 		for rational in testCases {
 			let ratio = rational.toRatio()
-			#expect(ratio.numerator == rational.numerator)
-			#expect(ratio.denominator == rational.denominator)
+			#expect(rational.numerator == ratio.numerator)
+			#expect(rational.denominator == ratio.denominator)
 		}
 	}
 

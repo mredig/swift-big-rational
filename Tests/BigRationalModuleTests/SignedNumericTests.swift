@@ -1,35 +1,35 @@
 import Foundation
-import XCTest
+import Testing
 import BigRationalModule
 import BigInt
 
-final class SignedNumericTests: XCTestCase {
-	func test_magnitude_for_any_positive_rational_returns_the_same_value() {
+struct SignedNumericTests {
+	@Test func test_magnitude_for_any_positive_rational_returns_the_same_value() {
 		for _ in 0..<20 {
 			let r = Rational(Int.random(in: 0...100), Int.random(in: 1...100))
-			XCTAssertEqual(r.magnitude, r)
+			#expect(r.magnitude == r)
 		}
 	}
 
-	func test_magnitude_for_any_negative_rational_negates_its_numerator() {
+	@Test func test_magnitude_for_any_negative_rational_negates_its_numerator() {
 		for _ in 0..<20 {
 			let n = Int.random(in: -100...0)
 			let d = Int.random(in: 1...100)
 			let r = Rational(n, d)
-			XCTAssertEqual(r.magnitude, Rational(-n, d))
+			#expect(r.magnitude == Rational(-n, d))
 		}
 	}
 
-	func test_negating_any_rational_number_negates_its_numerator() {
+	@Test func test_negating_any_rational_number_negates_its_numerator() {
 		for _ in 0..<20 {
 			let n = Int.random(in: -100...100)
 			let d = Int.random(in: 1...100)
 			let r = Rational(n, d)
-			XCTAssertEqual(-r, Rational(-n, d))
+			#expect(-r == Rational(-n, d))
 		}
 	}
 
-	func test_random_multiplications() {
+	@Test func test_random_multiplications() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -174,11 +174,11 @@ final class SignedNumericTests: XCTestCase {
 		]
 
 		for (f1, f2, result) in testCases {
-			XCTAssertEqual(f1 * f2, result)
+			#expect((f1 * f2) == result)
 		}
 	}
 
-	func testMultiplyByNan() async throws {
+	@Test func testMultiplyByNan() async throws {
 		let testCases: [(Rational, Rational, Rational)] = [
 			(
 				Rational(123, 0),
@@ -208,129 +208,129 @@ final class SignedNumericTests: XCTestCase {
 		]
 
 		for (f1, f2, result) in testCases {
-			XCTAssertEqual(f1 * f2, result)
+			#expect((f1 * f2) == result)
 		}
 	}
 
-	func testMultiplyByEquivalentFraction() throws {
+	@Test func testMultiplyByEquivalentFraction() throws {
 		let start = Rational(3, 4)
 		let equivalentFraction = Rational(5, 5)
 
 		let product = start * equivalentFraction
 
-		XCTAssertEqual(product.numerator, 15)
-		XCTAssertEqual(product.denominator, 20)
+		#expect(product.numerator == 15)
+		#expect(product.denominator == 20)
 	}
 
-	func testMultiplyByInt() throws {
+	@Test func testMultiplyByInt() throws {
 		let start = Rational(3, 4)
 
 		let product = start * 5
 
-		XCTAssertEqual(product.numerator, 15)
-		XCTAssertEqual(product.denominator, 4)
-		XCTAssertEqual(product, Rational(15, 4))
+		#expect(product.numerator == 15)
+		#expect(product.denominator == 4)
+		#expect(product == Rational(15, 4))
 	}
 
-	func testMultiplyByBigInt() throws {
+	@Test func testMultiplyByBigInt() throws {
 		let start = Rational(3, 4)
 		let five = BigInt(5)
 		let product = start * five
 
-		XCTAssertEqual(product.numerator, 15)
-		XCTAssertEqual(product.denominator, 4)
-		XCTAssertEqual(product, Rational(15, 4))
+		#expect(product.numerator == 15)
+		#expect(product.denominator == 4)
+		#expect(product == Rational(15, 4))
 	}
 
-	func testMultiplyByBigUInt() throws {
+	@Test func testMultiplyByBigUInt() throws {
 		let start = Rational(3, 4)
 		let five = BigUInt(5)
 		let product = start * five
 
-		XCTAssertEqual(product.numerator, 15)
-		XCTAssertEqual(product.denominator, 4)
-		XCTAssertEqual(product, Rational(15, 4))
+		#expect(product.numerator == 15)
+		#expect(product.denominator == 4)
+		#expect(product == Rational(15, 4))
 	}
 
-	func testMultiplyInPlace() throws {
+	@Test func testMultiplyInPlace() throws {
 		var value = Rational(1234, sign: .positive)
 		value *= 2
 
-		XCTAssertEqual(value, Rational(2468))
+		#expect(value == Rational(2468))
 	}
 
-	func testUnsignedMultiplyInPlace() throws {
+	@Test func testUnsignedMultiplyInPlace() throws {
 		var value = Rational(1234, sign: .positive)
 		value *= UInt(2)
 
-		XCTAssertEqual(value, Rational(2468))
+		#expect(value == Rational(2468))
 	}
 
-	func testSignedMultiplyInPlace() throws {
+	@Test func testSignedMultiplyInPlace() throws {
 		var value = Rational(1234, sign: .positive)
 		value *= Int(-2)
 
-		XCTAssertEqual(value, -Rational(2468))
+		#expect(value == -Rational(2468))
 	}
 
-	func testDivideByEquivalentFraction() throws {
+	@Test func testDivideByEquivalentFraction() throws {
 		let start = Rational(15, 20)
 		let equivalentFraction = Rational(5, 5)
 
 		let product = start / equivalentFraction
 
-		XCTAssertEqual(product.numerator, 3)
-		XCTAssertEqual(product.denominator, 4)
+		#expect(product.numerator == 3)
+		#expect(product.denominator == 4)
 	}
 
-	func testDivideByInt() throws {
+	@Test func testDivideByInt() throws {
 		let start = Rational(3, 4)
 
 		let product = start / 5
 
-		XCTAssertEqual(product.numerator, 3)
-		XCTAssertEqual(product.denominator, 20)
-		XCTAssertEqual(product, Rational(3, 20))
+		#expect(product.numerator == 3)
+		#expect(product.denominator == 20)
+		#expect(product == Rational(3, 20))
 	}
 
-	func testDivideByBigInt() throws {
+	@Test func testDivideByBigInt() throws {
 		let start = Rational(3, 4)
 		let five = BigInt(5)
 		let product = start / five
 
-		XCTAssertEqual(product.numerator, 3)
-		XCTAssertEqual(product.denominator, 20)
-		XCTAssertEqual(product, Rational(3, 20))
+		#expect(product.numerator == 3)
+		#expect(product.denominator == 20)
+		#expect(product == Rational(3, 20))
 	}
 
-	func testDivideByBigUInt() throws {
+	@Test func testDivideByBigUInt() throws {
 		let start = Rational(3, 4)
 		let five = BigUInt(5)
 		let product = start / five
 
-		XCTAssertEqual(product.numerator, 3)
-		XCTAssertEqual(product.denominator, 20)
-		XCTAssertEqual(product, Rational(3, 20))
+		#expect(product.numerator == 3)
+		#expect(product.denominator == 20)
+		#expect(product == Rational(3, 20))
 	}
 
-	func testDivideInPlace() throws {
+	@Test func testDivideInPlace() throws {
 		var value = Rational(1234, sign: .positive)
 		value /= 2
 
-		XCTAssertEqual(value, Rational(617))
+		#expect(value == Rational(617))
 	}
 
-	func testUnsignedDivideInPlace() throws {
+	@Test func testUnsignedDivideInPlace() throws {
 		var value = Rational(1234, sign: .positive)
 		value /= UInt(2)
 
-		XCTAssertEqual(value, Rational(617))
+		#expect(value == Rational(617))
 	}
 
-	func testSignedDivideInPlace() throws {
+	@Test func testSignedDivideInPlace() throws {
 		var value = Rational(1234, sign: .positive)
 		value /= Int(-2)
 
-		XCTAssertEqual(value, -Rational(617))
+		#expect(value == -Rational(617))
 	}
 }

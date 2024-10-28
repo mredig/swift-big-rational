@@ -9,10 +9,13 @@ extension Rational {
 			rhs.isNaN == false
 		else { return .nan }
 
-		let n1 = lhs.numerator * lhs.sign.rawValue
-		let d1 = lhs.denominator
-		let n2 = rhs.numerator * rhs.sign.rawValue
-		let d2 = rhs.denominator
+		let lhsSimplified = lhs.simplifiedValues
+		let rhsSimplified = rhs.simplifiedValues
+
+		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
+		let d1 = lhsSimplified.denominator
+		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
+		let d2 = rhsSimplified.denominator
 
 		let g1 = gcd(n1, d2)
 		let g2 = gcd(n2, d1)
@@ -54,10 +57,13 @@ extension Rational {
 		guard rhs.isZero == false else { return .nan }
 		guard rhs.isNaN == false, lhs.isNaN == false else { return .nan }
 
-		let n1 = lhs.numerator * lhs.sign.rawValue
-		let d1 = lhs.denominator
-		let n2 = rhs.numerator * rhs.sign.rawValue
-		let d2 = rhs.denominator
+		let lhsSimplified = lhs.simplifiedValues
+		let rhsSimplified = rhs.simplifiedValues
+
+		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
+		let d1 = lhsSimplified.denominator
+		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
+		let d2 = rhsSimplified.denominator
 
 		let g1 = gcd(n1, n2)
 		let g2 = gcd(d2, d1)

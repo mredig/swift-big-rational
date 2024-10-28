@@ -2,12 +2,25 @@ import BigInt
 
 public struct Rational: Sendable, Codable {
 	/// The numerator of this value.
-	public let numerator: BigInt
+	public let numerator: Storage
 
 	/// The denominator of this value.
-	public let denominator: BigInt
+	public let denominator: Storage
 
 	public let sign: Sign
+
+	public struct Simplified: Sendable, Hashable, Codable {
+		public let numerator: BigInt
+		public let denominator: BigInt
+		public let sign: Sign
+
+		@inlinable
+		init(_ numerator: BigInt, _ denominator: BigInt, sign: Sign) {
+			self.numerator = numerator
+			self.denominator = denominator
+			self.sign = sign
+		}
+	}
 
 	public var isNaN: Bool { denominator == 0 }
 
@@ -57,17 +70,11 @@ public struct Rational: Sendable, Codable {
 
 	@inlinable
 	internal init(numerator: Storage, denominator: Storage, sign: Sign) {
-		fatalError()
-	}
-
-	/// Creates a rational value with the given numerator and denominator.
-	@inlinable
-	internal init(numerator: BigInt, denominator: BigInt, sign: Sign) {
 		guard
 			denominator != 0
 		else {
-			self.denominator = 0
-			self.numerator = 0
+			self.denominator = .bigInt(0)
+			self.numerator = .bigInt(0)
 			self.sign = .zero
 			return
 		}
@@ -79,6 +86,12 @@ public struct Rational: Sendable, Codable {
 			return
 		}
 		self.sign = sign
+	}
+
+	/// Creates a rational value with the given numerator and denominator.
+	@inlinable
+	internal init(numerator: BigInt, denominator: BigInt, sign: Sign) {
+		self.init(numerator: .bigInt(numerator), denominator: .bigInt(denominator), sign: sign)
 	}
 }
 
@@ -110,26 +123,76 @@ extension Rational {
 		guard reduced else { return }
 		self = self.reduced
 	}
+
+	@inlinable
+	public static func oneOver(_ value: BigInt) -> Rational {
+		Rational(1, value)
+	}
+
+	///
+	@inlinable
+	public static func identityFraction(of value: BigInt) -> Rational {
+		Rational(value, value)
+	}
 }
 
 // MARK: - Properties
 extension Rational {
+	@inlinable
+	public var simplified: Rational {
+		switch (numerator, denominator) {
+		case (.bigInt, .bigInt):
+			return self
+		case (.rational(let topRational), .bigInt(let bigInt)):
+			return topRational * Rational.oneOver(bigInt)
+		case (.bigInt(let bigInt), .rational(let bottomRational)):
+			return Rational(bigInt) * bottomRational.getReciprocal()
+		case (.rational(let topRational), .rational(let bottomRational)):
+			return topRational * bottomRational.getReciprocal()
+		}
+	}
+
+	@inlinable
+	public var isSimplified: Bool {
+		guard
+			case (.bigInt, .bigInt) = (numerator, denominator)
+		else { return false }
+		return true
+	}
+
+	@inlinable
+	public var simplifiedValues: Simplified {
+		switch (numerator, denominator) {
+		case (.bigInt(let num), .bigInt(let den)):
+			return Simplified(num, den, sign: sign)
+		case (.rational(let topRational), .bigInt(let bigInt)):
+			return (topRational * Rational.oneOver(bigInt)).simplifiedValues
+		case (.bigInt(let bigInt), .rational(let bottomRational)):
+			return (Rational(bigInt) * bottomRational.getReciprocal()).simplifiedValues
+		case (.rational(let topRational), .rational(let bottomRational)):
+			return (topRational * bottomRational.getReciprocal()).simplifiedValues
+		}
+	}
+
 	/// The quotient of the numerator divided by the denominator.
 	@inlinable
 	public var quotient: BigInt {
-		(numerator / denominator) * sign.rawValue
+		let simplified = self.simplifiedValues
+		return (simplified.numerator / simplified.denominator) * simplified.sign.rawValue
 	}
 
 	/// The remainder of the numerator divided by the denominator.
 	@inlinable
 	public var remainder: BigInt {
-		(numerator % denominator) * sign.rawValue
+		let simplified = self.simplifiedValues
+		return (simplified.numerator % simplified.denominator) * simplified.sign.rawValue
 	}
 
 	/// The quotient and remainder of the numerator divided by the denominator.
 	@inlinable
 	public var quotientAndRemainder: (quotient: BigInt, remainder: BigInt) {
-		let result = numerator.quotientAndRemainder(dividingBy: denominator)
+		let simplified = simplified.simplifiedValues
+		let result = simplified.numerator.quotientAndRemainder(dividingBy: simplified.denominator)
 		return (result.quotient * sign.rawValue, result.remainder * sign.rawValue)
 	}
 
@@ -164,9 +227,11 @@ extension Rational {
 			return Self(numerator: 0, denominator: 1, sign: .zero)
 		}
 
-		let g = gcd(numerator, denominator)
-		let numerator = numerator / g
-		let denominator = denominator / g
+		let simplifiedValues = simplified.simplifiedValues
+
+		let g = gcd(simplifiedValues.numerator, simplifiedValues.denominator)
+		let numerator = simplifiedValues.numerator / g
+		let denominator = simplifiedValues.denominator / g
 
 		return Self(numerator: numerator, denominator: denominator, sign: sign)
 	}
@@ -180,7 +245,11 @@ extension Rational {
 	/// Whether or not the magnitude of this value is less than `1`.
 	@inlinable
 	public var isProperFraction: Bool {
-		numerator.magnitude < denominator.magnitude
+		guard
+			isSimplified
+		else { return false }
+		let simplifiedValues = simplified.simplifiedValues
+		return simplifiedValues.numerator.magnitude < simplifiedValues.denominator.magnitude
 	}
 }
 
@@ -196,7 +265,8 @@ extension Rational {
 	/// Returns the numerator and denominator as a tuple.
 	@inlinable
 	public func toRatio() -> (numerator: BigInt, denominator: BigInt) {
-		(numerator, denominator)
+		let simplifiedValues = simplifiedValues
+		return (simplifiedValues.numerator, simplifiedValues.denominator)
 	}
 
 	/// Returns the closest rational number to this value
@@ -208,14 +278,16 @@ extension Rational {
 		guard max != 0 else { return .nan }
 		let max = BigInt(max)
 
-		guard denominator > max else { return self }
+		let simplifiedValues = simplifiedValues
+
+		guard simplifiedValues.denominator > max else { return self }
 
 		var p0: BigInt = 0
 		var q0: BigInt = 1
 		var p1: BigInt = 1
 		var q1: BigInt = 0
-		var n = numerator
-		var d = denominator
+		var n = simplifiedValues.numerator
+		var d = simplifiedValues.denominator
 
 		while true {
 			let a = floorDivision(n, d)
@@ -227,7 +299,7 @@ extension Rational {
 		}
 
 		let k = floorDivision((max - q0), q1)
-		return if 2 * d * (q0 + k * q1) <= denominator {
+		return if 2 * d * (q0 + k * q1) <= simplifiedValues.denominator {
 			Self(numerator: p1, denominator: q1, sign: sign)
 		} else {
 			Self(numerator: p0 + k * p1, denominator: q0 + k * q1, sign: sign)
@@ -255,7 +327,7 @@ extension Rational {
 	/// The greatest integer less than or equal to this value.
 	@inlinable
 	public var floor: BigInt {
-		guard !isInteger else { return numerator * sign.rawValue }
+		guard !isInteger else { return simplifiedValues.numerator * sign.rawValue }
 		return if isNegative {
 			quotient - 1
 		} else {
@@ -266,7 +338,7 @@ extension Rational {
 	/// The smallest integer greater than or equal to this value.
 	@inlinable
 	public var ceil: BigInt {
-		guard !isInteger else { return numerator * sign.rawValue }
+		guard !isInteger else { return simplifiedValues.numerator * sign.rawValue }
 		return if isNegative {
 			quotient
 		} else {
@@ -278,14 +350,15 @@ extension Rational {
 	/// greater magnitude if two values are equally close.
 	@inlinable
 	public var rounded: BigInt {
-		guard !isInteger else { return numerator * sign.rawValue }
+		guard !isInteger else { return simplifiedValues.numerator * sign.rawValue }
 		// If the magnitude of the fractional part
 		// is less than 1/2, round towards zero.
 		//
 		// |r|    1
 		// --- < --- => 2 * |r| < |d|
 		// |d|    2
-		return if 2 * remainder.magnitude < denominator.magnitude {
+		let simplifiedValues = simplifiedValues
+		return if 2 * remainder.magnitude < simplifiedValues.denominator.magnitude {
 			quotient
 		} else {
 			roundedAwayFromZero
@@ -296,7 +369,7 @@ extension Rational {
 	/// or equal to this value.
 	@inlinable
 	public var roundedAwayFromZero: BigInt {
-		guard !isInteger else { return numerator * sign.rawValue }
+		guard !isInteger else { return simplifiedValues.numerator * sign.rawValue }
 		return if isNegative {
 			quotient - 1
 		} else {
