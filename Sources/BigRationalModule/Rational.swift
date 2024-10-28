@@ -22,7 +22,11 @@ public struct Rational: Sendable, Codable {
 		}
 	}
 
-	public var isNaN: Bool { denominator == 0 }
+	public var isNaN: Bool {
+		numerator.isNaN ||
+		denominator.isNaN ||
+		denominator.isZero
+	}
 
 	public static let nan = Rational(numerator: 0, denominator: 0, sign: .zero)
 
@@ -93,6 +97,17 @@ public struct Rational: Sendable, Codable {
 	internal init(numerator: BigInt, denominator: BigInt, sign: Sign) {
 		self.init(numerator: .bigInt(numerator), denominator: .bigInt(denominator), sign: sign)
 	}
+
+
+	/// Creates a rational value with the given numerator and denominator.
+	@inlinable
+	internal init(autoSign numerator: BigInt, denominator: BigInt) {
+		let sign = Sign.multiplicationOutput(lhs: Sign(numerator), rhs: Sign(denominator))
+		self.init(
+			numerator: .bigUInt(numerator.magnitude),
+			denominator: .bigUInt(denominator.magnitude),
+			sign: sign)
+	}
 }
 
 // MARK: - Initializers
@@ -156,7 +171,8 @@ extension Rational {
 	/// `Rational.oneOver(0) // NaN`
 	@inlinable
 	public static func oneOver(_ value: BigInt) -> Rational {
-		Rational(1, value)
+
+		Rational(autoSign: 1, denominator: value)
 	}
 
 	/// Creates a `Rational` equal to `1/value`. Obviously, `value` must be greater than `0`.
@@ -177,7 +193,7 @@ extension Rational {
 	/// `Rational.identityFraction(of: 0) // NaN`
 	@inlinable
 	public static func identityFraction(of value: BigInt) -> Rational {
-		Rational(value, value)
+		Rational(autoSign: value, denominator: value)
 	}
 
 	/// Creates a `Rational` equal to `1`, but with a value of `value/value`. Obviously, `value` must be greater than `0`.
@@ -195,16 +211,8 @@ extension Rational {
 extension Rational {
 	@inlinable
 	public var simplified: Rational {
-		switch (numerator, denominator) {
-		case (.bigInt, .bigInt):
-			return self
-		case (.rational(let topRational), .bigInt(let bigInt)):
-			return topRational * Rational.oneOver(bigInt)
-		case (.bigInt(let bigInt), .rational(let bottomRational)):
-			return Rational(bigInt) * bottomRational.getReciprocal()
-		case (.rational(let topRational), .rational(let bottomRational)):
-			return topRational * bottomRational.getReciprocal()
-		}
+		let simplifiedValues = simplifiedValues
+		return Rational(numerator: simplifiedValues.numerator, denominator: simplifiedValues.denominator, sign: simplifiedValues.sign)
 	}
 
 	@inlinable
@@ -288,7 +296,7 @@ extension Rational {
 		let numerator = simplifiedValues.numerator / g
 		let denominator = simplifiedValues.denominator / g
 
-		return Self(numerator: numerator, denominator: denominator, sign: sign)
+		return Self(numerator: numerator, denominator: denominator, sign: simplifiedValues.sign)
 	}
 
 	/// Whether or not this value represents an integer.

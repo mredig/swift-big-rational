@@ -5,6 +5,10 @@ public extension Rational {
 		case bigInt(BigInt)
 		indirect case rational(Rational)
 
+		public static func bigUInt(_ value: BigUInt) -> Storage {
+			.bigInt(BigInt(value))
+		}
+
 		public var isZero: Bool {
 			switch self {
 			case .bigInt(let bigInt):
@@ -38,6 +42,15 @@ public extension Rational {
 				true
 			case .rational(let rational):
 				rational.isInteger
+			}
+		}
+
+		public var isNaN: Bool {
+			switch self {
+			case .bigInt:
+				false
+			case .rational(let rational):
+				rational.isNaN
 			}
 		}
 	}
