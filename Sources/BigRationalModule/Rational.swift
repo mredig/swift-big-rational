@@ -75,7 +75,7 @@ public struct Rational: Sendable, Codable {
 	@inlinable
 	internal init(numerator: Storage, denominator: Storage, sign: Sign) {
 		guard
-			denominator != 0
+			denominator.isZero == false
 		else {
 			self.denominator = .bigInt(0)
 			self.numerator = .bigInt(0)
@@ -85,7 +85,7 @@ public struct Rational: Sendable, Codable {
 
 		self.numerator = numerator
 		self.denominator = denominator
-		guard numerator != 0 else {
+		guard numerator.isZero == false else {
 			self.sign = .zero
 			return
 		}
@@ -286,7 +286,7 @@ extension Rational {
 			return Self(numerator: 1, denominator: 1, sign: sign)
 		}
 
-		guard numerator != 0 else {
+		guard numerator.isZero == false else {
 			return Self(numerator: 0, denominator: 1, sign: .zero)
 		}
 
