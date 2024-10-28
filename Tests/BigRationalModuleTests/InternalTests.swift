@@ -43,7 +43,7 @@ struct InternalTests {
 		(-4, -4, 1),
 		(-4, -1, 4),
 	])
-	func floorDivision(args: (a: Int, b: Int, expectation: Int)) {
+	func floorDivision(args: (a: Int, b: Int, expectation: Int)) throws {
 		let (a, b, expectation) = args
 		#expect(BigRationalModule.floorDivision(a, b) == expectation)
 	}
