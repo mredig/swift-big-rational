@@ -1,5 +1,15 @@
 import BigInt
 
+/// A numerical type to represent and calculate rational values. If math isn't your strong suit, it just means "fractions".
+///
+/// There's a lot of things to document here, but something that is somewhat notable is how equatability works.
+///
+/// `==` and `!=` determine if the represented value is the same, so `1/2 == 2/4`, for example. However,
+/// despite `Rational` being a struct and not a class, it has the `===` operator implemented. In this case,
+/// it means "identical". So, for example, `1/2 === 1/2`, but `1/2 !== 2/4`. It extends to embedded
+/// `Rational`s so `(1/3)/4 === (1/3)/4`, and `(1/3)/4 !== (1/3)/(4/1)`, despite them having
+/// the same value, once simplified. However, `===` does NOT mean that these values have the same address
+/// memory! It simply indicates they have the same value AND composition, as opposed to just value.
 public struct Rational: Sendable, Codable {
 	/// The numerator of this value.
 	public let numerator: Storage

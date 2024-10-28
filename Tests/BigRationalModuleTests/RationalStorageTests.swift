@@ -179,4 +179,46 @@ struct RationalStorageTests {
 		#expect(smaller <= larger)
 		#expect(larger >= smaller)
 	}
+
+	@Test func isIdenticalBigInt() throws {
+		let bigInt1 = Rational.Storage.bigInt(BigInt(5))
+		let bigInt2 = Rational.Storage.bigInt(BigInt(5))
+
+		#expect(bigInt1 === bigInt2)
+	}
+
+	@Test func isIdenticalBigInt2() throws {
+		let bigInt1 = Rational.Storage.bigInt(BigInt(5))
+		let bigInt2 = Rational.Storage.bigInt(BigInt(10) / BigInt(2))
+
+		#expect(bigInt1 === bigInt2)
+	}
+
+	@Test func isNotIdenticalBigInt() throws {
+		let bigInt1 = Rational.Storage.bigInt(BigInt(5))
+		let bigInt2 = Rational.Storage.bigInt(BigInt(6))
+
+		#expect(bigInt1 !== bigInt2)
+	}
+
+	@Test func isIdenticalRational() throws {
+		let rational1 = Rational.Storage.rational(Rational(5))
+		let rational2 = Rational.Storage.rational(Rational(5))
+
+		#expect(rational1 === rational2)
+	}
+
+	@Test func isNotIdenticalRational() throws {
+		let rational1 = Rational.Storage.rational(Rational(5))
+		let rational2 = Rational.Storage.rational(Rational(6))
+
+		#expect(rational1 !== rational2)
+	}
+
+	@Test func isNotIdenticalRational2() throws {
+		let rational1 = Rational.Storage.rational(Rational(5))
+		let rational2 = Rational.Storage.rational(Rational(10, 2))
+
+		#expect(rational1 !== rational2)
+	}
 }
