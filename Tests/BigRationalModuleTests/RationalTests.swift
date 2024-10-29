@@ -496,34 +496,30 @@ struct RationalTests {
 		#expect(input.rounded == expected)
 	}
 
-	@Test func test_roundedAwayFromZero() {
-		let testCases = [
-			(Rational(262_145_157, 855_776_251), 1),
-			(Rational(511_358_916, 557_170_961), 1),
-			(Rational(92_969_496, 90_227_555), 2),
-			(Rational(-43_185_664, 39_317_189), -2),
-			(Rational(-240_713_497, 238_367_712), -2),
-			(Rational(591_146_833, 657_580_281), 1),
-			(Rational(290_602_188, 43_467_593), 7),
-			(Rational(453_350_972, 355_255_185), 2),
-			(Rational(-93_951_361, 801828), -118),
-			(Rational(524_801_197, 996_990_896), 1),
-			(Rational(12_550_443, 16_801_627), 1),
-			(Rational(407_782_537, 379_273_747), 2),
-			(Rational(-225_345_144, 122_457_433), -2),
-			(Rational(-947_835_479, 17_137_154), -56),
-			(Rational(-436_220_527, 569_379_639), -1),
-			(Rational(-353_461_135, 89_691_766), -4),
-			(Rational(-666702, 156_567_307), -1),
-			(Rational(-869_265_084, 47_563_579), -19),
-			(Rational(-987_442_149, 769_441_060), -2),
-			(Rational(4, 1), 4),
-			(Rational(-4, 1), -4),
-		]
-
-		for (rational, expected) in testCases {
-			#expect(rational.roundedAwayFromZero == expected)
-		}
+	@Test(arguments: [
+		(Rational(262_145_157, 855_776_251), BigInt(1)),
+		(Rational(511_358_916, 557_170_961), BigInt(1)),
+		(Rational(92_969_496, 90_227_555), BigInt(2)),
+		(Rational(-43_185_664, 39_317_189), BigInt(-2)),
+		(Rational(-240_713_497, 238_367_712), BigInt(-2)),
+		(Rational(591_146_833, 657_580_281), BigInt(1)),
+		(Rational(290_602_188, 43_467_593), BigInt(7)),
+		(Rational(453_350_972, 355_255_185), BigInt(2)),
+		(Rational(-93_951_361, 801828), BigInt(-118)),
+		(Rational(524_801_197, 996_990_896), BigInt(1)),
+		(Rational(12_550_443, 16_801_627), BigInt(1)),
+		(Rational(407_782_537, 379_273_747), BigInt(2)),
+		(Rational(-225_345_144, 122_457_433), BigInt(-2)),
+		(Rational(-947_835_479, 17_137_154), BigInt(-56)),
+		(Rational(-436_220_527, 569_379_639), BigInt(-1)),
+		(Rational(-353_461_135, 89_691_766), BigInt(-4)),
+		(Rational(-666702, 156_567_307), BigInt(-1)),
+		(Rational(-869_265_084, 47_563_579), BigInt(-19)),
+		(Rational(-987_442_149, 769_441_060), BigInt(-2)),
+		(Rational(4, 1), BigInt(4)),
+		(Rational(-4, 1), BigInt(-4)),
+	]) func roundAwayFromZero(_ input: Rational, _ expected: BigInt) {
+		#expect(input.roundedAwayFromZero == expected)
 	}
 
 	@Test(arguments: [
