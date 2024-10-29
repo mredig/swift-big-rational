@@ -148,7 +148,7 @@ extension Rational.Storage: CustomStringConvertible, CustomDebugStringConvertibl
 		case .bigInt(let bigInt):
 			bigInt.description
 		case .rational(let rational):
-			"(\(rational.description))"
+			"(\(rational.makeDescription(asChild: true, alwaysShowSign: false)))"
 		}
 	}
 
