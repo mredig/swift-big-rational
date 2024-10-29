@@ -74,12 +74,43 @@ struct SimplificationTests {
 			(
 				Rational(
 					Rational(-8, Rational(
-						Rational(2, -4), 3) // 2 / -12
-					), // 96 / 2
+						Rational(2, -4), 3) // 2/-12
+					), // 96/2
 					Rational(2, 1) // 96/4
 				),
 				Rational(96, 4)
+			),
+			(
+				Rational(
+					Rational(
+						Rational(-5, 10),
+						Rational(Rational(1, 3), 4) // 1/12
+					), // -60/10
+					Rational(1, 2) // -120/10
+				),
+				Rational(-120, 10)
+			),
+			(
+				Rational(
+					Rational(
+						8,
+						Rational(Rational(-4, 3), Rational(-2, 4)) // -16/-6
+					), // 48/16
+					Rational(-2, 1) // 48/-32
+				),
+				Rational(48, -32)
+			),
+			(
+				Rational(
+					Rational(9, Rational(
+						Rational(-3, Rational(-27, 9)), // -27/-27
+						2) // 27/54
+					), // 486/27
+					Rational(3, -1) // 486/-81
+				),
+				Rational(486, -81)
 			)
+
 		]
 	)
 	func simplify(_ input: Rational, expectation: Rational) throws {
