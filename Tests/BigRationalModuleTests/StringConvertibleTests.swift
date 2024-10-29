@@ -1,52 +1,54 @@
-import XCTest
+import Testing
 import BigRationalModule
 
-final class StringConvertibleTests: XCTestCase {
-	func test_fraction_string_conversion() throws {
+struct StringConvertibleTests {
+	@Test func testFractionStringConversion() throws {
 		let r = Rational(1, 2)
-		XCTAssertEqual(r.description, "1/2")
+		#expect(r.description == "1/2")
 	}
 
-	func test_integer_string_conversion() throws {
+	@Test func testIntegerStringConversion() throws {
 		let r = Rational(1, 1)
-		XCTAssertEqual(r.description, "1")
+		#expect(r.description == "1")
 	}
 
-	func test_negative_integer_string_conversion() throws {
+	@Test func testNegativeIntegerStringConversion() throws {
 		let r = Rational(-1, 1)
-		XCTAssertEqual(r.description, "-1")
+		#expect(r.description == "-1")
 	}
 
-	func test_nan_string_conversion() throws {
+	@Test func testNanStringConversion() throws {
 		let nans = [
 			Rational.nan,
 			Rational(0, 0)
 		]
 		for nanValue in nans {
-			XCTAssertEqual(nanValue.description, "NaN")
+			#expect(nanValue.description == "NaN")
 		}
 	}
-	func test_fraction_debug_string_conversion() throws {
+
+	@Test func testFractionDebugStringConversion() throws {
 		let r = Rational(1, 2)
-		XCTAssertEqual(r.debugDescription, "Rational(+1, 2)")
+		#expect(r.debugDescription == "Rational(+1, 2)")
 	}
 
-	func test_fraction_negative_debug_string_conversion() throws {
+	@Test func testFractionNegativeDebugStringConversion() throws {
 		let r = Rational(-1, 2)
-		XCTAssertEqual(r.debugDescription, "Rational(-1, 2)")
+		#expect(r.debugDescription == "Rational(-1, 2)")
 	}
 
-	func test_zero_debug_string_conversion() throws {
+	@Test func testZeroDebugStringConversion() throws {
 		let r = Rational(0)
-		XCTAssertEqual(r.debugDescription, "Rational(0, 1)")
+		#expect(r.debugDescription == "Rational(0, 1)")
 	}
-	func test_nan_debug_string_conversion() throws {
+
+	@Test func testNanDebugStringConversion() throws {
 		let nans = [
 			Rational.nan,
 			Rational(0, 0)
 		]
 		for nanValue in nans {
-			XCTAssertEqual(nanValue.debugDescription, "Rational(NaN)")
+			#expect(nanValue.debugDescription == "Rational(NaN)")
 		}
 	}
 }
