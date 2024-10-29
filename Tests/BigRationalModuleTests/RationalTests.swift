@@ -426,7 +426,60 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_rounded() {
+	@Test(arguments: [
+		(Rational(-442_953_198, 161_035_891), BigInt(-3)),
+		(Rational(145_572_591, 41_904_785), BigInt(3)),
+		(Rational(369_455_244, 450_441_619), BigInt(1)),
+		(Rational(-26_645_233, 313_679_846), BigInt(0)),
+		(Rational(173_235_281, 63_539_958), BigInt(3)),
+		(Rational(99_597_999, 156_872_312), BigInt(1)),
+		(Rational(4_743_518, 21_380_689), BigInt(0)),
+		(Rational(-6_106_153, 630_866_866), BigInt(0)),
+		(Rational(-617_391_735, 918_185_023), BigInt(-1)),
+		(Rational(336_502_607, 601_469_461), BigInt(1)),
+		(Rational(-470_618_449, 381_647_498), BigInt(-1)),
+		(Rational(59_458_494, 904_283_479), BigInt(0)),
+		(Rational(235_220_648, 192_965_389), BigInt(1)),
+		(Rational(-475_141_877, 486_562_778), BigInt(-1)),
+		(Rational(-218_854_626, 982_833_661), BigInt(0)),
+		(Rational(-800_445_193, 407_793_102), BigInt(-2)),
+		(Rational(-61_297_445, 699_073_486), BigInt(0)),
+		(Rational(27_887_271, 106_035_878), BigInt(0)),
+		(Rational(817_429_193, 836_401_092), BigInt(1)),
+		(Rational(682_609_737, 247_987_673), BigInt(3)),
+		(Rational(-280_167_719, 487_973_505), BigInt(-1)),
+		(Rational(-1_027_342, 956_624_971), BigInt(0)),
+		(Rational(258_627_324, 764_748_691), BigInt(0)),
+		(Rational(-90_979_598, 191_256_335), BigInt(0)),
+		(Rational(412_028_835, 307_263_104), BigInt(1)),
+		(Rational(-74_944_193, 35_136_677), BigInt(-2)),
+		(Rational(-319_150_439, 196_247_867), BigInt(-2)),
+		(Rational(718_823_359, 943_120_754), BigInt(1)),
+		(Rational(-780_056_835, 648_890_056), BigInt(-1)),
+		(Rational(-2_959_814, 3_601_095), BigInt(-1)),
+		(Rational(-587_033_904, 467_255_407), BigInt(-1)),
+		(Rational(171_766_619, 373_838_817), BigInt(0)),
+		(Rational(68_670_103, 190_183_655), BigInt(0)),
+		(Rational(-526_476_361, 826_488_955), BigInt(-1)),
+		(Rational(441_511_037, 337_758_880), BigInt(1)),
+		(Rational(851_181_533, 341_887_973), BigInt(2)),
+		(Rational(-148_560_757, 651_059_711), BigInt(0)),
+		(Rational(-441_058_157, 326_433_226), BigInt(-1)),
+		(Rational(-315_480_221, 132_343_142), BigInt(-2)),
+		(Rational(835_788_958, 560_272_033), BigInt(1)),
+		(Rational(60_096_671, 4_847_083), BigInt(12)),
+		(Rational(-879_359_583, 726_629_690), BigInt(-1)),
+		(Rational(243_361_472, 49_958_187), BigInt(5)),
+		(Rational(498_495_848, 359_144_109), BigInt(1)),
+		(Rational(102_976_308, 110_289_203), BigInt(1)),
+		(Rational(-270_539_401, 228_262_422), BigInt(-1)),
+		(Rational(-232_939_621, 791_369_726), BigInt(0)),
+		(Rational(-634_324_370, 945_168_363), BigInt(-1)),
+		(Rational(61_419_539, 391_130_885), BigInt(0)),
+		(Rational(-227_065_415, 193_646_176), BigInt(-1)),
+		(Rational(4, 1), BigInt(4)),
+		(Rational(-4, 1), BigInt(-4)),
+	]) func rounding(_ input: Rational, _ expected: BigInt) {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -440,65 +493,7 @@ struct RationalTests {
 		///     print(f"(Rational({fractions[i].numerator}, {fractions[i].denominator}), {fractions[i].__round__()}),")
 		/// ```
 		///
-
-		let testCases = [
-			(Rational(-442_953_198, 161_035_891), -3),
-			(Rational(145_572_591, 41_904_785), 3),
-			(Rational(369_455_244, 450_441_619), 1),
-			(Rational(-26_645_233, 313_679_846), 0),
-			(Rational(173_235_281, 63_539_958), 3),
-			(Rational(99_597_999, 156_872_312), 1),
-			(Rational(4_743_518, 21_380_689), 0),
-			(Rational(-6_106_153, 630_866_866), 0),
-			(Rational(-617_391_735, 918_185_023), -1),
-			(Rational(336_502_607, 601_469_461), 1),
-			(Rational(-470_618_449, 381_647_498), -1),
-			(Rational(59_458_494, 904_283_479), 0),
-			(Rational(235_220_648, 192_965_389), 1),
-			(Rational(-475_141_877, 486_562_778), -1),
-			(Rational(-218_854_626, 982_833_661), 0),
-			(Rational(-800_445_193, 407_793_102), -2),
-			(Rational(-61_297_445, 699_073_486), 0),
-			(Rational(27_887_271, 106_035_878), 0),
-			(Rational(817_429_193, 836_401_092), 1),
-			(Rational(682_609_737, 247_987_673), 3),
-			(Rational(-280_167_719, 487_973_505), -1),
-			(Rational(-1_027_342, 956_624_971), 0),
-			(Rational(258_627_324, 764_748_691), 0),
-			(Rational(-90_979_598, 191_256_335), 0),
-			(Rational(412_028_835, 307_263_104), 1),
-			(Rational(-74_944_193, 35_136_677), -2),
-			(Rational(-319_150_439, 196_247_867), -2),
-			(Rational(718_823_359, 943_120_754), 1),
-			(Rational(-780_056_835, 648_890_056), -1),
-			(Rational(-2_959_814, 3_601_095), -1),
-			(Rational(-587_033_904, 467_255_407), -1),
-			(Rational(171_766_619, 373_838_817), 0),
-			(Rational(68_670_103, 190_183_655), 0),
-			(Rational(-526_476_361, 826_488_955), -1),
-			(Rational(441_511_037, 337_758_880), 1),
-			(Rational(851_181_533, 341_887_973), 2),
-			(Rational(-148_560_757, 651_059_711), 0),
-			(Rational(-441_058_157, 326_433_226), -1),
-			(Rational(-315_480_221, 132_343_142), -2),
-			(Rational(835_788_958, 560_272_033), 1),
-			(Rational(60_096_671, 4_847_083), 12),
-			(Rational(-879_359_583, 726_629_690), -1),
-			(Rational(243_361_472, 49_958_187), 5),
-			(Rational(498_495_848, 359_144_109), 1),
-			(Rational(102_976_308, 110_289_203), 1),
-			(Rational(-270_539_401, 228_262_422), -1),
-			(Rational(-232_939_621, 791_369_726), 0),
-			(Rational(-634_324_370, 945_168_363), -1),
-			(Rational(61_419_539, 391_130_885), 0),
-			(Rational(-227_065_415, 193_646_176), -1),
-			(Rational(4, 1), 4),
-			(Rational(-4, 1), -4),
-		]
-
-		for (rational, expected) in testCases {
-			#expect(rational.rounded == expected)
-		}
+		#expect(input.rounded == expected)
 	}
 
 	@Test func test_roundedAwayFromZero() {

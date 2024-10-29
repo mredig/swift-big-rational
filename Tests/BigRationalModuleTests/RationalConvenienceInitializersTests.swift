@@ -22,9 +22,9 @@ struct RationalConvenienceInitializersTests {
 
 	@Test func oneOverBigIntParts() throws(Error) {
 		let tests: [(input: BigInt, n: Rational.Storage, d: Rational.Storage, sign: Rational.Sign)] = [
-			(5, .bigInt(1), .bigInt(5), .positive),
-			(-5, .bigInt(1), .bigInt(5), .negative),
-			(0, .bigInt(0), .bigInt(0), .zero)
+			(5, .bigUInt(1), .bigUInt(5), .positive),
+			(-5, .bigUInt(1), .bigUInt(5), .negative),
+			(0, .bigUInt(0), .bigUInt(0), .zero)
 		]
 
 		for (input, numerator, denominator, sign) in tests {
@@ -58,10 +58,10 @@ struct RationalConvenienceInitializersTests {
 
 	@Test func oneOverRationalParts() {
 		let tests: [(input: Rational, n: Rational.Storage, d: Rational.Storage, sign: Rational.Sign)] = [
-			(Rational(5, 6), .bigInt(1), .rational(Rational(5, 6)), .positive),
-			(Rational(-5, 6), .bigInt(1), .rational(Rational(-5, 6)), .positive),
-			(Rational(5, -6), .bigInt(1), .rational(Rational(5, -6)), .positive),
-			(Rational(-5, -6), .bigInt(1), .rational(Rational(-5, -6)), .positive),
+			(Rational(5, 6), .bigUInt(1), .rational(Rational(5, 6)), .positive),
+			(Rational(-5, 6), .bigUInt(1), .rational(Rational(-5, 6)), .positive),
+			(Rational(5, -6), .bigUInt(1), .rational(Rational(5, -6)), .positive),
+			(Rational(-5, -6), .bigUInt(1), .rational(Rational(-5, -6)), .positive),
 //			(.zero, .nan),
 //			(.nan, .nan),
 		]

@@ -4,7 +4,7 @@ import BigRationalModule
 
 struct RationalStorageTests {
 	@Test func bigIntIsZero() throws {
-		let bigIntZero = Rational.Storage.bigInt(BigInt(0))
+		let bigIntZero = Rational.Storage.bigUInt(BigUInt(0))
 		#expect(bigIntZero.isZero)
 	}
 
@@ -14,7 +14,7 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntIsNotZero() throws {
-		let bigIntNonZero = Rational.Storage.bigInt(BigInt(1))
+		let bigIntNonZero = Rational.Storage.bigUInt(BigUInt(1))
 		#expect(!bigIntNonZero.isZero)
 	}
 
@@ -24,7 +24,7 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntIsPositive() throws {
-		let bigIntPositive = Rational.Storage.bigInt(BigInt(2))
+		let bigIntPositive = Rational.Storage.bigUInt(BigUInt(2))
 		#expect(bigIntPositive.isPositive)
 	}
 
@@ -33,20 +33,20 @@ struct RationalStorageTests {
 		#expect(rationalPositive.isPositive)
 	}
 
-	@Test func bigIntIsNotPositive() throws {
-		let bigIntNegative = Rational.Storage.bigInt(BigInt(-1))
-		#expect(!bigIntNegative.isPositive)
-	}
+//	@Test func bigIntIsNotPositive() throws {
+//		let bigIntNegative = Rational.Storage.bigUInt(BigUInt(-1))
+//		#expect(!bigIntNegative.isPositive)
+//	}
 
 	@Test func rationalIsNotPositive() throws {
 		let rationalNegative = Rational.Storage.rational(Rational(-1, 2))
 		#expect(!rationalNegative.isPositive)
 	}
 
-	@Test func bigIntIsNegative() throws {
-		let bigIntNegative = Rational.Storage.bigInt(BigInt(-3))
-		#expect(bigIntNegative.isNegative)
-	}
+//	@Test func bigIntIsNegative() throws {
+//		let bigIntNegative = Rational.Storage.bigUInt(BigUInt(-3))
+//		#expect(bigIntNegative.isNegative)
+//	}
 
 	@Test func rationalIsNegative() throws {
 		let rationalNegative = Rational.Storage.rational(Rational(-5, 7))
@@ -54,7 +54,7 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntIsNotNegative() throws {
-		let bigIntPositive = Rational.Storage.bigInt(BigInt(4))
+		let bigIntPositive = Rational.Storage.bigUInt(BigUInt(4))
 		#expect(!bigIntPositive.isNegative)
 	}
 
@@ -64,7 +64,7 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntIsInteger() throws {
-		let bigIntInt = Rational.Storage.bigInt(BigInt(5))
+		let bigIntInt = Rational.Storage.bigUInt(BigUInt(5))
 		#expect(bigIntInt.isInteger)
 	}
 
@@ -79,7 +79,7 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntEqualsRational() throws {
-		let bigIntValue = Rational.Storage.bigInt(5)
+		let bigIntValue = Rational.Storage.bigUInt(5)
 		let rationalValue = Rational.Storage.rational(Rational(5, 1))
 		#expect(bigIntValue == rationalValue)
 	}
@@ -91,20 +91,20 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntNotEqualsRational() throws {
-		let bigIntValue = Rational.Storage.bigInt(5)
+		let bigIntValue = Rational.Storage.bigUInt(5)
 		let rationalValue = Rational.Storage.rational(Rational(5, 2))
 		#expect(bigIntValue != rationalValue)
 	}
 
 	@Test func bigIntNotEqualToAnotherBigInt() throws {
-		let bigIntValue = Rational.Storage.bigInt(5)
-		let differentBigInt = Rational.Storage.bigInt(6)
+		let bigIntValue = Rational.Storage.bigUInt(5)
+		let differentBigInt = Rational.Storage.bigUInt(6)
 		#expect(bigIntValue != differentBigInt)
 	}
 
 	@Test func storageBigIntEqualToBigInt() throws {
 		let bigIntValue: BigInt = 5
-		let storageValue = Rational.Storage.bigInt(5)
+		let storageValue = Rational.Storage.bigUInt(5)
 		#expect(storageValue == bigIntValue)
 	}
 
@@ -116,7 +116,7 @@ struct RationalStorageTests {
 
 	@Test func storageBigIntNotEqualToBigInt() throws {
 		let bigIntValue: BigInt = 5
-		let storageValue = Rational.Storage.bigInt(6)
+		let storageValue = Rational.Storage.bigUInt(6)
 		#expect(storageValue != bigIntValue)
 	}
 
@@ -127,22 +127,22 @@ struct RationalStorageTests {
 	}
 
 	@Test func bigIntAndRationalSameHash() throws {
-		let bigIntHashValue = Rational.Storage.bigInt(BigInt(5)).hashValue
+		let bigIntHashValue = Rational.Storage.bigUInt(BigUInt(5)).hashValue
 		let rationalHashValue = Rational.Storage.rational(Rational(5, 1)).hashValue
 
 		#expect(bigIntHashValue == rationalHashValue)
 	}
 
 	@Test func bigIntAndRationalDifferentHash() throws {
-		let bigIntHashValue = Rational.Storage.bigInt(BigInt(5)).hashValue
+		let bigIntHashValue = Rational.Storage.bigUInt(BigUInt(5)).hashValue
 		let rationalHashValue = Rational.Storage.rational(Rational(5, 2)).hashValue
 
 		#expect(bigIntHashValue != rationalHashValue)
 	}
 
 	@Test func compareWrappedBigInts() throws {
-		let smaller = Rational.Storage.bigInt(5)
-		let larger = Rational.Storage.bigInt(6)
+		let smaller = Rational.Storage.bigUInt(5)
+		let larger = Rational.Storage.bigUInt(6)
 
 		#expect(smaller < larger)
 		#expect(larger > smaller)
@@ -161,7 +161,7 @@ struct RationalStorageTests {
 	}
 
 	@Test func compareWrappedRationalLargerThanBigInt() throws {
-		let smaller = Rational.Storage.bigInt(1)
+		let smaller = Rational.Storage.bigUInt(1)
 		let larger = Rational.Storage.rational(Rational(6, 3))
 
 		#expect(smaller < larger)
@@ -172,7 +172,7 @@ struct RationalStorageTests {
 
 	@Test func compareWrappedBigIntLargerThanRational() throws {
 		let smaller = Rational.Storage.rational(Rational(6, 3))
-		let larger = Rational.Storage.bigInt(10)
+		let larger = Rational.Storage.bigUInt(10)
 
 		#expect(smaller < larger)
 		#expect(larger > smaller)
@@ -181,22 +181,22 @@ struct RationalStorageTests {
 	}
 
 	@Test func isIdenticalBigInt() throws {
-		let bigInt1 = Rational.Storage.bigInt(BigInt(5))
-		let bigInt2 = Rational.Storage.bigInt(BigInt(5))
+		let bigInt1 = Rational.Storage.bigUInt(BigUInt(5))
+		let bigInt2 = Rational.Storage.bigUInt(BigUInt(5))
 
 		#expect(bigInt1 === bigInt2)
 	}
 
 	@Test func isIdenticalBigInt2() throws {
-		let bigInt1 = Rational.Storage.bigInt(BigInt(5))
-		let bigInt2 = Rational.Storage.bigInt(BigInt(10) / BigInt(2))
+		let bigInt1 = Rational.Storage.bigUInt(BigUInt(5))
+		let bigInt2 = Rational.Storage.bigUInt(BigUInt(10) / BigUInt(2))
 
 		#expect(bigInt1 === bigInt2)
 	}
 
-	@Test func isNotIdenticalBigInt() throws {
-		let bigInt1 = Rational.Storage.bigInt(BigInt(5))
-		let bigInt2 = Rational.Storage.bigInt(BigInt(6))
+	@Test func isNotIdenticalBigUInt() throws {
+		let bigInt1 = Rational.Storage.bigUInt(BigUInt(5))
+		let bigInt2 = Rational.Storage.bigUInt(BigUInt(6))
 
 		#expect(bigInt1 !== bigInt2)
 	}

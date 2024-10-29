@@ -13,17 +13,17 @@ extension Rational: AdditiveArithmetic {
 
 		let lhsSimplified = lhs.simplifiedValues
 		let rhsSimplified = rhs.simplifiedValues
-		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
-		let d1 = lhsSimplified.denominator
-		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
-		let d2 = rhsSimplified.denominator
+		let n1 = BigInt(lhsSimplified.numerator) * lhsSimplified.sign.rawValue
+		let d1 = BigInt(lhsSimplified.denominator)
+		let n2 = BigInt(rhsSimplified.numerator) * rhsSimplified.sign.rawValue
+		let d2 = BigInt(rhsSimplified.denominator)
 
 		let g = gcd(d1, d2)
 		guard g != 1 else {
 			let numerator = n1 * d2 + n2 * d1
 			let sign = Sign(numerator)
-			let posNumerator = BigInt(numerator.magnitude)
-			return Rational(numerator: posNumerator, denominator: d1 * d2, sign: sign)
+			let posNumerator = numerator.magnitude
+			return Rational(numerator: posNumerator, denominator: BigUInt(d1 * d2), sign: sign)
 		}
 
 		let s = d1 / g

@@ -2,17 +2,18 @@ import BigInt
 
 public extension Rational {
 	enum Storage: Sendable, Codable {
-		case bigInt(BigInt)
+		case bigUInt(BigUInt)
 		indirect case rational(Rational)
 
-		public static func bigUInt(_ value: BigUInt) -> Storage {
-			.bigInt(BigInt(value))
+		public static func bigInt(_ value: BigInt) -> Storage? {
+			guard value >= 0 else { return nil }
+			return .bigUInt(BigUInt(value))
 		}
 
 		public var isZero: Bool {
 			switch self {
-			case .bigInt(let bigInt):
-				bigInt == 0
+			case .bigUInt(let value):
+				value == 0
 			case .rational(let rational):
 				rational.isZero
 			}
@@ -20,8 +21,8 @@ public extension Rational {
 
 		public var isPositive: Bool {
 			switch self {
-			case .bigInt(let bigInt):
-				bigInt.signum() == 1
+			case .bigUInt(let value):
+				value > 0
 			case .rational(let rational):
 				rational.signum() == 1
 			}
@@ -29,8 +30,8 @@ public extension Rational {
 
 		public var isNegative: Bool {
 			switch self {
-			case .bigInt(let bigInt):
-				bigInt.signum() == -1
+			case .bigUInt:
+				false
 			case .rational(let rational):
 				rational.signum() == -1
 			}
@@ -38,7 +39,7 @@ public extension Rational {
 
 		public var isInteger: Bool {
 			switch self {
-			case .bigInt:
+			case .bigUInt:
 				true
 			case .rational(let rational):
 				rational.isInteger
@@ -47,7 +48,7 @@ public extension Rational {
 
 		public var isNaN: Bool {
 			switch self {
-			case .bigInt:
+			case .bigUInt:
 				false
 			case .rational(let rational):
 				rational.isNaN
@@ -59,9 +60,9 @@ public extension Rational {
 extension Rational.Storage: Hashable {
 	public static func == (lhs: Self, rhs: Self) -> Bool {
 		switch (lhs, rhs) {
-		case (.bigInt(let lBigInt), .bigInt(let rBigInt)):
-			return lBigInt == rBigInt
-		case (.bigInt(let a), .rational(let b)), (.rational(let b), .bigInt(let a)):
+		case (.bigUInt(let lValue), .bigUInt(let rValue)):
+			return lValue == rValue
+		case (.bigUInt(let a), .rational(let b)), (.rational(let b), .bigUInt(let a)):
 			guard b.isInteger else { return false }
 			return a == b.reduced.simplifiedValues.numerator
 		case (.rational(let lRat), .rational(let rRat)):
@@ -71,8 +72,8 @@ extension Rational.Storage: Hashable {
 
 	public static func === (lhs: Self, rhs: Self) -> Bool {
 		switch (lhs, rhs) {
-		case (.bigInt(let lBigInt), .bigInt(let rBigInt)):
-			lBigInt == rBigInt
+		case (.bigUInt(let lValue), .bigUInt(let rValue)):
+			lValue == rValue
 		case (.rational(let lRat), .rational(let rRat)):
 			lRat === rRat
 		default: false
@@ -88,14 +89,14 @@ extension Rational.Storage: Hashable {
 	}
 
 	public static func != (lhs: Self, rhs: BigInt) -> Bool {
-		lhs != .bigInt(rhs)
+		!(lhs == .bigInt(rhs))
 	}
 
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(String(describing: Self.self))
 		switch self {
-		case .bigInt(let bigInt):
-			hasher.combine(bigInt)
+		case .bigUInt(let value):
+			hasher.combine(value)
 		case .rational(let rational):
 			if rational.isInteger {
 				hasher.combine(rational.reduced.simplifiedValues.numerator)
@@ -115,14 +116,14 @@ extension Rational.Storage: Comparable {
 		let leftRat: Rational
 		let rightRat: Rational
 		switch (lhs, rhs) {
-		case (.bigInt(let lBigInt), .bigInt(let rBigInt)):
-			return lBigInt < rBigInt
-		case (.bigInt(let a), .rational(let b)):
-			leftRat = Rational(a)
+		case (.bigUInt(let lValue), .bigUInt(let rValue)):
+			return lValue < rValue
+		case (.bigUInt(let a), .rational(let b)):
+			leftRat = Rational(a, sign: .positive)
 			rightRat = b
-		case (.rational(let a), .bigInt(let b)):
+		case (.rational(let a), .bigUInt(let b)):
 			leftRat = a
-			rightRat = Rational(b)
+			rightRat = Rational(b, sign: .positive)
 		case (.rational(let lRat), .rational(let rRat)):
 			leftRat = lRat
 			rightRat = rRat
@@ -140,13 +141,17 @@ extension Optional where Wrapped == Rational.Storage {
 		case .none: false
 		}
 	}
+
+	public static func != <I: FixedWidthInteger>(lhs: Self, rhs: I) -> Bool {
+		!(lhs == rhs)
+	}
 }
 
 extension Rational.Storage: CustomStringConvertible, CustomDebugStringConvertible {
 	public var description: String {
 		switch self {
-		case .bigInt(let bigInt):
-			bigInt.description
+		case .bigUInt(let value):
+			value.description
 		case .rational(let rational):
 			"(\(rational.makeDescription(asChild: true, alwaysShowSign: false)))"
 		}

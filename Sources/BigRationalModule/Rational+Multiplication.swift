@@ -12,10 +12,10 @@ extension Rational {
 		let lhsSimplified = lhs.simplifiedValues
 		let rhsSimplified = rhs.simplifiedValues
 
-		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
-		let d1 = lhsSimplified.denominator
-		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
-		let d2 = rhsSimplified.denominator
+		let n1 = BigInt(lhsSimplified.numerator) * lhsSimplified.sign.rawValue
+		let d1 = BigInt(lhsSimplified.denominator)
+		let n2 = BigInt(rhsSimplified.numerator) * rhsSimplified.sign.rawValue
+		let d2 = BigInt(rhsSimplified.denominator)
 
 		let numerator = n1 * n2
 		let denominator = d1 * d2
@@ -57,10 +57,10 @@ extension Rational {
 		let lhsSimplified = lhs.simplifiedValues
 		let rhsSimplified = rhs.simplifiedValues
 
-		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
-		let d1 = lhsSimplified.denominator
-		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
-		let d2 = rhsSimplified.denominator
+		let n1 = BigInt(lhsSimplified.numerator) * lhsSimplified.sign.rawValue
+		let d1 = BigInt(lhsSimplified.denominator)
+		let n2 = BigInt(rhsSimplified.numerator) * rhsSimplified.sign.rawValue
+		let d2 = BigInt(rhsSimplified.denominator)
 
 		let g1 = gcd(n1, n2)
 		let g2 = gcd(d2, d1)
