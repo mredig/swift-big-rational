@@ -3,6 +3,10 @@ import BigInt
 extension Rational: Equatable {
 	@inlinable
 	public static func == (lhs: Self, rhs: Self) -> Bool {
+		guard
+			lhs.isNaN == false,
+			rhs.isNaN == false
+		else { return false }
 		func reducedEqual(lhs: Self, rhs: Self) -> Bool {
 			lhs.numerator == rhs.numerator && lhs.denominator == rhs.denominator && lhs.sign == rhs.sign
 		}

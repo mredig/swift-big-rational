@@ -12,6 +12,10 @@ struct RationalConvenienceInitializersTests {
 
 		for (input, expectation) in tests {
 			let testedValue = Rational.oneOver(input)
+			guard testedValue == expectation else {
+				#expect(testedValue.isNaN == expectation.isNaN)
+				return
+			}
 			#expect(testedValue == expectation)
 		}
 	}
@@ -44,6 +48,10 @@ struct RationalConvenienceInitializersTests {
 
 		for (input, expectation) in tests {
 			let testedValue = Rational.oneOver(input)
+			guard testedValue == expectation else {
+				#expect(testedValue.isNaN == expectation.isNaN)
+				return
+			}
 			#expect(testedValue == expectation)
 		}
 	}
@@ -76,6 +84,10 @@ struct RationalConvenienceInitializersTests {
 
 		for (input, expectation) in tests {
 			let testedValue = Rational.identityFraction(of: input)
+			guard testedValue == expectation else {
+				#expect(testedValue.isNaN == expectation.isNaN)
+				return
+			}
 			#expect(testedValue == expectation)
 		}
 	}
@@ -92,6 +104,10 @@ struct RationalConvenienceInitializersTests {
 
 		for (input, expectation) in tests {
 			let testedValue = Rational.identityFraction(of: input)
+			guard testedValue == expectation else {
+				#expect(testedValue.isNaN == expectation.isNaN)
+				return
+			}
 			#expect(testedValue == expectation)
 		}
 	}

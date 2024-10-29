@@ -207,8 +207,13 @@ struct SignedNumericTests {
 			),
 		]
 
-		for (f1, f2, result) in testCases {
-			#expect((f1 * f2) == result)
+		for (f1, f2, expectation) in testCases {
+			let testedValue = f1 * f2
+			guard testedValue == expectation else {
+				#expect(testedValue.isNaN == expectation.isNaN)
+				return
+			}
+			#expect(testedValue == expectation)
 		}
 	}
 

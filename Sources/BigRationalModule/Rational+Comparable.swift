@@ -11,9 +11,9 @@ extension Rational: Comparable {
 		let lhsSimplified = lhs.simplifiedValues
 		let rhsSimplified = rhs.simplifiedValues
 
-		let n1 = lhsSimplified.numerator
+		let n1 = lhsSimplified.numerator * lhsSimplified.sign.rawValue
 		let d1 = lhsSimplified.denominator
-		let n2 = rhsSimplified.numerator
+		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
 		let d2 = rhsSimplified.denominator
 
 		// n1   n2    n1 * d2   n2 * d1
@@ -24,4 +24,26 @@ extension Rational: Comparable {
 
 		return a < b
 	}
+
+	@inlinable
+	public static func > (lhs: Self, rhs: Self) -> Bool {
+		rhs < lhs
+	}
+
+	@inlinable
+	public static func >= (lhs: Self, rhs: Self) -> Bool {
+		guard lhs != rhs else {
+			return true
+		}
+		return lhs > rhs
+	}
+
+	@inlinable
+	public static func <= (lhs: Self, rhs: Self) -> Bool {
+		guard lhs != rhs else {
+			return true
+		}
+		return lhs < rhs
+	}
+
 }

@@ -274,7 +274,7 @@ struct RationalTests {
 	}
 
 	@Test func limitedDenominatorAt0IsNan() {
-		#expect(Rational(10).limitDenominator(to: 0) == .nan)
+		#expect(Rational(10).limitDenominator(to: 0).isNaN)
 	}
 
 	@Test func test_floor() {
@@ -529,5 +529,22 @@ struct RationalTests {
 		for (rational, expected) in testCases {
 			#expect(rational.roundedAwayFromZero == expected)
 		}
+	}
+
+	@Test(arguments: [
+		(Rational(
+			numerator: Rational(
+				8,
+				Rational(numerator: Rational(-4, 3), denominator: Rational(-2, 4))
+			),
+			denominator: Rational(-2, 1)),
+		 false),
+		(Rational(5), false),
+		(Rational(-5), false),
+		(Rational(0), true),
+		(Rational(1, 5), true),
+		(Rational(-1, 5), true)
+	]) func isNotProperFraction(_ value: Rational, _ expectation: Bool) throws {
+		#expect(value.isProperFraction == expectation)
 	}
 }
