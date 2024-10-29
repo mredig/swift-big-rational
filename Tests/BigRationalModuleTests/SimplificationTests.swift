@@ -210,9 +210,7 @@ struct SimplificationTests {
 		#expect(reduced === expectation)
 	}
 
-	@Test func other() throws {
-		let foo = Rational.init(-1)
-
-		print(foo)
+	@Test func reduceNaN() throws {
+		#expect(Rational.nan.reduced.isNaN)
 	}
 }
