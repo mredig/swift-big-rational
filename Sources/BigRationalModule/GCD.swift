@@ -19,8 +19,8 @@ internal func gcd<T: BinaryInteger>(_ a: T, _ b: T) -> T {
 	var x = a.magnitude
 	var y = b.magnitude
 
-	if x == 0 { return T(y) }
-	if y == 0 { return T(x) }
+	guard x != 0 else { return T(y) }
+	guard y != 0 else { return T(x) }
 
 	let xtz = x.trailingZeroBitCount
 	let ytz = y.trailingZeroBitCount
