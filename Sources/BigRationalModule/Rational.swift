@@ -20,12 +20,14 @@ public struct Rational: Sendable, Codable {
 	public let sign: Sign
 
 	public struct Simplified: Sendable, Hashable, Codable {
+		// There's no valdation on this type, so it's only available in package.
+		// Be sure to always provide valid values.
 		public let numerator: BigInt
 		public let denominator: BigInt
 		public let sign: Sign
 
 		@inlinable
-		init(_ numerator: BigInt, _ denominator: BigInt, sign: Sign) {
+		package init(_ numerator: BigInt, _ denominator: BigInt, sign: Sign) {
 			self.numerator = numerator
 			self.denominator = denominator
 			self.sign = sign
