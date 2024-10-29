@@ -242,11 +242,14 @@ extension Rational {
 		case (.bigInt(let num), .bigInt(let den)):
 			return Simplified(num, den, sign: sign)
 		case (.rational(let topRational), .bigInt(let bigInt)):
-			return (topRational * Rational.oneOver(bigInt)).simplifiedValues
+			let simple = topRational * Rational.oneOver(bigInt) * sign.rawValue
+			return simple.simplifiedValues
 		case (.bigInt(let bigInt), .rational(let bottomRational)):
-			return (Rational(bigInt) * bottomRational.getReciprocal()).simplifiedValues
+			let simple = Rational(bigInt) * bottomRational.getReciprocal() * sign.rawValue
+			return simple.simplifiedValues
 		case (.rational(let topRational), .rational(let bottomRational)):
-			return (topRational * bottomRational.getReciprocal()).simplifiedValues
+			let simple = topRational * bottomRational.getReciprocal() * sign.rawValue
+			return simple.simplifiedValues
 		}
 	}
 
