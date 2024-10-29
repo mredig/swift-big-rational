@@ -5,7 +5,7 @@ import BigRationalModule
 
 struct RationalTests {
 
-	@Test func test_quotient() {
+	@Test func quotient() {
 		let testCases = [
 			(Rational(5, 4), 1),
 			(Rational(-5, 4), -1),
@@ -19,7 +19,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_remainder() {
+	@Test func remainder() {
 		let testCases = [
 			(Rational(5, 4), 1),
 			(Rational(-5, 4), -1),
@@ -34,7 +34,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_quotientAndRemainder() {
+	@Test func quotientAndRemainder() {
 		let testCases = [
 			(Rational(5, 4), 1, 1),
 			(Rational(-5, 4), -1, -1),
@@ -51,7 +51,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_isNegative() {
+	@Test func isNegative() {
 		let testCases = [
 			(Rational(5, 4), false),
 			(Rational(-5, 4), true),
@@ -66,7 +66,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_isPositive() {
+	@Test func isPositive() {
 		let testCases = [
 			(Rational(5, 4), true),
 			(Rational(-5, 4), false),
@@ -81,7 +81,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_isInteger() {
+	@Test func isInteger() {
 		let testCases = [
 			(Rational(5, 4), false),
 			(Rational(-5, 4), false),
@@ -96,7 +96,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_isProperFaction() {
+	@Test func isProperFaction() {
 		let testCases = [
 			(Rational(5, 4), false),
 			(Rational(-5, 4), false),
@@ -112,8 +112,8 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_signum_int8() {
-		let testCases: [(Rational, Int8)] = [
+	@Test func signum() {
+		let testCases: [(Rational, Int)] = [
 			(Rational(1, 4), 1),
 			(Rational(0, 4), 0),
 			(Rational(-1, 7), -1),
@@ -125,20 +125,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_signum_int16() {
-		let testCases: [(Rational, Int16)] = [
-			(Rational(1, 4), 1),
-			(Rational(0, 4), 0),
-			(Rational(-1, 7), -1),
-			(Rational(-0, 7), 0),
-		]
-
-		for (rational, expected) in testCases {
-			#expect(rational.signum() == expected)
-		}
-	}
-
-	@Test func test_sign() {
+	@Test func sign() {
 		let testCases: [(Rational, Rational.Sign)] = [
 			(Rational(1, 4), .positive),
 			(Rational(0, 4), .zero),
@@ -160,20 +147,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_signum() {
-		let testCases: [(Rational, Int)] = [
-			(Rational(1, 4), 1),
-			(Rational(0, 4), 0),
-			(Rational(-1, 7), -1),
-			(Rational(-0, 7), 0),
-		]
-
-		for (rational, expected) in testCases {
-			#expect(rational.signum() == expected)
-		}
-	}
-
-	@Test func test_toRatio() {
+	@Test func toRatio() {
 		let testCases = (0..<50).map { _ in
 			Rational(
 				Int.random(in: -1_000_000_000...1_000_000_000),
@@ -188,7 +162,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_limitDenominator_when_denominator_is_less_than_max() {
+	@Test func limitDenominatorWhenDenominatorIsLessThanMax() {
 		let testCases = (0..<50).map { _ in
 			Rational(
 				Int.random(in: -1_000_000...1_000_000),
@@ -201,7 +175,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_limitDenominator_when_denominator_is_larger_than_max() {
+	@Test func limitDenominatorWhenDenominatorIsLargerThanMax() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -277,7 +251,7 @@ struct RationalTests {
 		#expect(Rational(10).limitDenominator(to: 0).isNaN)
 	}
 
-	@Test func test_floor() {
+	@Test func floor() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
@@ -352,7 +326,7 @@ struct RationalTests {
 		}
 	}
 
-	@Test func test_ceil() {
+	@Test func ceil() {
 		/// Random test cases created using the following Python script:
 		///
 		/// ```
