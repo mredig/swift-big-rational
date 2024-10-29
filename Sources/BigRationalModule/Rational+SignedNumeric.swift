@@ -18,8 +18,8 @@ extension Rational: SignedNumeric {
 	/// 	Rational(exactly: 1_000)    // Rational(1000, 1)
 	///
 	@inlinable
-	public init?(exactly source: some BinaryInteger) {
-		guard let value = BigInt(exactly: source) else { return nil }
+	public init(exactly source: some BinaryInteger) {
+		let value = BigInt(source)
 		self.init(value)
 	}
 
