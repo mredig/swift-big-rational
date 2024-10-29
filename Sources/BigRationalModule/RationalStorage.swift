@@ -153,11 +153,6 @@ extension Rational.Storage: CustomStringConvertible, CustomDebugStringConvertibl
 	}
 
 	public var debugDescription: String {
-		switch self {
-		case .bigInt(let bigInt):
-			bigInt.description
-		case .rational:
-			"Rational.Storage\(description)"
-		}
+		"Rational.Storage\(description)"
 	}
 }
