@@ -17,11 +17,8 @@ extension Rational {
 		let n2 = rhsSimplified.numerator * rhsSimplified.sign.rawValue
 		let d2 = rhsSimplified.denominator
 
-		let g1 = gcd(n1, d2)
-		let g2 = gcd(n2, d1)
-
-		let numerator = (n1 / g1) * (n2 / g2)
-		let denominator = (d1 / g2) * (d2 / g1)
+		let numerator = n1 * n2
+		let denominator = d1 * d2
 
 		return Self(numerator, denominator)
 	}

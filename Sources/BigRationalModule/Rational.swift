@@ -149,6 +149,7 @@ extension Rational {
 		self = self.reduced
 	}
 
+	@_disfavoredOverload
 	@inlinable
 	public init(_ numerator: Rational, _ denominator: Rational, reduced: Bool = false) {
 		self.init(numerator: .rational(numerator), denominator: .rational(denominator), sign: .positive)
