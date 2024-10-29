@@ -156,7 +156,7 @@ extension Rational.Storage: CustomStringConvertible, CustomDebugStringConvertibl
 		switch self {
 		case .bigInt(let bigInt):
 			bigInt.description
-		case .rational(let rational):
+		case .rational:
 			"Rational.Storage\(description)"
 		}
 	}
