@@ -110,7 +110,6 @@ public struct Rational: Sendable, Codable {
 		self.init(numerator: .bigInt(numerator), denominator: .bigInt(denominator), sign: sign)
 	}
 
-
 	/// Creates a rational value with the given numerator and denominator.
 	@inlinable
 	internal init(autoSign numerator: BigInt, denominator: BigInt) {
@@ -131,13 +130,13 @@ extension Rational {
 	///     Rational(2, 2)     // 2/2
 	///     Rational(1, -3)    // -1/3
 	///     Rational(6, 3, reduced: true)     // 2
+	///     Rational(6, 0)     // NaN
 	///
-	/// - Precondition: `denominator != 0`
 	@inlinable
-	public init(_ numerator: BigUInt, _ denominator: BigUInt, sign: Sign = .positive, reduced: Bool = false) {
-		self.init(numerator: BigInt(numerator), denominator: BigInt(denominator), sign: sign)
-		guard reduced else { return }
-		self = self.reduced
+	public static func bigUInt(_ numerator: BigUInt, _ denominator: BigUInt, sign: Sign = .positive, reduced: Bool = false) -> Self {
+		let new = Rational(numerator: .bigUInt(numerator), denominator: .bigUInt(denominator), sign: sign)
+		guard reduced else { return new }
+		return new.reduced
 	}
 
 	@inlinable
@@ -146,14 +145,17 @@ extension Rational {
 		let denSign = Sign(denominator)
 		let sign = Sign.multiplicationOutput(lhs: numSign, rhs: denSign)
 
-		self.init(BigUInt(numerator.magnitude), BigUInt(denominator.magnitude), sign: sign, reduced: reduced)
-		guard reduced else { return }
-		self = self.reduced
+		let new = Rational.bigUInt(BigUInt(numerator.magnitude), BigUInt(denominator.magnitude), sign: sign, reduced: reduced)
+		guard reduced else {
+			self = new
+			return
+		}
+		self = new.reduced
 	}
 
 	@_disfavoredOverload
 	@inlinable
-	public init(_ numerator: Rational, _ denominator: Rational, reduced: Bool = false) {
+	public init(numerator: Rational, denominator: Rational, reduced: Bool = false) {
 		self.init(numerator: .rational(numerator), denominator: .rational(denominator), sign: .positive)
 		guard reduced else { return }
 		self = self.reduced

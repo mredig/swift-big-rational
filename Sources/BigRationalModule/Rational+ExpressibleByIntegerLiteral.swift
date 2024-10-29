@@ -3,7 +3,7 @@ import BigInt
 extension Rational: ExpressibleByIntegerLiteral {
 	@inlinable
 	public init(integerLiteral value: Int64) {
-		self.init(BigInt(integerLiteral: value))
+		self.init(autoSign: BigInt(integerLiteral: value), denominator: 1)
 	}
 }
 
@@ -14,8 +14,7 @@ extension Rational {
 	/// equal to `value` and denominator `1
 	@inlinable
 	public init(_ value: BigInt) {
-		let sign = Sign(value)
-		self.init(numerator: value, denominator: 1, sign: sign)
+		self.init(autoSign: value, denominator: 1)
 	}
 
 	/// Converts the given integer to a rational value.

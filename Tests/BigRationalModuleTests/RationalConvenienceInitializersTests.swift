@@ -82,9 +82,9 @@ struct RationalConvenienceInitializersTests {
 
 	@Test func identityFractionRational() {
 		let tests: [(input: Rational, expectation: Rational)] = [
-			(Rational(7, 8), Rational(Rational(7, 8), Rational(7, 8))),
+			(Rational(7, 8), Rational(numerator: Rational(7, 8), denominator: Rational(7, 8))),
 			(Rational(7, 8), 1),
-			(Rational(-7, 8), Rational(Rational(-7, 8), Rational(-7, 8))),
+			(Rational(-7, 8), Rational(numerator: Rational(-7, 8), denominator: Rational(-7, 8))),
 			(Rational(-7, 8), 1),
 			(.nan, .nan),
 			(.zero, .nan)

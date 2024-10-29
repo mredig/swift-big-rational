@@ -46,7 +46,7 @@ struct HashableTests {
 	@Test func nanHashEqual() throws {
 		let a = Rational.nan.hashValue
 		let b = Rational.nan.hashValue
-		let c = Rational(5, 0, sign: .positive).hashValue
+		let c = Rational.bigUInt(5, 0, sign: .positive).hashValue
 
 		#expect(a == b)
 		#expect(a == c)

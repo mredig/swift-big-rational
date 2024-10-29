@@ -22,8 +22,8 @@ struct EquatableTests {
 			(Rational(12, Rational(5, -6)), Rational(12, Rational(5, -6))),
 			(Rational(-12, Rational(5, 6), reduced: true), Rational(-72, 5)),
 
-			(Rational(Rational(10, 11), Rational(5, -6)), Rational(Rational(10, 11), Rational(5, -6))),
-			(Rational(Rational(10, 11), Rational(5, -6), reduced: true), Rational(-12, 11)),
+			(Rational(numerator: Rational(10, 11), denominator: Rational(5, -6)), Rational(numerator: Rational(10, 11), denominator: Rational(5, -6))),
+			(Rational(numerator: Rational(10, 11), denominator: Rational(5, -6), reduced: true), Rational(-12, 11)),
 		]
 
 		for (input, expectation) in tests {
@@ -39,7 +39,7 @@ struct EquatableTests {
 
 			(Rational(-12, Rational(5, 6)), Rational(-72, 5)),
 
-			(Rational(Rational(10, 11), Rational(5, -6)), Rational(-12, 11)),
+			(Rational(numerator: Rational(10, 11), denominator: Rational(5, -6)), Rational(-12, 11)),
 		]
 
 		for (input, expectation) in tests {
@@ -78,7 +78,7 @@ struct EquatableTests {
 	@Test func nanEqual() throws {
 		let a = Rational.nan
 		let b = Rational.nan
-		let c = Rational(5, 0, sign: .positive)
+		let c = Rational.bigUInt(5, 0, sign: .positive)
 
 		#expect(a == b)
 		#expect(a == c)
