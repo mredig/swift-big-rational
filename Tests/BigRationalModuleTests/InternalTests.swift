@@ -1,3 +1,4 @@
+#if DEBUG
 import Foundation
 import Testing
 @testable import BigRationalModule
@@ -64,3 +65,4 @@ struct InternalTests {
 		#expect(gcd(a, b) == expectation)
 	}
 }
+#endif

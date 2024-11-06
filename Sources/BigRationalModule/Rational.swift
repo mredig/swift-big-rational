@@ -60,7 +60,7 @@ public struct Rational: Sendable, Codable {
 		}
 
 		@inlinable
-		public init<N: SignedInteger>(_ value: N) {
+		public init<N: SignedNumeric & Comparable>(_ value: N) {
 			switch value {
 				case 0:
 					self = .zero
