@@ -34,6 +34,36 @@ extension Rational {
 			self.init(num * bigPower, sign: sign)
 		}
 	}
-}
 
+	public init?<F: BinaryFloatingPoint>(truncating float: F) {
+		guard float.isZero == false else {
+			self = .zero
+			return
+		}
+		guard
+			float.isFinite,
+			float.isSignalingNaN == false,
+			float.isNaN == false
+		else { return nil }
+
+		let sigCount = F.significandBitCount
+		let significandBits = float.significandBitPattern + (1 << sigCount)
+		let exponent = Int(float.exponent) - sigCount
+
+		let multiplier: Rational = {
+			guard exponent < 0 else {
+				return Rational(exactly: BigUInt(2).power(exponent))
+			}
+			let firstStep = Rational(exactly: BigUInt(2).power(abs(exponent)))
+			return Rational(1, firstStep)
+		}()
+
+		let significand = Rational(exactly: significandBits)
+
+		self = significand * multiplier
+		if float.sign == .minus {
+			self *= -1
+		}
+	}
+}
 #endif
