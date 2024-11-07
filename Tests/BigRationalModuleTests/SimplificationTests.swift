@@ -16,8 +16,8 @@ struct SimplificationTests {
 	@Test(arguments: [
 		Rational(numerator: Rational(2), denominator: Rational(5)),
 		Rational(numerator: (-3), denominator: (10)),
-		Rational(Rational(2), 7),
-		Rational(7, Rational(2)),
+		Rational(Rational(2), big: 7),
+		Rational(big: 7, Rational(2)),
 	])
 	func isNotSimplified(_ value: Rational) throws {
 		#expect(value.isSimplified == false)
@@ -31,7 +31,7 @@ struct SimplificationTests {
 			),
 			(Rational(1, 2), Rational(1, 2)),
 			(
-				Rational(Rational(3, 4), 4),
+				Rational(Rational(3, 4), big: 4),
 				Rational(3, 16)
 			),
 			(
@@ -40,7 +40,7 @@ struct SimplificationTests {
 			),
 			(Rational(14, 49), Rational(14, 49)),
 			(
-				Rational(Rational(-12, 16), 2),
+				Rational(Rational(-12, 16), big: 2),
 				Rational(-12, 32)
 			),
 			(
@@ -56,7 +56,7 @@ struct SimplificationTests {
 				Rational(-162, 162)
 			),
 			(
-				Rational(Rational(50, -75), 2),
+				Rational(Rational(50, -75), big: 2),
 				Rational(-50, 150)
 			),
 			(
@@ -73,8 +73,8 @@ struct SimplificationTests {
 			),
 			(
 				Rational(
-					numerator: Rational(-8, Rational(
-						Rational(2, -4), 3) // 2/-12
+					numerator: Rational(big: -8, Rational(
+						Rational(2, -4), big: 3) // 2/-12
 					), // 96/2
 					denominator: Rational(2, 1) // 96/4
 				),
@@ -84,7 +84,7 @@ struct SimplificationTests {
 				Rational(
 					numerator: Rational(
 						numerator: Rational(-5, 10),
-						denominator: Rational(Rational(1, 3), 4) // 1/12
+						denominator: Rational(Rational(1, 3), big: 4) // 1/12
 					), // -60/10
 					denominator: Rational(1, 2) // -120/10
 				),
@@ -93,7 +93,7 @@ struct SimplificationTests {
 			(
 				Rational(
 					numerator: Rational(
-						8,
+						big: 8,
 						Rational(numerator: Rational(-4, 3), denominator: Rational(-2, 4)) // -16/-6
 					), // 48/16
 					denominator: Rational(-2, 1) // 48/-32
@@ -102,9 +102,9 @@ struct SimplificationTests {
 			),
 			(
 				Rational(
-					numerator: Rational(9, Rational(
-						Rational(-3, Rational(-27, 9)), // -27/-27
-						2) // 27/54
+					numerator: Rational(big: 9, Rational(
+						Rational(big: -3, Rational(-27, 9)), // -27/-27
+						big: 2) // 27/54
 					), // 486/27
 					denominator: Rational(3, -1) // 486/-81
 				),
@@ -125,7 +125,7 @@ struct SimplificationTests {
 			),
 			(Rational(1, 2), Rational(1, 2)),
 			(
-				Rational(Rational(3, 4), 4),
+				Rational(Rational(3, 4), big: 4),
 				Rational(3, 16)
 			),
 			(
@@ -134,7 +134,7 @@ struct SimplificationTests {
 			),
 			(Rational(14, 49), Rational(2, 7)),
 			(
-				Rational(Rational(-12, 16), 2),
+				Rational(Rational(-12, 16), big: 2),
 				Rational(-3, 8)
 			),
 			(
@@ -150,7 +150,7 @@ struct SimplificationTests {
 				Rational(-1)
 			),
 			(
-				Rational(Rational(50, -75), 2),
+				Rational(Rational(50, -75), big: 2),
 				Rational(-1, 3)
 			),
 			(
@@ -166,8 +166,8 @@ struct SimplificationTests {
 			),
 			(
 				Rational(
-					numerator: Rational(-8, Rational(
-						Rational(2, -4), 3) // 2/-12
+					numerator: Rational(big: -8, Rational(
+						Rational(2, -4), big: 3) // 2/-12
 					), // 96/2
 					denominator: Rational(2, 1) // 96/4
 				),
@@ -177,7 +177,7 @@ struct SimplificationTests {
 				Rational(
 					numerator: Rational(
 						numerator: Rational(-5, 10),
-						denominator: Rational(Rational(1, 3), 4) // 1/12
+						denominator: Rational(Rational(1, 3), big: 4) // 1/12
 					), // -60/10
 					denominator: Rational(1, 2) // -120/10
 				),
@@ -186,7 +186,7 @@ struct SimplificationTests {
 			(
 				Rational(
 					numerator: Rational(
-						8,
+						big: 8,
 						Rational(numerator: Rational(-4, 3), denominator: Rational(-2, 4)) // -16/-6
 					), // 48/16
 					denominator: Rational(-2, 1) // 48/-32
@@ -195,9 +195,9 @@ struct SimplificationTests {
 			),
 			(
 				Rational(
-					numerator: Rational(9, Rational(
-						Rational(-3, Rational(-27, 9)), // -27/-27
-						2) // 27/54
+					numerator: Rational(big: 9, Rational(
+						Rational(big: -3, Rational(-27, 9)), // -27/-27
+						big: 2) // 27/54
 					), // 486/27
 					denominator: Rational(3, -1) // 486/-81
 				),

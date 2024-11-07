@@ -50,7 +50,7 @@ extension Rational {
 				return Rational(exactly: BigUInt(2).power(exponent))
 			}
 			let firstStep = Rational(exactly: BigUInt(2).power(abs(exponent)))
-			return Rational(1, firstStep)
+			return Rational(big: 1, firstStep)
 		}()
 
 		let significand = Rational(exactly: significandBits)

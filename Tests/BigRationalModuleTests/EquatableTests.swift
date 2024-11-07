@@ -16,11 +16,11 @@ struct EquatableTests {
 			(Rational(1, 12), Rational(1, 12)),
 			(Rational(2, 24, reduced: true), Rational(1, 12)),
 
-			(Rational(Rational(5, 6), 12), Rational(Rational(5, 6), 12)),
-			(Rational(Rational(5, 6), 12, reduced: true), Rational(5, 72)),
+			(Rational(Rational(5, 6), big: 12), Rational(Rational(5, 6), big: 12)),
+			(Rational(Rational(5, 6), big: 12, reduced: true), Rational(5, 72)),
 
-			(Rational(12, Rational(5, -6)), Rational(12, Rational(5, -6))),
-			(Rational(-12, Rational(5, 6), reduced: true), Rational(-72, 5)),
+			(Rational(big: 12, Rational(5, -6)), Rational(big: 12, Rational(5, -6))),
+			(Rational(big: -12, Rational(5, 6), reduced: true), Rational(-72, 5)),
 
 			(Rational(numerator: Rational(10, 11), denominator: Rational(5, -6)), Rational(numerator: Rational(10, 11), denominator: Rational(5, -6))),
 			(Rational(numerator: Rational(10, 11), denominator: Rational(5, -6), reduced: true), Rational(-12, 11)),
@@ -35,9 +35,9 @@ struct EquatableTests {
 		let tests: [(Rational, Rational)] = [
 			(Rational(2, 24), Rational(1, 12)),
 
-			(Rational(Rational(5, 6), 12), Rational(5, 72)),
+			(Rational(Rational(5, 6), big: 12), Rational(5, 72)),
 
-			(Rational(-12, Rational(5, 6)), Rational(-72, 5)),
+			(Rational(big: -12, Rational(5, 6)), Rational(-72, 5)),
 
 			(Rational(numerator: Rational(10, 11), denominator: Rational(5, -6)), Rational(-12, 11)),
 		]

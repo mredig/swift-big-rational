@@ -60,7 +60,7 @@ struct StringConvertibleTests {
 			),
 			(Rational(1, 2), "1/2"),
 			(
-				Rational(Rational(3, 4), 4),
+				Rational(Rational(3, 4), big: 4),
 				"(3/4)/4"
 			),
 			(
@@ -69,7 +69,7 @@ struct StringConvertibleTests {
 			),
 			(Rational(14, 49), "14/49"),
 			(
-				Rational(Rational(-12, 16), 2),
+				Rational(Rational(-12, 16), big: 2),
 				"(-12/16)/2"
 			),
 			(
@@ -85,7 +85,7 @@ struct StringConvertibleTests {
 				"(18/27)/(-6/9)"
 			),
 			(
-				Rational(Rational(50, -75), 2),
+				Rational(Rational(50, -75), big: 2),
 				"(-50/75)/2"
 			),
 			(
@@ -101,8 +101,8 @@ struct StringConvertibleTests {
 			),
 			(
 				Rational(
-					numerator: Rational(-8, Rational(
-						Rational(2, -4), 3) // 2/-12
+					numerator: Rational(big: -8, Rational(
+						Rational(2, -4), big: 3) // 2/-12
 					), // 96/2
 					denominator: Rational(2, 1) // 96/4
 				),
@@ -112,7 +112,7 @@ struct StringConvertibleTests {
 				Rational(
 					numerator: Rational(
 						numerator: Rational(-5, 10),
-						denominator: Rational(Rational(1, 3), 4) // 1/12
+						denominator: Rational(Rational(1, 3), big: 4) // 1/12
 					), // -60/10
 					denominator: Rational(1, 2) // -120/10
 				),
@@ -121,7 +121,7 @@ struct StringConvertibleTests {
 			(
 				Rational(
 					numerator: Rational(
-						8,
+						big: 8,
 						Rational(numerator: Rational(-4, 3), denominator: Rational(-2, 4)) // -16/-6
 					), // 48/16
 					denominator: Rational(-2, 1) // 48/-32
@@ -130,9 +130,9 @@ struct StringConvertibleTests {
 			),
 			(
 				Rational(
-					numerator: Rational(9, Rational(
-						Rational(-3, Rational(-27, 9)), // -27/-27
-						2) // 27/54
+					numerator: Rational(big: 9, Rational(
+						Rational(big: -3, Rational(-27, 9)), // -27/-27
+						big: 2) // 27/54
 					), // 486/27
 					denominator: Rational(3, -1) // 486/-81
 				),

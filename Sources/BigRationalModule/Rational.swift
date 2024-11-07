@@ -168,7 +168,7 @@ extension Rational {
 	}
 
 	@inlinable
-	public init(_ numerator: BigInt, _ denominator: Rational, reduced: Bool = false) {
+	public init(big numerator: BigInt, _ denominator: Rational, reduced: Bool = false) {
 		let sign = Sign(numerator)
 		let numerator = numerator.magnitude
 		self.init(numerator: .bigUInt(numerator), denominator: .rational(denominator), sign: sign)
@@ -177,7 +177,7 @@ extension Rational {
 	}
 
 	@inlinable
-	public init(_ numerator: Rational, _ denominator: BigInt, reduced: Bool = false) {
+	public init(_ numerator: Rational, big denominator: BigInt, reduced: Bool = false) {
 		let sign = Sign(denominator)
 		let denominator = denominator.magnitude
 		self.init(numerator: .rational(numerator), denominator: .bigUInt(denominator), sign: sign)

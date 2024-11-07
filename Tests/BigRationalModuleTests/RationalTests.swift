@@ -499,7 +499,7 @@ struct RationalTests {
 	@Test(arguments: [
 		(Rational(
 			numerator: Rational(
-				8,
+				big: 8,
 				Rational(numerator: Rational(-4, 3), denominator: Rational(-2, 4))
 			),
 			denominator: Rational(-2, 1)),
