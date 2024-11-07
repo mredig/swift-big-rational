@@ -8,7 +8,7 @@ extension Rational: Equatable {
 			rhs.isNaN == false
 		else { return false }
 		func reducedEqual(lhs: Self, rhs: Self) -> Bool {
-			lhs.numerator == rhs.numerator && lhs.denominator == rhs.denominator && lhs.sign == rhs.sign
+			lhs.sign == rhs.sign && lhs.numerator == rhs.numerator && lhs.denominator == rhs.denominator
 		}
 
 		let a = lhs.reduced
