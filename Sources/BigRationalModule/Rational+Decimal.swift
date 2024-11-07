@@ -21,17 +21,12 @@ extension Rational {
 
 		if decPlace > 0 {
 			// fraction
-			guard
-				let den = BigUInt(exactly: pow(10, decPlace))
-			else { return nil }
+			let den = BigUInt(10).power(decPlace)
 			self.init(numerator: .bigUInt(num), denominator: .bigUInt(den), sign: sign)
 		} else {
 			// whole
-			let power = pow(10, decimal.exponent)
-			guard
-				let bigPower = BigUInt(exactly: power)
-			else { return nil }
-			self.init(num * bigPower, sign: sign)
+			let bigPower = BigUInt(10).power(abs(decPlace))
+			self.init(big: num * bigPower, sign: sign)
 		}
 	}
 
