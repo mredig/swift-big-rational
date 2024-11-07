@@ -46,4 +46,30 @@ struct FloatTests {
 	func initFromDouble(_ value: Double, _ expectation: Rational) throws {
 		#expect(Rational(truncating: value)!.reduced === expectation)
 	}
+
+	@Test(arguments: [
+		( Float.zero, Rational.zero ),
+		( Float(1), Rational(1) ),
+		( Float(-1), Rational(-1) ),
+		( Float(1.25), Rational(5, 4) ),
+		( Float(-1.25), Rational(-5, 4) ),
+		( Float.greatestFiniteMagnitude, Rational(big: BigInt(Float.greatestFiniteMagnitude)) ),
+		( Float.leastNormalMagnitude, Rational("1/85070591730234615865843651857942052864")! ),
+	])
+	func initFromFloat(_ value: Float, _ expectation: Rational) throws {
+		#expect(Rational(truncating: value)!.reduced === expectation)
+	}
+
+	@Test(arguments: [
+		( Float16.zero, Rational.zero ),
+		( Float16(1), Rational(1) ),
+		( Float16(-1), Rational(-1) ),
+		( Float16(1.25), Rational(5, 4) ),
+		( Float16(-1.25), Rational(-5, 4) ),
+		( Float16.greatestFiniteMagnitude, Rational(big: BigInt(Float16.greatestFiniteMagnitude)) ),
+		( Float16.leastNormalMagnitude, Rational("1/16384")! ),
+	])
+	func initFromFloat16(_ value: Float16, _ expectation: Rational) throws {
+		#expect(Rational(truncating: value)!.reduced === expectation)
+	}
 }
