@@ -16,9 +16,13 @@ let package = Package(
 			url: "https://github.com/apple/swift-numerics",
 			from: "1.0.0"
 		),
+//		.package(
+//			url: "https://github.com/attaswift/BigInt.git",
+//			.upToNextMajor(from: "5.5.0")
+//		),
 		.package(
-			url: "https://github.com/attaswift/BigInt.git",
-			.upToNextMajor(from: "5.5.0")
+			url: "https://github.com/mredig/BigInt.git",
+			branch: "decimal-perf"
 		),
 	],
 	targets: [
