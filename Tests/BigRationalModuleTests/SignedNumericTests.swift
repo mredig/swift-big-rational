@@ -258,21 +258,21 @@ struct SignedNumericTests {
 	}
 
 	@Test func testMultiplyInPlace() throws {
-		var value = Rational(1234, sign: .positive)
+		var value = Rational(big: 1234, sign: .positive)
 		value *= 2
 
 		#expect(value == Rational(2468))
 	}
 
 	@Test func testUnsignedMultiplyInPlace() throws {
-		var value = Rational(1234, sign: .positive)
+		var value = Rational(big: 1234, sign: .positive)
 		value *= UInt(2)
 
 		#expect(value == Rational(2468))
 	}
 
 	@Test func testSignedMultiplyInPlace() throws {
-		var value = Rational(1234, sign: .positive)
+		var value = Rational(big: 1234, sign: .positive)
 		value *= Int(-2)
 
 		#expect(value == -Rational(2468))
@@ -319,21 +319,21 @@ struct SignedNumericTests {
 	}
 
 	@Test func testDivideInPlace() throws {
-		var value = Rational(1234, sign: .positive)
+		var value = Rational(big: 1234, sign: .positive)
 		value /= 2
 
 		#expect(value == Rational(617))
 	}
 
 	@Test func testUnsignedDivideInPlace() throws {
-		var value = Rational(1234, sign: .positive)
+		var value = Rational(big: 1234, sign: .positive)
 		value /= UInt(2)
 
 		#expect(value == Rational(617))
 	}
 
 	@Test func testSignedDivideInPlace() throws {
-		var value = Rational(1234, sign: .positive)
+		var value = Rational(big: 1234, sign: .positive)
 		value /= Int(-2)
 
 		#expect(value == -Rational(617))

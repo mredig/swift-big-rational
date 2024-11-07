@@ -262,7 +262,7 @@ extension Rational {
 			let simple = topRational * Rational.oneOver(intVal) * sign.rawValue
 			return simple.simplifiedValues
 		case (.bigUInt(let bigUInt), .rational(let bottomRational)):
-			let simple = Rational(bigUInt, sign: .positive) * bottomRational.getReciprocal() * sign.rawValue
+			let simple = Rational(big: bigUInt, sign: .positive) * bottomRational.getReciprocal() * sign.rawValue
 			return simple.simplifiedValues
 		case (.rational(let topRational), .rational(let bottomRational)):
 			let simple = topRational * bottomRational.getReciprocal() * sign.rawValue

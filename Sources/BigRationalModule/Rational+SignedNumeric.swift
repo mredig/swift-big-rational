@@ -20,7 +20,7 @@ extension Rational: SignedNumeric {
 	@inlinable
 	public init(exactly source: some BinaryInteger) {
 		let value = BigInt(source)
-		self.init(value)
+		self.init(big: value)
 	}
 
 	@inlinable

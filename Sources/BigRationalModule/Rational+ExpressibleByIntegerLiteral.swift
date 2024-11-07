@@ -13,7 +13,7 @@ extension Rational {
 	/// Equivalent to creating a rational value with numerator
 	/// equal to `value` and denominator `1
 	@inlinable
-	public init(_ value: BigInt) {
+	public init(big value: BigInt) {
 		self.init(autoSign: value, denominator: 1)
 	}
 
@@ -22,7 +22,7 @@ extension Rational {
 	/// Equivalent to creating a rational value with numerator
 	/// equal to `value` and denominator `1`.
 	@inlinable
-	public init(_ value: BigUInt, sign: Sign) {
+	public init(big value: BigUInt, sign: Sign) {
 		self.init(numerator: BigInt(value), denominator: 1, sign: sign)
 	}
 }

@@ -4,7 +4,7 @@ extension Rational: AdditiveArithmetic {
 	/// The additive identity, with numerator `1` and denominator `0`.
 	@inlinable
 	public static var zero: Self {
-		Self(0 as BigInt)
+		Self(big: 0)
 	}
 
 	@inlinable

@@ -119,11 +119,11 @@ extension Rational.Storage: Comparable {
 		case (.bigUInt(let lValue), .bigUInt(let rValue)):
 			return lValue < rValue
 		case (.bigUInt(let a), .rational(let b)):
-			leftRat = Rational(a, sign: .positive)
+			leftRat = Rational(big: a, sign: .positive)
 			rightRat = b
 		case (.rational(let a), .bigUInt(let b)):
 			leftRat = a
-			rightRat = Rational(b, sign: .positive)
+			rightRat = Rational(big: b, sign: .positive)
 		case (.rational(let lRat), .rational(let rRat)):
 			leftRat = lRat
 			rightRat = rRat

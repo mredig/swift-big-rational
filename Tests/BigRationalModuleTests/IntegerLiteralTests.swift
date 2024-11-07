@@ -11,12 +11,12 @@ struct IntegerLiteralTests {
 	}
 
 	@Test func initFromBigUInt() throws {
-		let new = Rational(BigUInt(1234), sign: .positive)
+		let new = Rational(big: 1234, sign: .positive)
 		#expect(new == Rational.bigUInt(1234, 1, sign: .positive))
 	}
 
 	@Test func initNegativeFromBigUInt() throws {
-		let new = Rational(BigUInt(1234), sign: .negative)
+		let new = Rational(big: 1234, sign: .negative)
 		#expect(new == Rational.bigUInt(1234, 1, sign: .negative))
 	}
 
