@@ -4,7 +4,7 @@ import BigInt
 import Foundation
 
 struct IntegerLiteralTests {
-	@Test func test_literal_2_returns_2_over_1() throws {
+	@Test func literal2Returns2Over1() throws {
 		let r: Rational = 2
 		#expect(r.numerator == 2)
 		#expect(r.denominator == 1)
@@ -54,7 +54,7 @@ struct IntegerLiteralTests {
 			print("significand: \(value.significand)")
 			print("ulp: \(value.ulp)")
 			print("decimalCount: \(decimalCount(for: value))")
-//
+
 //			let base = Rational(BigInt((value.significand as NSNumber).intValue))
 //			let ulppy = pow(10, -(value.exponent))
 //			let mult = Rational.oneOver(BigInt((ulppy as NSNumber).intValue))
