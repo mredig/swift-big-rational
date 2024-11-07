@@ -3,9 +3,9 @@ import BigInt
 import BigRationalModule
 
 struct RationalStorageTests {
-	@Test func bigIntIsZero() throws {
-		let bigIntZero = Rational.Storage.bigUInt(BigUInt(0))
-		#expect(bigIntZero.isZero)
+	@Test func bigUIntIsZero() throws {
+		let bigUIntZero = Rational.Storage.bigUInt(BigUInt(0))
+		#expect(bigUIntZero.isZero)
 	}
 
 	@Test func rationalIsZero() throws {
@@ -13,9 +13,14 @@ struct RationalStorageTests {
 		#expect(rationalZero.isZero)
 	}
 
-	@Test func bigIntIsNotZero() throws {
-		let bigIntNonZero = Rational.Storage.bigUInt(BigUInt(1))
-		#expect(!bigIntNonZero.isZero)
+	@Test func bigUIntIsNotZero() throws {
+		let bigUIntNonZero = Rational.Storage.bigUInt(BigUInt(1))
+		#expect(!bigUIntNonZero.isZero)
+	}
+
+	@Test func bigIntMustBeGreaterThanZero() throws {
+		let willBeNull = Rational.Storage.bigInt(BigInt(-1))
+		#expect(willBeNull == nil)
 	}
 
 	@Test func rationalIsNotZero() throws {
@@ -33,20 +38,10 @@ struct RationalStorageTests {
 		#expect(rationalPositive.isPositive)
 	}
 
-//	@Test func bigIntIsNotPositive() throws {
-//		let bigIntNegative = Rational.Storage.bigUInt(BigUInt(-1))
-//		#expect(!bigIntNegative.isPositive)
-//	}
-
 	@Test func rationalIsNotPositive() throws {
 		let rationalNegative = Rational.Storage.rational(Rational(-1, 2))
 		#expect(!rationalNegative.isPositive)
 	}
-
-//	@Test func bigIntIsNegative() throws {
-//		let bigIntNegative = Rational.Storage.bigUInt(BigUInt(-3))
-//		#expect(bigIntNegative.isNegative)
-//	}
 
 	@Test func rationalIsNegative() throws {
 		let rationalNegative = Rational.Storage.rational(Rational(-5, 7))
@@ -138,6 +133,13 @@ struct RationalStorageTests {
 		let rationalHashValue = Rational.Storage.rational(Rational(5, 2)).hashValue
 
 		#expect(bigIntHashValue != rationalHashValue)
+	}
+
+	@Test func optionalNilIsNotEqualToInt() throws {
+		let opt: Rational.Storage? = nil
+		let int = 5
+
+		#expect(opt != 5)
 	}
 
 	@Test func compareWrappedBigInts() throws {

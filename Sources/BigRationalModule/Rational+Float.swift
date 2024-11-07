@@ -29,7 +29,10 @@ extension Rational {
 			self.init(big: num * bigPower, sign: sign)
 		}
 	}
+}
+#endif
 
+extension Rational {
 	public init?<F: BinaryFloatingPoint>(truncating float: F) {
 		guard float.isZero == false else {
 			self = .zero
@@ -61,4 +64,3 @@ extension Rational {
 		}
 	}
 }
-#endif

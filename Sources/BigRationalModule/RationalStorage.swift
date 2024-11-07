@@ -70,20 +70,6 @@ extension Rational.Storage: Hashable {
 		}
 	}
 
-	public static func === (lhs: Self, rhs: Self) -> Bool {
-		switch (lhs, rhs) {
-		case (.bigUInt(let lValue), .bigUInt(let rValue)):
-			lValue == rValue
-		case (.rational(let lRat), .rational(let rRat)):
-			lRat === rRat
-		default: false
-		}
-	}
-
-	public static func !== (lhs: Self, rhs: Self) -> Bool {
-		!(lhs === rhs)
-	}
-
 	public static func == (lhs: Self, rhs: BigInt) -> Bool {
 		lhs == .bigInt(rhs)
 	}
@@ -108,6 +94,24 @@ extension Rational.Storage: Hashable {
 
 	public static func == <I: FixedWidthInteger>(lhs: Self, rhs: I) -> Bool {
 		lhs == BigInt(rhs)
+	}
+}
+
+extension Optional where Wrapped == Rational.Storage {
+	public static func === (lhs: Self, rhs: Self) -> Bool {
+		switch (lhs, rhs) {
+		case (.bigUInt(let lValue), .bigUInt(let rValue)):
+			lValue == rValue
+		case (.rational(let lRat), .rational(let rRat)):
+			lRat === rRat
+		case (.none, .none):
+			true
+		default: false
+		}
+	}
+
+	public static func !== (lhs: Self, rhs: Self) -> Bool {
+		!(lhs === rhs)
 	}
 }
 

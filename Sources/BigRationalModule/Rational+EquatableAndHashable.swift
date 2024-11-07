@@ -15,11 +15,13 @@ extension Rational: Equatable {
 		let b = rhs.reduced
 		return reducedEqual(lhs: a, rhs: b)
 	}
+}
 
+extension Optional where Wrapped == Rational {
 	@inlinable
 	public static func === (lhs: Self, rhs: Self) -> Bool {
-		guard lhs.sign == rhs.sign else { return false }
-		return lhs.numerator === rhs.numerator && lhs.denominator === rhs.denominator
+		guard lhs?.sign == rhs?.sign else { return false }
+		return lhs?.numerator === rhs?.numerator && lhs?.denominator === rhs?.denominator
 	}
 
 	@inlinable
