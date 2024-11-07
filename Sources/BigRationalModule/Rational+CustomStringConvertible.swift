@@ -17,7 +17,7 @@ extension Rational: CustomStringConvertible {
 			else { return "" }
 			return "\(sign)"
 		}()
-		if isInteger && isSimplified && asChild == false {
+		if denominator == .bigUInt(1) && isInteger && isSimplified && asChild == false {
 			return base + "\(numerator)"
 		} else {
 			return base + "\(numerator)/\(denominator)"
