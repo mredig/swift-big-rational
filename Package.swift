@@ -22,7 +22,7 @@ let package = Package(
 //		),
 		.package(
 			url: "https://github.com/mredig/BigInt.git",
-			branch: "decimal-perf"
+			branch: "decimal-perf2"
 		),
 	],
 	targets: [

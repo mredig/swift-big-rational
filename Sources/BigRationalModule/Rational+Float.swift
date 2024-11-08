@@ -63,4 +63,37 @@ extension Rational {
 			self *= -1
 		}
 	}
+
+	public func doubleValue() -> Double {
+		let (quotient, remainder) = quotientAndRemainder
+
+		let biggestDouble = BigUInt(Double.greatestFiniteMagnitude)
+		let biggestDoubleRational = Rational(big: biggestDouble, sign: .positive)
+		let smallestDoubleRational = Rational(big: biggestDouble, sign: .negative)
+
+		guard Rational(big: quotient) < biggestDoubleRational else {
+			return .greatestFiniteMagnitude
+		}
+		guard Rational(big: quotient) > smallestDoubleRational else {
+			return -.greatestFiniteMagnitude
+		}
+
+		let remaining = Rational(
+			numerator: .bigUInt(remainder.magnitude),
+			   denominator: simplified.denominator,
+			   sign: Sign(remainder))
+		   .reduced
+		let simplifiedRemaining = {
+			let simpleValues = remaining.simplifiedValues
+			let doubleGreatest = BigUInt(Double.greatestFiniteMagnitude)
+			guard simpleValues.denominator <= doubleGreatest else {
+				return remaining.limitDenominator(to: doubleGreatest).simplifiedValues
+			}
+			return simpleValues
+		}()
+
+		let doubleNumerator = Double(BigInt(simplifiedRemaining.numerator) * simplifiedRemaining.sign.rawValue)
+		let doubleDenominator = Double(simplifiedRemaining.denominator)
+		return (doubleNumerator / doubleDenominator) + Double(quotient)
+	}
 }

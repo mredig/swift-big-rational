@@ -42,6 +42,7 @@ struct FloatTests {
 		( Double(-1), Rational(-1) ),
 		( Double(1.25), Rational(5, 4) ),
 		( Double(-1.25), Rational(-5, 4) ),
+		( Double(bitPattern: 0x3ff4000000000001), Rational(5629499534213121, 4503599627370496)),
 		( Double.greatestFiniteMagnitude, Rational(big: BigInt(Double.greatestFiniteMagnitude)) ),
 		( Double.leastNormalMagnitude, Rational(BigInt(1), BigInt("44942328371557897693232629769725618340449424473557664318357520289433168951375240783177119330601884005280028469967848339414697442203604155623211857659868531094441973356216371319075554900311523529863270738021251442209537670585615720368478277635206809290837627671146574559986811484619929076208839082406056034304")) ),
 	])
@@ -75,5 +76,25 @@ struct FloatTests {
 	])
 	func initFromFloat16(_ value: Float16, _ expectation: Rational?) throws {
 		#expect(Rational(truncating: value)?.reduced === expectation)
+	}
+
+	@Test(arguments: [
+		( Rational.zero, Double.zero ),
+		( Rational(1), Double(1) ),
+		( Rational(-1), Double(-1) ),
+		( Rational(5, 4), Double(1.25) ),
+		( Rational(-5, 4), Double(-1.25) ),
+		( Rational(125, 4), Double(31.25) ),
+		( Rational((BigInt(5629499534213121) * 10000) + 1, BigInt(4503599627370496) * 10000), Double(bitPattern: 0x3ff4000000000001)),
+		( Rational((BigInt(5629499534213121) * BigInt(10).power(309)) + 1, BigInt(4503599627370496) * BigInt(10).power(309)), Double(bitPattern: 0x3ff4000000000001)),
+		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 3, BigInt(exactly: Decimal.greatestFiniteMagnitude)!), Double(3) ),
+		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 5, BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 4), Double(1.25) ),
+		( Rational((BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 5) + 1, BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 4), Double(1.25) ),
+		( Rational(big: BigInt(Double.greatestFiniteMagnitude)), Double.greatestFiniteMagnitude ),
+		( Rational(big: BigInt(-Double.greatestFiniteMagnitude)), -Double.greatestFiniteMagnitude ),
+		( Rational(BigInt(1), BigInt("44942328371557897693232629769725618340449424473557664318357520289433168951375240783177119330601884005280028469967848339414697442203604155623211857659868531094441973356216371319075554900311523529863270738021251442209537670585615720368478277635206809290837627671146574559986811484619929076208839082406056034304")), Double.leastNormalMagnitude ),
+	])
+	func toDouble(_ value: Rational, _ expectation: Double) throws {
+		#expect(value.doubleValue() == expectation)
 	}
 }

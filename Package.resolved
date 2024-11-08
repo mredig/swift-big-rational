@@ -1,13 +1,13 @@
 {
-  "originHash" : "856f6d3ba1b52a28e279839d70964166866980d67b908481048e70477643b69d",
+  "originHash" : "cd8d19bdb55976b9db20cb762f0b11fdde3c2f56978daafed6e9cb8906ee5b5b",
   "pins" : [
     {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mredig/BigInt.git",
       "state" : {
-        "branch" : "decimal-perf",
-        "revision" : "75c319c98dbbb425cb144569cadfd4be3061adfb"
+        "branch" : "decimal-perf2",
+        "revision" : "871e9c779e7d4f239e358c06ff2df70e925ebab1"
       }
     },
     {
