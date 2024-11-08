@@ -97,3 +97,9 @@ extension Rational {
 		return (doubleNumerator / doubleDenominator) + Double(quotient)
 	}
 }
+
+public extension BinaryFloatingPoint {
+	init(_ value: Rational) {
+		self = Self(value.doubleValue())
+	}
+}

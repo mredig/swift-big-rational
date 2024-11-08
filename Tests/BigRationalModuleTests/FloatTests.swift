@@ -97,4 +97,25 @@ struct FloatTests {
 	func toDouble(_ value: Rational, _ expectation: Double) throws {
 		#expect(value.doubleValue() == expectation)
 	}
+
+	@Test(arguments: [
+		( Rational.zero, Float.zero ),
+		( Rational(1), Float(1) ),
+		( Rational(-1), Float(-1) ),
+		( Rational(5, 4), Float(1.25) ),
+		( Rational(-5, 4), Float(-1.25) ),
+		( Rational(125, 4), Float(31.25) ),
+		( Rational((BigInt(10485761) * 10000) + 1, BigInt(8388608) * 10000), Float(bitPattern: 0x3fa00001)),
+		( Rational((BigInt(10485761) * BigInt(10).power(309)) + 1, BigInt(8388608) * BigInt(10).power(309)), Float(bitPattern: 0x3fa00001)),
+		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 3, BigInt(exactly: Decimal.greatestFiniteMagnitude)!), Float(3) ),
+		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 5, BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 4), Float(1.25) ),
+		( Rational((BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 5) + 1, BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 4), Float(1.25) ),
+		( Rational(big: BigInt(Float.greatestFiniteMagnitude)), Float.greatestFiniteMagnitude ),
+		( Rational(big: BigInt(-Float.greatestFiniteMagnitude)), -Float.greatestFiniteMagnitude ),
+		( Rational(BigInt(1), BigInt("85070591730234615865843651857942052864")), Float.leastNormalMagnitude ),
+	])
+	func toFloat(_ value: Rational, _ expectation: Float) throws {
+		#expect(Float(value) == expectation)
+	}
+
 }
