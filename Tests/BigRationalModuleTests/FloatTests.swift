@@ -85,6 +85,7 @@ struct FloatTests {
 		( Rational(5, 4), Double(1.25) ),
 		( Rational(-5, 4), Double(-1.25) ),
 		( Rational(125, 4), Double(31.25) ),
+		( Rational(BigInt("314159265358979323846264338327950288419"), "100000000000000000000000000000000000000"), .pi ),
 		( Rational((BigInt(5629499534213121) * 10000) + 1, BigInt(4503599627370496) * 10000), Double(bitPattern: 0x3ff4000000000001)),
 		( Rational((BigInt(5629499534213121) * BigInt(10).power(309)) + 1, BigInt(4503599627370496) * BigInt(10).power(309)), Double(bitPattern: 0x3ff4000000000001)),
 		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 3, BigInt(exactly: Decimal.greatestFiniteMagnitude)!), Double(3) ),
@@ -118,4 +119,22 @@ struct FloatTests {
 		#expect(Float(value) == expectation)
 	}
 
+	@Test(arguments: [
+		( Rational.zero, Decimal.zero ),
+		( Rational(1), Decimal(1) ),
+		( Rational(-1), Decimal(-1) ),
+		( Rational(5, 4), Decimal(1.25) ),
+		( Rational(-5, 4), Decimal(-1.25) ),
+		( Rational(125, 4), Decimal(31.25) ),
+		( Rational(BigInt("314159265358979323846264338327950288419"), "100000000000000000000000000000000000000"), .pi ),
+		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 3, BigInt(exactly: Decimal.greatestFiniteMagnitude)!), Decimal(3) ),
+		( Rational(BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 5, BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 4), Decimal(1.25) ),
+		( Rational((BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 5) + 1, BigInt(exactly: Decimal.greatestFiniteMagnitude)! * 4), Decimal(string: "1.24999999999999999999999999999999999999")! ),
+		( Rational(big: BigInt(exactly: Decimal.greatestFiniteMagnitude)!), Decimal.greatestFiniteMagnitude ),
+		( Rational(big: BigInt(exactly: -Decimal.greatestFiniteMagnitude)!), -Decimal.greatestFiniteMagnitude ),
+		( Rational(BigInt(1), BigInt("1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")), Decimal(string: "0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001")! ),
+	])
+	func toDecimal(_ value: Rational, _ expectation: Decimal) throws {
+		#expect(Decimal(value) == expectation)
+	}
 }

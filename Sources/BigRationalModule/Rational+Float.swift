@@ -96,10 +96,48 @@ extension Rational {
 		let doubleDenominator = Double(simplifiedRemaining.denominator)
 		return (doubleNumerator / doubleDenominator) + Double(quotient)
 	}
+
+	public func decimalValue() -> Decimal {
+		let (quotient, remainder) = quotientAndRemainder
+
+		let biggestDecimal = BigUInt(exactly: Decimal.greatestFiniteMagnitude)!
+		let biggestDecimalRational = Rational(big: biggestDecimal, sign: .positive)
+		let smallestDecimalRational = Rational(big: biggestDecimal, sign: .negative)
+
+		guard Rational(big: quotient) < biggestDecimalRational else {
+			return .greatestFiniteMagnitude
+		}
+		guard Rational(big: quotient) > smallestDecimalRational else {
+			return -.greatestFiniteMagnitude
+		}
+
+		let remaining = Rational(
+			numerator: .bigUInt(remainder.magnitude),
+			   denominator: simplified.denominator,
+			   sign: Sign(remainder))
+		   .reduced
+		let simplifiedRemaining = {
+			let simpleValues = remaining.simplifiedValues
+			guard simpleValues.denominator <= biggestDecimal else {
+				return remaining.limitDenominator(to: biggestDecimal).simplifiedValues
+			}
+			return simpleValues
+		}()
+
+		let decimalNumerator = Decimal(BigInt(simplifiedRemaining.numerator) * simplifiedRemaining.sign.rawValue)
+		let decimalDenominator = Decimal(simplifiedRemaining.denominator)
+		return (decimalNumerator / decimalDenominator) + Decimal(quotient)
+	}
 }
 
 public extension BinaryFloatingPoint {
 	init(_ value: Rational) {
 		self = Self(value.doubleValue())
+	}
+}
+
+public extension Decimal {
+	init(_ value: Rational) {
+		self = value.decimalValue()
 	}
 }
