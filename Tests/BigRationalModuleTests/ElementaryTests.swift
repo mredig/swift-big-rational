@@ -4,7 +4,7 @@ import BigInt
 import Testing
 
 struct ElementaryTests {
-	@Test func square() throws {
+	@Test func squareRoot() throws {
 		#expect(Rational.sqrt(Rational(1)) == 1)
 		#expect(Rational.sqrt(Rational(4)) == 2)
 		#expect(Rational.sqrt(Rational(9)) == 3)
@@ -32,5 +32,29 @@ struct ElementaryTests {
 		#expect(Rational.sqrt(Rational(169, 4)) == Rational(13, 2))
 		#expect(Rational.sqrt(Rational(64, 25)) == Rational(8, 5))
 		#expect(Rational.sqrt(Rational(2401, 100)) == Rational(49, 10))
+
+		#expect(Rational.sqrt(Rational.zero) == .zero)
+		#expect(Rational.sqrt(Rational.nan) === .nan)
+		#expect(Rational.sqrt(Rational(-5, 1)) === .nan)
+		#expect(Rational.sqrt(Rational(-1, 200)) === .nan)
+	}
+
+	@Test func squareRootIrrational() throws {
+		func theTest(_ value: Rational) -> Bool {
+			let result = Rational.sqrt(value)
+
+			let squared = result * result
+
+			let valueDouble = value.doubleValue()
+			let squaredDouble = squared.doubleValue()
+
+			return abs(squaredDouble - valueDouble) < 0.00000001
+		}
+
+		#expect(theTest(10))
+		#expect(theTest(11))
+		#expect(theTest(12))
+		#expect(theTest(13))
+		#expect(theTest(500))
 	}
 }
