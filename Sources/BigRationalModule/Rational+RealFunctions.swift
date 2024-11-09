@@ -127,7 +127,7 @@ extension Rational: RealFunctions {
 		guard x.isNaN == false, x.isNegative == false else { return .nan }
 		guard x != 1 else { return 1 }
 
-		guard x.isProperFraction == false else {
+		guard x.isInteger else {
 			let numeratorSquare = sqrt(Rational(numerator: x.numerator, denominator: .bigUInt(1), sign: .positive))
 			let denominatorSquare = sqrt(Rational(numerator: x.denominator, denominator: .bigUInt(1), sign: .positive))
 

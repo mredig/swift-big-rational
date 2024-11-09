@@ -140,15 +140,14 @@ package extension Rational {
 			order = ((numeratorModifier, numeratorFlailStride), (denominatorModifier, denominatorFlailStride))
 		}
 
-		var tValue = value
 		for relativeAdjustment in order.first.stride {
 			guard
-				let newValue = order.first.modifier(tValue, relativeAdjustment)
+				let newValue = order.first.modifier(value, relativeAdjustment)
 			else { break }
-			tValue = newValue
-			let result = block(tValue)
+			value = newValue
+			let result = block(value)
 			if result == .match {
-				return tValue
+				return value
 			} else if result != startingComparison {
 				break
 			}

@@ -26,5 +26,11 @@ struct ElementaryTests {
 		#expect(Rational.sqrt(Rational(49, 100)) == Rational(7, 10))
 		#expect(Rational.sqrt(Rational(16, 25)) == Rational(4, 5))
 		#expect(Rational.sqrt(Rational(81, 100)) == Rational(9, 10))
+
+		#expect(Rational.sqrt(Rational(9, 4)) == Rational(3, 2))
+		#expect(Rational.sqrt(Rational(25, 4)) == Rational(5, 2))
+		#expect(Rational.sqrt(Rational(169, 4)) == Rational(13, 2))
+		#expect(Rational.sqrt(Rational(64, 25)) == Rational(8, 5))
+		#expect(Rational.sqrt(Rational(2401, 100)) == Rational(49, 10))
 	}
 }
