@@ -24,9 +24,24 @@ package extension Rational {
 				middle.isZero == false,
 				middle.denominator.isZero == false
 			else { return middle }
-			let result = block(middle)
+			let firstResult = block(middle)
 
-			switch result {
+			guard firstResult != .match else { return middle }
+
+			let simplerMiddle = {
+				if i.isMultiple(of: 2) {
+					middle.limitDenominator(to: Self.bigUintMax)
+				} else {
+					Rational(truncating: middle.doubleValue()) ?? middle.limitDenominator(to: Self.bigUintMax)
+				}
+			}()
+			let secondResult = {
+				guard simplerMiddle != middle else { return firstResult }
+				return block(simplerMiddle)
+			}()
+			guard secondResult != .match else { return simplerMiddle }
+
+			switch firstResult {
 			case .greaterThan:
 				let lower = {
 					let value = range.lowerBound.limitDenominator(to: Self.bigUintMax)
@@ -38,12 +53,8 @@ package extension Rational {
 				}()
 
 				let upper = {
-					let middleAlt = middle.limitDenominator(to: Self.bigUintMax)
-					guard
-						middleAlt != middle,
-						block(middleAlt) == .greaterThan
-					else { return middle }
-					return middleAlt
+					guard secondResult == .greaterThan else { return middle }
+					return simplerMiddle
 				}()
 
 				guard lower != upper else { fatalError("bad binary search - got greater than with 0 range span") }
@@ -52,12 +63,8 @@ package extension Rational {
 				return middle
 			case .lessThan:
 				let lower = {
-					let middleAlt = middle.limitDenominator(to: Self.bigUintMax)
-					guard
-						middleAlt != middle,
-						block(middleAlt) == .lessThan
-					else { return middle }
-					return middleAlt
+					guard secondResult == .lessThan else { return middle }
+					return simplerMiddle
 				}()
 
 				let upper = {
@@ -92,14 +99,17 @@ package extension Rational {
 			range = 0...1
 		}
 
-		return binarySearch({ test in
-			let result = test * test
-			if result == self {
-				return .match
-			} else if result > self {
-				return .greaterThan
-			} else {
-				return .lessThan
-			}
-		}, range: range)
+		return binarySearch(
+			{ test in
+				let result = test * test
+				if result == self {
+					return .match
+				} else if result > self {
+					return .greaterThan
+				} else {
+					return .lessThan
+				}
+			},
+			range: range)
 	}
+}
