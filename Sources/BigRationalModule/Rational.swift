@@ -375,7 +375,6 @@ extension Rational {
 		let max = BigInt(max)
 
 		let simplifiedValues = simplifiedValues
-
 		guard simplifiedValues.denominator > max else { return self }
 
 		var p0: BigInt = 0
