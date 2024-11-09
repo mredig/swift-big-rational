@@ -57,6 +57,10 @@ package extension Rational {
 					return simplerMiddle
 				}()
 
+				if i > maxIterations / 2, let getDesperate = flail(block, startValue: upper, startingComparison: .greaterThan) {
+					return getDesperate
+				}
+
 				guard lower != upper else { fatalError("bad binary search - got greater than with 0 range span") }
 				range = lower...upper
 			case .match:
@@ -76,6 +80,10 @@ package extension Rational {
 					return value
 				}()
 
+				if i > maxIterations / 2, let getDesperate = flail(block, startValue: lower, startingComparison: .lessThan) {
+					return getDesperate
+				}
+
 				guard upper != lower else { fatalError("bad binary search - got less than with 0 range span") }
 				range = lower...upper
 			}
@@ -83,33 +91,68 @@ package extension Rational {
 		return getMiddle(from: range).limitDenominator(to: Self.bigUintMax)
 	}
 
-	func squareRoot() -> Rational {
-		guard isZero == false else { return .zero }
-		guard isNaN == false, isNegative == false else { return .nan }
-		guard self != 1 else { return 1 }
+	// desperate attempt at honing in on a solid answer
+	private func flail(_ block: BinarySearchDeterminer, startValue: Rational, startingComparison: BSComparator) -> Rational? {
+		var value = startValue.reduced
+		let isProperFraction = value.isProperFraction
 
-		let range: ClosedRange<Rational>
-		if self > 1 {
-			if self.isInteger, self.reduced.simplifiedValues.numerator.isMultiple(of: 2) {
-				range = 0...self
-			} else {
-				range = 1...self
-			}
-		} else {
-			range = 0...1
+		let positiveFlail: StrideThrough<BigInt> = stride(from: 1, through: 10, by: 1)
+		let negativeFlail: StrideThrough<BigInt> = stride(from: -1, through: -10, by: -1)
+
+		let numeratorFlailStride: StrideThrough<BigInt>
+		let denominatorFlailStride: StrideThrough<BigInt>
+
+		switch startingComparison {
+		case .lessThan:
+			numeratorFlailStride = positiveFlail
+			denominatorFlailStride = negativeFlail
+		case .match:
+			return startValue
+		case .greaterThan:
+			numeratorFlailStride = negativeFlail
+			denominatorFlailStride = positiveFlail
 		}
 
-		return binarySearch(
-			{ test in
-				let result = test * test
-				if result == self {
-					return .match
-				} else if result > self {
-					return .greaterThan
-				} else {
-					return .lessThan
-				}
-			},
-			range: range)
+		func numeratorModifier(_ input: Rational, relativeAdjustment: BigInt) -> Rational? {
+			let simple = input.simplifiedValues
+			let num = simple.numerator
+			let den	= simple.denominator
+			let newNumerator = BigInt(num) + relativeAdjustment
+			guard newNumerator.sign == .plus else { return nil }
+			return Rational(numerator: .bigUInt(newNumerator.magnitude), denominator: .bigUInt(den), sign: value.sign)
+		}
+
+		func denominatorModifier(_ input: Rational, relativeAdjustment: BigInt) -> Rational? {
+			let simple = input.simplifiedValues
+			let num = simple.numerator
+			let den	= simple.denominator
+			let newDenominator = BigInt(den) + relativeAdjustment
+			guard newDenominator.sign == .plus else { return nil }
+			return Rational(numerator: .bigUInt(num), denominator: .bigUInt(newDenominator.magnitude), sign: value.sign)
+		}
+
+		typealias ValueModifier = (Rational, BigInt) -> Rational?
+		typealias ValueModStride = (modifier: ValueModifier, stride: StrideThrough<BigInt>)
+		let order: (first: ValueModStride, second: ValueModStride)
+		if isProperFraction {
+			order = ((denominatorModifier, denominatorFlailStride), (numeratorModifier, numeratorFlailStride))
+		} else {
+			order = ((numeratorModifier, numeratorFlailStride), (denominatorModifier, denominatorFlailStride))
+		}
+
+		var tValue = value
+		for relativeAdjustment in order.first.stride {
+			guard
+				let newValue = order.first.modifier(tValue, relativeAdjustment)
+			else { break }
+			tValue = newValue
+			let result = block(tValue)
+			if result == .match {
+				return tValue
+			} else if result != startingComparison {
+				break
+			}
+		}
+		return nil
 	}
 }
