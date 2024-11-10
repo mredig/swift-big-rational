@@ -115,7 +115,24 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func pow(_ x: Rational, _ y: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		guard x.isNaN == false else { return .nan }
+
+		guard y.isZero == false else { return 1 }
+		guard y != 1 else { return x }
+		guard y != -1 else { return x.getReciprocal() }
+
+		let simplifiedValues = y.simplifiedValues
+		let power = simplifiedValues.numerator
+		let nthRoot = simplifiedValues.denominator
+		let max = BigUInt(Int.max)
+		guard
+			nthRoot < max,
+			power < max
+		else { return .nan }
+
+		let step1 = root(x, Int(nthRoot))
+
+		return pow(step1, Int(power))
 	}
 	
 	public static func pow(_ x: Rational, _ n: Int) -> Rational {
@@ -156,39 +173,65 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func sqrt(_ x: Rational) -> Rational {
-		guard x.isZero == false else { return .zero }
-		guard x.isNaN == false, x.isNegative == false else { return .nan }
-		guard x != 1 else { return 1 }
+		root(x, 2)
+	}
+	
+	public static func root(_ base: Rational, _ exponent: Int) -> Rational {
+		var exponent = exponent
+		guard exponent != 0 else { return .nan }
+		guard base.isZero == false else { return .zero }
+		guard base.isNaN == false else { return .nan }
+		guard base != 1 else { return 1 }
 
-		guard x.isInteger else {
-			let numeratorSquare = sqrt(Rational(numerator: x.numerator, denominator: .bigUInt(1), sign: .positive))
-			let denominatorSquare = sqrt(Rational(numerator: x.denominator, denominator: .bigUInt(1), sign: .positive))
+		let isNegative = base.isNegative
+		var base = base
+		if isNegative {
+			guard exponent.isMultiple(of: 2) == false else { return .nan }
+			base.negate()
+		}
+		var invert = false
+		if exponent.signum() == -1 {
+			exponent.negate()
+			invert = true
+		}
 
-			return Rational(numerator: numeratorSquare, denominator: denominatorSquare, reduced: true)
+		guard base.isInteger else {
+			let numeratorSquare = sqrt(Rational(numerator: base.numerator, denominator: .bigUInt(1), sign: .positive))
+			let denominatorSquare = sqrt(Rational(numerator: base.denominator, denominator: .bigUInt(1), sign: .positive))
+
+			let out = Rational(numerator: numeratorSquare, denominator: denominatorSquare, reduced: true)
+			guard isNegative else {
+				return out
+			}
+			return -out
 		}
 
 		let range: ClosedRange<Rational>
-		if x.reduced.simplifiedValues.numerator.isMultiple(of: 2) {
-			range = 0...x
+		if base.reduced.simplifiedValues.numerator.isMultiple(of: 2) {
+			range = 0...base
 		} else {
-			range = 1...x
+			range = 1...base
 		}
 
-		return x.binarySearch(
+		var subfinal = base.binarySearch(
 			{ test in
-				let result = test * test
-				if result == x {
+				let result = Rational.pow(test, exponent)
+				if result == base {
 					return .match
-				} else if result > x {
+				} else if result > base {
 					return .greaterThan
 				} else {
 					return .lessThan
 				}
 			},
 			range: range)
-	}
-	
-	public static func root(_ x: Rational, _ n: Int) -> Rational {
-		fatalError("\(#function) not implemented")
+
+		if isNegative {
+			subfinal.negate()
+		}
+		if invert {
+			subfinal = subfinal.getReciprocal()
+		}
+		return subfinal
 	}
 }
