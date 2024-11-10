@@ -94,23 +94,19 @@ package extension Rational {
 	// desperate attempt at honing in on a solid answer
 	private func flail(_ block: BinarySearchDeterminer, startValue: Rational, startingComparison: BSComparator) -> Rational? {
 		var value = startValue.reduced
-		let isProperFraction = value.isProperFraction
 
 		let positiveFlail: StrideThrough<BigInt> = stride(from: 1, through: 10, by: 1)
 		let negativeFlail: StrideThrough<BigInt> = stride(from: -1, through: -10, by: -1)
 
 		let numeratorFlailStride: StrideThrough<BigInt>
-		let denominatorFlailStride: StrideThrough<BigInt>
 
 		switch startingComparison {
 		case .lessThan:
 			numeratorFlailStride = positiveFlail
-			denominatorFlailStride = negativeFlail
 		case .match:
 			return startValue
 		case .greaterThan:
 			numeratorFlailStride = negativeFlail
-			denominatorFlailStride = positiveFlail
 		}
 
 		func numeratorModifier(_ input: Rational, relativeAdjustment: BigInt) -> Rational? {
@@ -122,27 +118,9 @@ package extension Rational {
 			return Rational(numerator: .bigUInt(newNumerator.magnitude), denominator: .bigUInt(den), sign: value.sign)
 		}
 
-		func denominatorModifier(_ input: Rational, relativeAdjustment: BigInt) -> Rational? {
-			let simple = input.simplifiedValues
-			let num = simple.numerator
-			let den	= simple.denominator
-			let newDenominator = BigInt(den) + relativeAdjustment
-			guard newDenominator.sign == .plus else { return nil }
-			return Rational(numerator: .bigUInt(num), denominator: .bigUInt(newDenominator.magnitude), sign: value.sign)
-		}
-
-		typealias ValueModifier = (Rational, BigInt) -> Rational?
-		typealias ValueModStride = (modifier: ValueModifier, stride: StrideThrough<BigInt>)
-		let order: (first: ValueModStride, second: ValueModStride)
-		if isProperFraction {
-			order = ((denominatorModifier, denominatorFlailStride), (numeratorModifier, numeratorFlailStride))
-		} else {
-			order = ((numeratorModifier, numeratorFlailStride), (denominatorModifier, denominatorFlailStride))
-		}
-
-		for relativeAdjustment in order.first.stride {
+		for relativeAdjustment in numeratorFlailStride {
 			guard
-				let newValue = order.first.modifier(value, relativeAdjustment)
+				let newValue = numeratorModifier(value, relativeAdjustment: relativeAdjustment)
 			else { break }
 			value = newValue
 			let result = block(value)

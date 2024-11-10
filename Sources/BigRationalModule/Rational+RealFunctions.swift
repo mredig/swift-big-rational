@@ -135,14 +135,10 @@ extension Rational: RealFunctions {
 		}
 
 		let range: ClosedRange<Rational>
-		if x > 1 {
-			if x.isInteger, x.reduced.simplifiedValues.numerator.isMultiple(of: 2) {
-				range = 0...x
-			} else {
-				range = 1...x
-			}
+		if x.reduced.simplifiedValues.numerator.isMultiple(of: 2) {
+			range = 0...x
 		} else {
-			range = 0...1
+			range = 1...x
 		}
 
 		return x.binarySearch(
@@ -157,7 +153,6 @@ extension Rational: RealFunctions {
 				}
 			},
 			range: range)
-
 	}
 	
 	public static func root(_ x: Rational, _ n: Int) -> Rational {
