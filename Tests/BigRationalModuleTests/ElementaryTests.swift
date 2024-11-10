@@ -57,4 +57,29 @@ struct ElementaryTests {
 		#expect(theTest(13))
 		#expect(theTest(500))
 	}
+
+	@Test func nthPower() throws {
+		#expect(Rational.pow(2, 2 as Int) == 4)
+		#expect(Rational.pow(-2, 2 as Int) == 4)
+		#expect(Rational.pow(2, 3 as Int) == 8)
+		#expect(Rational.pow(-2, 3 as Int) == -8)
+		#expect(Rational.pow(3, 8 as Int) == 6561)
+		#expect(Rational.pow(3, 9 as Int) == 19683)
+		#expect(Rational.pow(2, -2 as Int) == Rational(1, 4))
+		#expect(Rational.pow(2, -3 as Int) == Rational(1, 8))
+		#expect(Rational.pow(-2, -3 as Int) == Rational(-1, 8))
+		#expect(Rational.pow(Rational(1, 2), 3 as Int) == Rational(1, 8))
+		#expect(Rational.pow(Rational.zero, 3 as Int) == .zero)
+		#expect(Rational.pow(Rational.zero, -1 as Int).isNaN)
+		#expect(Rational.pow(Rational.zero, -3 as Int).isNaN)
+		#expect(Rational.pow(Rational.zero, 0 as Int) == 1)
+		#expect(Rational.pow(Rational.nan, 0 as Int).isNaN)
+		#expect(Rational.pow(Rational.nan, 1 as Int).isNaN)
+		#expect(Rational.pow(Rational.nan, 5 as Int).isNaN)
+		#expect(Rational.pow(10, 9 as Int) == 1_000_000_000)
+		#expect(Rational.pow(10, 0 as Int) == 1)
+		#expect(Rational.pow(10, 1 as Int) == 10)
+		#expect(Rational.pow(10, -1 as Int) == Rational(1, 10))
+		#expect(Rational.pow(10, -9 as Int) == Rational(1, 1_000_000_000))
+	}
 }

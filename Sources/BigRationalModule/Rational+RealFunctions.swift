@@ -119,7 +119,40 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func pow(_ x: Rational, _ n: Int) -> Rational {
-		fatalError("\(#function) not implemented")
+		guard x.isNaN == false else { return .nan }
+
+		guard n != 0 else { return 1 }
+		guard n != 1 else { return x }
+		guard n != -1 else { return x.getReciprocal() }
+
+		var exponent = n
+
+		var invert = false
+		if exponent.signum() == -1 {
+			exponent.negate()
+			invert = true
+		}
+
+		var base = x
+
+		let oddHandler: Rational
+		if exponent.isMultiple(of: 2) {
+			oddHandler = 1
+		} else {
+			oddHandler = x
+			exponent -= 1
+		}
+
+		while exponent > 1 {
+			base = base * base
+			exponent /= 2
+		}
+
+		let final = oddHandler * base
+		guard invert else {
+			return final
+		}
+		return final.getReciprocal()
 	}
 	
 	public static func sqrt(_ x: Rational) -> Rational {
