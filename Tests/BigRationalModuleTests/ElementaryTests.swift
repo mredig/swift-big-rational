@@ -72,6 +72,10 @@ struct ElementaryTests {
 		#expect(Rational.root(-4, 2).isNaN)
 		#expect(Rational.root(16, -2) == Rational(1, 4))
 		#expect(Rational.root(4, -2) == Rational(1, 2))
+
+		#expect(Rational.root(Rational(8, 27), 3) == Rational(2, 3))
+		#expect(Rational.root(Rational(8, 27), -3) == Rational(3, 2))
+		#expect(Rational.root(Rational(-8, 27), -3) == Rational(-3, 2))
 	}
 
 	@Test func nthPower() throws {

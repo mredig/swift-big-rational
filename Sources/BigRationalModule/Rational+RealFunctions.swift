@@ -176,9 +176,9 @@ extension Rational: RealFunctions {
 		root(x, 2)
 	}
 	
-	public static func root(_ base: Rational, _ exponent: Int) -> Rational {
-		var exponent = exponent
-		guard exponent != 0 else { return .nan }
+	public static func root(_ base: Rational, _ degree: Int) -> Rational {
+		var degree = degree
+		guard degree != 0 else { return .nan }
 		guard base.isZero == false else { return .zero }
 		guard base.isNaN == false else { return .nan }
 		guard base != 1 else { return 1 }
@@ -186,24 +186,27 @@ extension Rational: RealFunctions {
 		let isNegative = base.isNegative
 		var base = base
 		if isNegative {
-			guard exponent.isMultiple(of: 2) == false else { return .nan }
+			guard degree.isMultiple(of: 2) == false else { return .nan }
 			base.negate()
 		}
 		var invert = false
-		if exponent.signum() == -1 {
-			exponent.negate()
+		if degree.signum() == -1 {
+			degree.negate()
 			invert = true
 		}
 
 		guard base.isInteger else {
-			let numeratorSquare = sqrt(Rational(numerator: base.numerator, denominator: .bigUInt(1), sign: .positive))
-			let denominatorSquare = sqrt(Rational(numerator: base.denominator, denominator: .bigUInt(1), sign: .positive))
+			let numeratorRooted = root(Rational(numerator: base.numerator, denominator: .bigUInt(1), sign: .positive), degree)
+			let denominatorRooted = root(Rational(numerator: base.denominator, denominator: .bigUInt(1), sign: .positive), degree)
 
-			let out = Rational(numerator: numeratorSquare, denominator: denominatorSquare, reduced: true)
-			guard isNegative else {
-				return out
+			var subfinal = Rational(numerator: numeratorRooted, denominator: denominatorRooted, reduced: true)
+			if isNegative {
+				subfinal.negate()
 			}
-			return -out
+			if invert {
+				subfinal = subfinal.getReciprocal()
+			}
+			return subfinal
 		}
 
 		let range: ClosedRange<Rational>
@@ -215,7 +218,7 @@ extension Rational: RealFunctions {
 
 		var subfinal = base.binarySearch(
 			{ test in
-				let result = Rational.pow(test, exponent)
+				let result = Rational.pow(test, degree)
 				if result == base {
 					return .match
 				} else if result > base {
