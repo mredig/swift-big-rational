@@ -7,8 +7,16 @@ struct ElementaryTests {
 	@Test func atan2() {}
 	@Test func erf() {}
 	@Test func erfc() {}
-	@Test func exp2() {}
 	@Test func exp10() {}
+
+	@Test func exp2() {
+		#expect(Rational.exp2(-1) == Rational(1, 2))
+		#expect(Rational.exp2(0) == 1)
+		#expect(Rational.exp2(Rational(1, 2)) == Rational("3260954456333195409/2305843009213693952"))
+		#expect(Rational.exp2(1) == 2)
+		#expect(Rational.exp2(8) == 256)
+		#expect(Rational.exp2(16) == 65536)
+	}
 	@Test func hypot() {}
 	@Test func gamma() {}
 	@Test func log2() {}
