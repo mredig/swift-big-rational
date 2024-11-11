@@ -89,7 +89,7 @@ extension Rational: RealFunctions {
 	public static func log(onePlus x: Rational) -> Rational {
 		fatalError("\(#function) not implemented")
 	}
-	
+
 	public static func acosh(_ x: Rational) -> Rational {
 		fatalError("\(#function) not implemented")
 	}
@@ -124,23 +124,22 @@ extension Rational: RealFunctions {
 		let simplifiedValues = y.simplifiedValues
 		let power = simplifiedValues.numerator
 		let nthRoot = simplifiedValues.denominator
-		let max = BigUInt(Int.max)
-		guard
-			nthRoot < max,
-			power < max
-		else { return .nan }
 
-		let step1 = root(x, Int(nthRoot))
+		let step1 = root(x, BigInt(nthRoot))
 
-		let subfinal = pow(step1, Int(power))
+		let subfinal = pow(step1, BigInt(power))
 		if y.isNegative {
 			return subfinal.getReciprocal()
 		} else {
 			return subfinal
 		}
 	}
-	
+
 	public static func pow(_ x: Rational, _ n: Int) -> Rational {
+		pow(x, BigInt(n))
+	}
+
+	public static func pow(_ x: Rational, _ n: BigInt) -> Rational {
 		guard x.isNaN == false else { return .nan }
 
 		guard n != 0 else { return 1 }
@@ -182,8 +181,12 @@ extension Rational: RealFunctions {
 	public static func sqrt(_ x: Rational) -> Rational {
 		root(x, 2)
 	}
-	
+
 	public static func root(_ base: Rational, _ degree: Int) -> Rational {
+		root(base, BigInt(degree))
+	}
+
+	public static func root(_ base: Rational, _ degree: BigInt) -> Rational {
 		var degree = degree
 		guard degree != 0 else { return .nan }
 		guard base.isZero == false else { return .zero }
