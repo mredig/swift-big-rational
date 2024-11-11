@@ -154,45 +154,29 @@ extension Rational: RealFunctions {
 			}
 		}
 
-		var workingExponent = n
+		var exponent = n
 
 		var invert = false
-		if workingExponent.signum() == -1 {
-			workingExponent.negate()
+		if exponent.signum() == -1 {
+			exponent.negate()
 			invert = true
 		}
-		let inExponent = workingExponent
 
 		var base = x
-		var accumulatedExponent = 1
 
-//		var oddAccumulator: Rational
-//		if exponent.isMultiple(of: 2) {
-//			oddAccumulator = 1
-//		} else {
-//			oddAccumulator = x
-//			exponent -= 1
-//		}
-
-		while accumulatedExponent < inExponent {
-			if workingExponent.isMultiple(of: 2) == false {
-				base *= x
-				accumulatedExponent += 1
-			}
-			base = base * base
-			workingExponent /= 2
-			accumulatedExponent *= 2
-		}
-		while accumulatedExponent != inExponent {
-			accumulatedExponent -= 1
-			base /= x
+		if exponent.isMultiple(of: 2) {
+			let halfPower = pow(base, (exponent / 2))
+			base = halfPower * halfPower
+		} else {
+			exponent -= 1
+			let halfPower = pow(base, (exponent / 2))
+			base = base * halfPower * halfPower
 		}
 
-		let final = base
 		guard invert else {
-			return final
+			return base
 		}
-		return final.getReciprocal()
+		return base.getReciprocal()
 	}
 	
 	public static func sqrt(_ x: Rational) -> Rational {
