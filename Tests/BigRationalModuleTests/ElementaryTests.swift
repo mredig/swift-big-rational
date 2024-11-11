@@ -105,7 +105,10 @@ struct ElementaryTests {
 		#expect(Rational.log(Rational(1, 3)).doubleValue() == -1.0986122886681098)
 		#expect(Rational.log(Rational(1, 4)).doubleValue() == -1.3862943611198906)
 		#expect(Rational.log(Rational(5, 72)).doubleValue() == -2.667228206581955)
-		#expect(Rational.log(Rational(1000000)).doubleValue() == 13.815510557964274)
+		#expect(Rational.log(Rational(1_000_001, 1_000_000)).doubleValue() == 9.999995000003334e-07)
+		#expect(Rational.log(Rational(1_000_000)).doubleValue() == 13.815510557964274)
+		#expect(Rational.log(Rational(1, 1_000_000)).doubleValue() == -13.815510557964274)
+		#expect(Rational.log(Rational(999_999, 1_000_000)).doubleValue() == -1.000000500000338e-06)
 		#expect(Rational.log(Rational(-3, 2)).doubleValue().isNaN)
 	}
 

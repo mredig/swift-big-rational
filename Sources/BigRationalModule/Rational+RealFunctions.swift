@@ -125,10 +125,12 @@ extension Rational: RealFunctions {
 			input /= threshold
 			k += 1
 		}
-		while input < 1 {
-			input *= threshold
-			k -= 1
-		}
+		// I believe it's mathematically impossible to end up in this block, so I'm commenting it.
+		// However, I'm leaving as a comment in case I'm wrong.
+//		while input < 1 {
+//			input *= threshold
+//			k -= 1
+//		}
 
 		let part = compute(x: input)
 		// *mathematically*, we COULD just use `part + ln(1.5)*k + ln(2)*j`,
