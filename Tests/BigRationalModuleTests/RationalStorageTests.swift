@@ -139,7 +139,7 @@ struct RationalStorageTests {
 		let opt: Rational.Storage? = nil
 		let int = 5
 
-		#expect(opt != 5)
+		#expect(opt != int)
 	}
 
 	@Test func compareWrappedBigInts() throws {
