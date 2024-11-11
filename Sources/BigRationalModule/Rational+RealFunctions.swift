@@ -132,7 +132,12 @@ extension Rational: RealFunctions {
 
 		let step1 = root(x, Int(nthRoot))
 
-		return pow(step1, Int(power))
+		let subfinal = pow(step1, Int(power))
+		if y.isNegative {
+			return subfinal.getReciprocal()
+		} else {
+			return subfinal
+		}
 	}
 	
 	public static func pow(_ x: Rational, _ n: Int) -> Rational {
@@ -141,31 +146,49 @@ extension Rational: RealFunctions {
 		guard n != 0 else { return 1 }
 		guard n != 1 else { return x }
 		guard n != -1 else { return x.getReciprocal() }
+		guard x.isZero == false else {
+			if n < 1 {
+				return .nan
+			} else {
+				return .zero
+			}
+		}
 
-		var exponent = n
+		var workingExponent = n
 
 		var invert = false
-		if exponent.signum() == -1 {
-			exponent.negate()
+		if workingExponent.signum() == -1 {
+			workingExponent.negate()
 			invert = true
 		}
+		let inExponent = workingExponent
 
 		var base = x
+		var accumulatedExponent = 1
 
-		let oddHandler: Rational
-		if exponent.isMultiple(of: 2) {
-			oddHandler = 1
-		} else {
-			oddHandler = x
-			exponent -= 1
-		}
+//		var oddAccumulator: Rational
+//		if exponent.isMultiple(of: 2) {
+//			oddAccumulator = 1
+//		} else {
+//			oddAccumulator = x
+//			exponent -= 1
+//		}
 
-		while exponent > 1 {
+		while accumulatedExponent < inExponent {
+			if workingExponent.isMultiple(of: 2) == false {
+				base *= x
+				accumulatedExponent += 1
+			}
 			base = base * base
-			exponent /= 2
+			workingExponent /= 2
+			accumulatedExponent *= 2
+		}
+		while accumulatedExponent != inExponent {
+			accumulatedExponent -= 1
+			base /= x
 		}
 
-		let final = oddHandler * base
+		let final = base
 		guard invert else {
 			return final
 		}
@@ -182,6 +205,7 @@ extension Rational: RealFunctions {
 		guard base.isZero == false else { return .zero }
 		guard base.isNaN == false else { return .nan }
 		guard base != 1 else { return 1 }
+		guard degree != 1 else { return base }
 
 		let isNegative = base.isNegative
 		var base = base

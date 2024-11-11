@@ -57,6 +57,9 @@ struct ElementaryTests {
 		#expect(Rational.pow(2, 3 as Int) == 8)
 		#expect(Rational.pow(-2, 3 as Int) == -8)
 		#expect(Rational.pow(-3, -1 as Int) == Rational(-1, 3))
+		#expect(Rational.pow(3, 6 as Int) == 729)
+		#expect(Rational.pow(3, 12 as Int) == 531_441)
+		#expect(Rational.pow(3, 13 as Int) == 1_594_323)
 		#expect(Rational.pow(3, 8 as Int) == 6561)
 		#expect(Rational.pow(3, 9 as Int) == 19683)
 		#expect(Rational.pow(2, -2 as Int) == Rational(1, 4))
@@ -72,11 +75,26 @@ struct ElementaryTests {
 		#expect(Rational.pow(Rational.nan, 0 as Int).isNaN)
 		#expect(Rational.pow(Rational.nan, 1 as Int).isNaN)
 		#expect(Rational.pow(Rational.nan, 5 as Int).isNaN)
-		#expect(Rational.pow(10, 9 as Int) == 1_000_000_000)
 		#expect(Rational.pow(10, 0 as Int) == 1)
 		#expect(Rational.pow(10, 1 as Int) == 10)
 		#expect(Rational.pow(10, -1 as Int) == Rational(1, 10))
 		#expect(Rational.pow(10, -9 as Int) == Rational(1, 1_000_000_000))
+
+		#expect(Rational.pow(10, 1 as Int) == 10)
+		#expect(Rational.pow(10, 2 as Int) == 100)
+		#expect(Rational.pow(10, 3 as Int) == 1_000)
+		#expect(Rational.pow(10, 4 as Int) == 10_000)
+		#expect(Rational.pow(10, 5 as Int) == 100_000)
+		#expect(Rational.pow(10, 6 as Int) == 1_000_000)
+		#expect(Rational.pow(10, 7 as Int) == 10_000_000)
+		#expect(Rational.pow(10, 8 as Int) == 100_000_000)
+		#expect(Rational.pow(10, 9 as Int) == 1_000_000_000)
+		#expect(Rational.pow(10, 10 as Int) == 10_000_000_000)
+		#expect(Rational.pow(10, 11 as Int) == 100_000_000_000)
+		#expect(Rational.pow(10, 12 as Int) == 1_000_000_000_000)
+		#expect(Rational.pow(10, 13 as Int) == 10_000_000_000_000)
+		#expect(Rational.pow(10, 14 as Int) == 100_000_000_000_000)
+		#expect(Rational.pow(10, 15 as Int) == 1_000_000_000_000_000)
 	}
 
 	@Test func nthRationalPower() throws {
@@ -87,6 +105,11 @@ struct ElementaryTests {
 		#expect(Rational.pow(9, Rational.zero) == 1)
 		#expect(Rational.pow(2, Rational(-8)) == Rational(1, 256))
 		#expect(Rational.pow(8, Rational(-1, 3)) == Rational(1, 2))
+		#expect(Rational.pow(0, Rational(1, 3)) == 0)
+		#expect(Rational.pow(0, Rational(3, 2)) == 0)
+		#expect(Rational.pow(0, Rational.zero) == 1)
+		#expect(Rational.pow(0, Rational(-1, 3)).isNaN)
+		#expect(Rational.pow(0, Rational(-3)).isNaN)
 	}
 
 	@Test func squareRoot() throws {
