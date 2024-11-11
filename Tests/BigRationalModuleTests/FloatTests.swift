@@ -137,4 +137,9 @@ struct FloatTests {
 	func toDecimal(_ value: Rational, _ expectation: Decimal) throws {
 		#expect(Decimal(value) == expectation)
 	}
+
+	@Test func specialCases() throws {
+		#expect(Rational.nan.doubleValue().isNaN)
+		#expect(Rational.nan.decimalValue().isNaN)
+	}
 }

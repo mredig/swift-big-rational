@@ -80,9 +80,10 @@ struct ElementaryTests {
 		#expect(Rational.log(Rational(709, 261)).doubleValue() == 0.9993351192094341)
 		#expect(Rational.log(Rational(12)).doubleValue() == 2.4849066497880004)
 		#expect(Rational.log(Rational(1, 3)).doubleValue() == -1.0986122886681098)
+		#expect(Rational.log(Rational(1, 4)).doubleValue() == -1.3862943611198906)
+		#expect(Rational.log(Rational(5, 72)).doubleValue() == -2.667228206581955)
 		#expect(Rational.log(Rational(1000000)).doubleValue() == 13.815510557964274)
-
-//		#expect(Rational.log(Rational(-3, 2)).doubleValue() == 0.405465108108)
+		#expect(Rational.log(Rational(-3, 2)).doubleValue().isNaN)
 	}
 
 	@Test func logOnePlus() {}

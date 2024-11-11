@@ -83,6 +83,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func log(_ x: Rational) -> Rational {
+		guard x.isNegative == false else { return .nan }
 		func compute(x: Rational) -> Rational {
 			var term = x - 1
 			var result = term

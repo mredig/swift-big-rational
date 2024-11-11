@@ -65,6 +65,9 @@ extension Rational {
 	}
 
 	public func doubleValue() -> Double {
+		guard isNaN == false else { return .nan }
+		guard isZero == false else { return .zero }
+
 		let (quotient, remainder) = quotientAndRemainder
 
 		let biggestDouble = BigUInt(Double.greatestFiniteMagnitude)
@@ -98,6 +101,9 @@ extension Rational {
 	}
 
 	public func decimalValue() -> Decimal {
+		guard isNaN == false else { return .nan }
+		guard isZero == false else { return .zero }
+
 		let (quotient, remainder) = quotientAndRemainder
 
 		let biggestDecimal = BigUInt(exactly: Decimal.greatestFiniteMagnitude)!
