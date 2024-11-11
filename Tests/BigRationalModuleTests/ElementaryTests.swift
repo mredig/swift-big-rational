@@ -34,7 +34,6 @@ struct ElementaryTests {
 	@Test func logGamma() {}
 	@Test func signGamma() {}
 	@Test func _mulAdd() {}
-	@Test func expMinusOne() {}
 
 	@Test func exp() {
 		#expect(Rational.exp(.nan).isNaN)
@@ -43,6 +42,15 @@ struct ElementaryTests {
 		#expect(Rational.exp(Rational(1, 2)).doubleValue() == 1.6487212706997052)
 		#expect(Rational.exp(Rational(-1, 2)).doubleValue() == 0.6065306597127891)
 		#expect(Rational.exp(-100).doubleValue() == 3.7200759760208356e-44)
+	}
+
+	@Test func expMinusOne() {
+		#expect(Rational.expMinusOne(0) == 0)
+		#expect(Rational.expMinusOne(1) == (.e - 1))
+		#expect(Rational.expMinusOne(1).doubleValue() == 1.7182818284590453)
+		#expect(Rational.expMinusOne(-1).doubleValue() == -0.6321205588285578)
+		#expect(Rational.expMinusOne(20).doubleValue() == 485165194.4097903)
+		#expect(Rational.expMinusOne(-45).doubleValue() == -1)
 	}
 
 	@Test func cosh() {}

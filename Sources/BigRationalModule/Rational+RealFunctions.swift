@@ -55,7 +55,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func expMinusOne(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		exp(x) - 1
 	}
 	
 	public static func cosh(_ x: Rational) -> Rational {
