@@ -64,6 +64,8 @@ struct FloatTests {
 		#expect(Rational(truncating: value)?.reduced === expectation)
 	}
 
+	#if DEBUG
+	@available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *)
 	@Test(arguments: [
 		( Float16.zero, Rational.zero ),
 		( Float16(1), Rational(1) ),
@@ -77,6 +79,7 @@ struct FloatTests {
 	func initFromFloat16(_ value: Float16, _ expectation: Rational?) throws {
 		#expect(Rational(truncating: value)?.reduced === expectation)
 	}
+	#endif
 
 	@Test(arguments: [
 		( Rational.zero, Double.zero ),

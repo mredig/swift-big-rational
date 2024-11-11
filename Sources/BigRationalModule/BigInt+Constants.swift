@@ -22,8 +22,10 @@ public extension BigInt {
 	static let int64Min = BigInt(Int64.min)
 	static let intMin = BigInt(Int.min)
 
-	@available(macOS 11.0, iOS 14.0, *)
-	static let float16Greatest = BigInt(Float16.greatestFiniteMagnitude)
+	// Float16 is relatively new as a Swift type and, therefore, doesn't have
+	// native support with far backwards compatibility. Its greatest magnitude
+	// is simple enough, so just hardcoding its value.
+	static let float16Greatest = BigInt(65504)
 	static let floatGreatest = BigInt(Float.greatestFiniteMagnitude)
 	static let doubleGreatest = BigInt(Double.greatestFiniteMagnitude)
 	#if canImport(Foundation)
@@ -44,7 +46,6 @@ public extension BigUInt {
 	static let int64Max = BigInt.int64Max.magnitude
 	static let intMax = BigInt.intMax.magnitude
 
-	@available(macOS 11.0, iOS 14.0, *)
 	static let float16Greatest = BigInt.float16Greatest.magnitude
 	static let floatGreatest = BigInt.floatGreatest.magnitude
 	static let doubleGreatest = BigInt.doubleGreatest.magnitude
