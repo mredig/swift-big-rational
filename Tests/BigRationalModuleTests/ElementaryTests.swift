@@ -7,7 +7,6 @@ struct ElementaryTests {
 	@Test func atan2() {}
 	@Test func erf() {}
 	@Test func erfc() {}
-	@Test func exp10() {}
 
 	@Test func exp2() {
 		#expect(Rational.exp2(-1) == Rational(1, 2))
@@ -17,6 +16,17 @@ struct ElementaryTests {
 		#expect(Rational.exp2(8) == 256)
 		#expect(Rational.exp2(16) == 65536)
 	}
+
+	@Test func exp10() {
+		#expect(Rational.exp10(-5) == Rational(1, 100_000))
+		#expect(Rational.exp10(-1) == Rational(1, 10))
+		#expect(Rational.exp10(0) == 1)
+		#expect(Rational.exp10(Rational(1, 2)) == Rational("113933059935810853/36028797018963968"))
+		#expect(Rational.exp10(1) == 10)
+		#expect(Rational.exp10(8) == 100_000_000)
+		#expect(Rational.exp10(16) == 10_000_000_000_000_000)
+	}
+
 	@Test func hypot() {}
 	@Test func gamma() {}
 	@Test func log2() {}
@@ -41,7 +51,7 @@ struct ElementaryTests {
 	@Test func asin() {}
 	@Test func atan() {}
 
-	@Test func nthPower() throws {
+	@Test func nthPowerInt() throws {
 		#expect(Rational.pow(2, 2 as Int) == 4)
 		#expect(Rational.pow(-2, 2 as Int) == 4)
 		#expect(Rational.pow(2, 3 as Int) == 8)
@@ -69,12 +79,14 @@ struct ElementaryTests {
 		#expect(Rational.pow(10, -9 as Int) == Rational(1, 1_000_000_000))
 	}
 
-	@Test func nthFractionPower() throws {
+	@Test func nthRationalPower() throws {
 		#expect(Rational.pow(-8, Rational(1, 3)) == -2)
 		#expect(Rational.pow(8, Rational(2, 3)) == 4)
 		#expect(Rational.pow(9, Rational(1, 2)) == 3)
 		#expect(Rational.pow(9, Rational(1, 1)) == 9)
 		#expect(Rational.pow(9, Rational.zero) == 1)
+		#expect(Rational.pow(2, Rational(-8)) == Rational(1, 256))
+		#expect(Rational.pow(8, Rational(-1, 3)) == Rational(1, 2))
 	}
 
 	@Test func squareRoot() throws {

@@ -19,7 +19,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func exp10(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		pow(10, x)
 	}
 	
 	public static func hypot(_ x: Rational, _ y: Rational) -> Rational {
