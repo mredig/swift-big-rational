@@ -7,7 +7,6 @@ package extension Rational {
 		case match
 		case greaterThan
 	}
-	private static let bigUintMax = BigUInt(UInt.max)
 
 	func binarySearch(_ block: BinarySearchDeterminer, range: ClosedRange<Rational>, maxIterations: Int = 100) -> Rational {
 		func getMiddle(from range: ClosedRange<Rational>) -> Rational {
@@ -30,9 +29,9 @@ package extension Rational {
 
 			let simplerMiddle = {
 				if i.isMultiple(of: 2) {
-					middle.limitDenominator(to: Self.bigUintMax)
+					middle.limitDenominator(to: .uIntMax)
 				} else {
-					Rational(truncating: middle.doubleValue()) ?? middle.limitDenominator(to: Self.bigUintMax)
+					Rational(truncating: middle.doubleValue()) ?? middle.limitDenominator(to: .uIntMax)
 				}
 			}()
 			let secondResult = {
@@ -44,7 +43,7 @@ package extension Rational {
 			switch firstResult {
 			case .greaterThan:
 				let lower = {
-					let value = range.lowerBound.limitDenominator(to: Self.bigUintMax)
+					let value = range.lowerBound.limitDenominator(to: .uIntMax)
 					guard
 						value != range.lowerBound,
 						block(value) == .lessThan
@@ -72,7 +71,7 @@ package extension Rational {
 				}()
 
 				let upper = {
-					let value = range.upperBound.limitDenominator(to: Self.bigUintMax)
+					let value = range.upperBound.limitDenominator(to: .uIntMax)
 					guard
 						value != range.upperBound,
 						block(value) == .greaterThan
@@ -88,7 +87,7 @@ package extension Rational {
 				range = lower...upper
 			}
 		}
-		return getMiddle(from: range).limitDenominator(to: Self.bigUintMax)
+		return getMiddle(from: range).limitDenominator(to: .uIntMax)
 	}
 
 	// desperate attempt at honing in on a solid answer

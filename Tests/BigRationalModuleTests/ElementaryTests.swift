@@ -77,6 +77,7 @@ struct ElementaryTests {
 	@Test func log() {
 		#expect(Rational.log(.zero).isNaN)
 		#expect(Rational.log(1) == .zero)
+		#expect(Rational.log(2).doubleValue() == Rational.ln2.doubleValue())
 		#expect(Rational.log(Rational(10, 9)).doubleValue() == 0.10536051565782631)
 		#expect(Rational.log(Rational(709, 261)).doubleValue() == 0.9993351192094341)
 		#expect(Rational.log(Rational(12)).doubleValue() == 2.4849066497880004)

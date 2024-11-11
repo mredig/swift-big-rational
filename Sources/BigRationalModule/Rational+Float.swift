@@ -70,9 +70,8 @@ extension Rational {
 
 		let (quotient, remainder) = quotientAndRemainder
 
-		let biggestDouble = BigUInt(Double.greatestFiniteMagnitude)
-		let biggestDoubleRational = Rational(big: biggestDouble, sign: .positive)
-		let smallestDoubleRational = Rational(big: biggestDouble, sign: .negative)
+		let biggestDoubleRational = Rational(big: .doubleGreatest, sign: .positive)
+		let smallestDoubleRational = Rational(big: .doubleGreatest, sign: .negative)
 
 		guard Rational(big: quotient) < biggestDoubleRational else {
 			return .greatestFiniteMagnitude
@@ -88,9 +87,8 @@ extension Rational {
 		   .reduced
 		let simplifiedRemaining = {
 			let simpleValues = remaining.simplifiedValues
-			let doubleGreatest = BigUInt(Double.greatestFiniteMagnitude)
-			guard simpleValues.denominator <= doubleGreatest else {
-				return remaining.limitDenominator(to: doubleGreatest).simplifiedValues
+			guard simpleValues.denominator <= .doubleGreatest else {
+				return remaining.limitDenominator(to: .doubleGreatest).simplifiedValues
 			}
 			return simpleValues
 		}()
@@ -106,9 +104,8 @@ extension Rational {
 
 		let (quotient, remainder) = quotientAndRemainder
 
-		let biggestDecimal = BigUInt(exactly: Decimal.greatestFiniteMagnitude)!
-		let biggestDecimalRational = Rational(big: biggestDecimal, sign: .positive)
-		let smallestDecimalRational = Rational(big: biggestDecimal, sign: .negative)
+		let biggestDecimalRational = Rational(big: .decimalGreatest, sign: .positive)
+		let smallestDecimalRational = Rational(big: .decimalGreatest, sign: .negative)
 
 		guard Rational(big: quotient) < biggestDecimalRational else {
 			return .greatestFiniteMagnitude
@@ -124,8 +121,8 @@ extension Rational {
 		   .reduced
 		let simplifiedRemaining = {
 			let simpleValues = remaining.simplifiedValues
-			guard simpleValues.denominator <= biggestDecimal else {
-				return remaining.limitDenominator(to: biggestDecimal).simplifiedValues
+			guard simpleValues.denominator <= .decimalGreatest else {
+				return remaining.limitDenominator(to: .decimalGreatest).simplifiedValues
 			}
 			return simpleValues
 		}()
