@@ -36,8 +36,28 @@ struct ElementaryTests {
 	}
 
 	@Test func gamma() {}
-	@Test func log2() {}
-	@Test func log10() {}
+
+	@Test func log2() {
+		#expect(Rational.log2(.zero).isNaN)
+		#expect(Rational.log2(Rational(1, 1)) == 0)
+		#expect(Rational.log2(Rational(8, 1)).limitDenominator(to: .uIntMax) == 3)
+		#expect(Rational.log2(Rational(2, 1)).limitDenominator(to: .uIntMax) == 1)
+		#expect(Rational.log2(Rational(1, 32)).limitDenominator(to: .uIntMax) == -5)
+		#expect(Rational.log2(Rational(1024, 1)).limitDenominator(to: .uIntMax) == 10)
+		#expect(Rational.log2(Rational(1, 1048576)).limitDenominator(to: .uIntMax) == -20)
+	}
+
+	@Test func log10() {
+		#expect(Rational.log10(.zero).isNaN)
+		#expect(Rational.log10(1000).limitDenominator(to: .uIntMax) == 3)
+		#expect(Rational.log10(Rational(1000, 1)).limitDenominator(to: .uIntMax) == 3)
+		#expect(Rational.log10(Rational(1, 1)).limitDenominator(to: .uIntMax) == 0)
+		#expect(Rational.log10(Rational(10, 1)).limitDenominator(to: .uIntMax) == 1)
+		#expect(Rational.log10(Rational(1, 100)).limitDenominator(to: .uIntMax) == -2)
+		#expect(Rational.log10(Rational(1, 1000000000)).limitDenominator(to: .uIntMax) == -9)
+		#expect(Rational.log10(Rational(50, 1)).doubleValue().isApproximatelyEqual(to: 1.69897))
+	}
+
 	@Test func logGamma() {}
 	@Test func signGamma() {}
 
@@ -77,10 +97,10 @@ struct ElementaryTests {
 	@Test func log() {
 		#expect(Rational.log(.zero).isNaN)
 		#expect(Rational.log(1) == .zero)
-		#expect(Rational.log(2).doubleValue() == Rational.ln2.doubleValue())
+		#expect(Rational.log(2).doubleValue() == 0.6931471805599453)
 		#expect(Rational.log(10).doubleValue().isApproximatelyEqual(to: Rational.ln10.doubleValue()))
 		#expect(Rational.log(Rational(10, 9)).doubleValue() == 0.10536051565782631)
-		#expect(Rational.log(Rational(709, 261)).doubleValue() == 0.9993351192094341)
+		#expect(Rational.log(Rational(709, 261)).doubleValue() == 0.9993351192094342)
 		#expect(Rational.log(Rational(12)).doubleValue() == 2.4849066497880004)
 		#expect(Rational.log(Rational(1, 3)).doubleValue() == -1.0986122886681098)
 		#expect(Rational.log(Rational(1, 4)).doubleValue() == -1.3862943611198906)
@@ -93,7 +113,7 @@ struct ElementaryTests {
 		#expect(Rational.log(onePlus: -1).isNaN)
 		#expect(Rational.log(onePlus: 0) == .zero)
 		#expect(Rational.log(onePlus: Rational(10, 9) - 1).doubleValue() == 0.10536051565782631)
-		#expect(Rational.log(onePlus: Rational(709, 261) - 1).doubleValue() == 0.9993351192094341)
+		#expect(Rational.log(onePlus: Rational(709, 261) - 1).doubleValue() == 0.9993351192094342)
 		#expect(Rational.log(onePlus: Rational(12) - 1).doubleValue() == 2.4849066497880004)
 		#expect(Rational.log(onePlus: Rational(1, 3) - 1).doubleValue() == -1.0986122886681098)
 		#expect(Rational.log(onePlus: Rational(1, 4) - 1).doubleValue() == -1.3862943611198906)

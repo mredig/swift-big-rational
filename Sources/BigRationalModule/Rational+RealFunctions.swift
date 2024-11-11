@@ -31,11 +31,13 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func log2(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		let startLog = log(x)
+		return startLog / .ln2
 	}
 	
 	public static func log10(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		let startLog = log(x)
+		return startLog / .ln10
 	}
 	
 	public static func logGamma(_ x: Rational) -> Rational {
@@ -89,7 +91,7 @@ extension Rational: RealFunctions {
 			var result = term
 			var iteration = 1
 			var difference: Rational = 10
-			let threshold = Rational(1, Int.max / 2)
+			let threshold = Rational(1, big: .uIntMax)
 			while difference > threshold {
 				iteration += 1
 				term *= -(x - 1)
