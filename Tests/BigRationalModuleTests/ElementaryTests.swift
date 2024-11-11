@@ -27,7 +27,14 @@ struct ElementaryTests {
 		#expect(Rational.exp10(16) == 10_000_000_000_000_000)
 	}
 
-	@Test func hypot() {}
+	@Test func hypot() {
+		#expect(Rational.hypot(Rational(3), Rational(4)) == 5)
+		#expect(Rational.hypot(Rational(0), Rational(0)) == 0)
+		#expect(Rational.hypot(Rational(-3), Rational(4)) == 5)
+		#expect(Rational.hypot(Rational(3, 2), Rational(5, 2)).doubleValue() == 2.9154759474226504)
+		#expect(Rational.hypot(Rational(3000000), Rational(4000000)) == 5000000)
+	}
+
 	@Test func gamma() {}
 	@Test func log2() {}
 	@Test func log10() {}

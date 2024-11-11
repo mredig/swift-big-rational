@@ -23,7 +23,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func hypot(_ x: Rational, _ y: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		sqrt((x * x) + (y * y))
 	}
 	
 	public static func gamma(_ x: Rational) -> Rational {
