@@ -47,7 +47,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func _mulAdd(_ a: Rational, _ b: Rational, _ c: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		(a * b) + c
 	}
 	
 	public static func exp(_ x: Rational) -> Rational {

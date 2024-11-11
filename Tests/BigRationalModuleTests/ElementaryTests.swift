@@ -33,7 +33,14 @@ struct ElementaryTests {
 	@Test func log10() {}
 	@Test func logGamma() {}
 	@Test func signGamma() {}
-	@Test func _mulAdd() {}
+
+	@Test func _mulAdd() {
+		#expect(Rational._mulAdd(2, 3, 4) == 10)
+		#expect(Rational._mulAdd(0, 3, 5) == 5)
+		#expect(Rational._mulAdd(-2, 3, 1) == -5)
+		#expect(Rational._mulAdd(Rational(3, 2), 2, Rational(7, 2)) == Rational(13, 2))
+		#expect(Rational._mulAdd(100000, 200000, 300000) == 20000300000)
+	}
 
 	@Test func exp() {
 		#expect(Rational.exp(.nan).isNaN)
