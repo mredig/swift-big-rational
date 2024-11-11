@@ -21,8 +21,8 @@ let package = Package(
 //			.upToNextMajor(from: "5.5.0")
 //		),
 		.package(
-			url: "https://github.com/mredig/BigInt.git",
-			branch: "decimal-perf2"
+			url: "https://github.com/attaswift/BigInt.git",
+			branch: "master"
 		),
 	],
 	targets: [
