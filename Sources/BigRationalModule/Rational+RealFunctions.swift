@@ -107,6 +107,18 @@ extension Rational: RealFunctions {
 
 		var input = x
 		guard input > 0 else { return .nan }
+
+		var j = 0
+		let twoThreshold = Rational(2)
+		while input > twoThreshold {
+			input /= twoThreshold
+			j += 1
+		}
+		while input < 1 {
+			input *= twoThreshold
+			j -= 1
+		}
+
 		var k = 0
 		let threshold = Rational(3, 2)
 		while input > threshold {
@@ -119,10 +131,18 @@ extension Rational: RealFunctions {
 		}
 
 		let part = compute(x: input)
-		guard k != 0 else {
+		// *mathematically*, we COULD just use `part + ln(1.5)*k + ln(2)*j`,
+		// but this is used to avoid circular dependencies on the dynamically generated constants.
+		switch (j, k) {
+		case (0, 0):
 			return part
+		case (let j, 0):
+			return part + (Self.ln2 * j)
+		case (0, let k):
+			return part + (Self.lnOneAndHalf * k)
+		default:
+			return part + (Self.lnOneAndHalf * k) + (Self.ln2 * j)
 		}
-		return part + (Self.lnOneAndHalf * k)
 	}
 
 	public static func log(_ x: Rational) -> Rational {
