@@ -75,6 +75,7 @@ struct ElementaryTests {
 	@Test func tan() {}
 
 	@Test func log() {
+		#expect(Rational.log(.zero).isNaN)
 		#expect(Rational.log(1) == .zero)
 		#expect(Rational.log(Rational(10, 9)).doubleValue() == 0.10536051565782631)
 		#expect(Rational.log(Rational(709, 261)).doubleValue() == 0.9993351192094341)
@@ -86,7 +87,19 @@ struct ElementaryTests {
 		#expect(Rational.log(Rational(-3, 2)).doubleValue().isNaN)
 	}
 
-	@Test func logOnePlus() {}
+	@Test func logOnePlus() {
+		#expect(Rational.log(onePlus: -1).isNaN)
+		#expect(Rational.log(onePlus: 0) == .zero)
+		#expect(Rational.log(onePlus: Rational(10, 9) - 1).doubleValue() == 0.10536051565782631)
+		#expect(Rational.log(onePlus: Rational(709, 261) - 1).doubleValue() == 0.9993351192094341)
+		#expect(Rational.log(onePlus: Rational(12) - 1).doubleValue() == 2.4849066497880004)
+		#expect(Rational.log(onePlus: Rational(1, 3) - 1).doubleValue() == -1.0986122886681098)
+		#expect(Rational.log(onePlus: Rational(1, 4) - 1).doubleValue() == -1.3862943611198906)
+		#expect(Rational.log(onePlus: Rational(5, 72) - 1).doubleValue() == -2.667228206581955)
+		#expect(Rational.log(onePlus: Rational(1000000) - 1).doubleValue() == 13.815510557964274)
+		#expect(Rational.log(onePlus: Rational(-3, 2) - 1).doubleValue().isNaN)
+	}
+
 	@Test func acosh() {}
 	@Test func asinh() {}
 	@Test func atanh() {}

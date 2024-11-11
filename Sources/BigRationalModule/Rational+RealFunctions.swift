@@ -118,7 +118,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func log(onePlus x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		log(x + 1)
 	}
 
 	public static func acosh(_ x: Rational) -> Rational {
