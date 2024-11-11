@@ -83,15 +83,18 @@ extension Rational: RealFunctions {
 	public static func tan(_ x: Rational) -> Rational {
 		fatalError("\(#function) not implemented")
 	}
-	
-	public static func log(_ x: Rational) -> Rational {
+
+	public static func computeTaylorSeriesLog(
+		_ x: Rational,
+		precision: Rational = Rational(1, big: .uIntMax)
+	) -> Rational {
 		guard x.isNegative == false else { return .nan }
 		func compute(x: Rational) -> Rational {
 			var term = x - 1
 			var result = term
 			var iteration = 1
 			var difference: Rational = 10
-			let threshold = Rational(1, big: .uIntMax)
+			let threshold = precision
 			while difference > threshold {
 				iteration += 1
 				term *= -(x - 1)
@@ -116,7 +119,14 @@ extension Rational: RealFunctions {
 		}
 
 		let part = compute(x: input)
+		guard k != 0 else {
+			return part
+		}
 		return part + (Self.lnOneAndHalf * k)
+	}
+
+	public static func log(_ x: Rational) -> Rational {
+		computeTaylorSeriesLog(x)
 	}
 	
 	public static func log(onePlus x: Rational) -> Rational {
