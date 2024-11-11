@@ -83,7 +83,37 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func log(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		func compute(x: Rational) -> Rational {
+			var term = x - 1
+			var result = term
+			var iteration = 1
+			var difference: Rational = 10
+			let threshold = Rational(1, Int.max / 2)
+			while difference > threshold {
+				iteration += 1
+				term *= -(x - 1)
+				let newResult = result + (term / iteration)
+				difference = abs(newResult - result)
+				result = newResult
+			}
+			return result
+		}
+
+		var input = x
+		guard input >= 0 else { return .nan }
+		var k = 0
+		let threshold = Rational(3, 2)
+		while input > threshold {
+			input /= threshold
+			k += 1
+		}
+		while input < 1 {
+			input *= threshold
+			k -= 1
+		}
+
+		let part = compute(x: input)
+		return part + (Self.lnOneAndHalf * k)
 	}
 	
 	public static func log(onePlus x: Rational) -> Rational {

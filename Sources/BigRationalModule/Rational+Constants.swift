@@ -12,4 +12,6 @@ public extension Rational {
 		}
 		return rat
 	}()
+
+	internal static let lnOneAndHalf = Rational("399903938307826879733974190160033610849/986284467666564368825418460469762457600")!
 }
