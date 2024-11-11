@@ -101,7 +101,7 @@ extension Rational: RealFunctions {
 		}
 
 		var input = x
-		guard input >= 0 else { return .nan }
+		guard input > 0 else { return .nan }
 		var k = 0
 		let threshold = Rational(3, 2)
 		while input > threshold {
