@@ -88,6 +88,7 @@ struct ElementaryTests {
 		#expect(Rational.pow(2, 3 as Int) == 8)
 		#expect(Rational.pow(-2, 3 as Int) == -8)
 		#expect(Rational.pow(-3, -1 as Int) == Rational(-1, 3))
+		#expect(Rational.pow(2, 6 as Int) == 64)
 		#expect(Rational.pow(3, 6 as Int) == 729)
 		#expect(Rational.pow(3, 12 as Int) == 531_441)
 		#expect(Rational.pow(3, 13 as Int) == 1_594_323)

@@ -154,6 +154,8 @@ extension Rational: RealFunctions {
 		}
 
 		var exponent = n
+		var result: Rational = 1
+		var currentBase = x
 
 		var invert = false
 		if exponent.signum() == -1 {
@@ -161,21 +163,18 @@ extension Rational: RealFunctions {
 			invert = true
 		}
 
-		var base = x
-
-		if exponent.isMultiple(of: 2) {
-			let halfPower = pow(base, (exponent / 2))
-			base = halfPower * halfPower
-		} else {
-			exponent -= 1
-			let halfPower = pow(base, (exponent / 2))
-			base = base * halfPower * halfPower
+		while exponent > 0 {
+			if exponent.isMultiple(of: 2) == false {
+				result = result * currentBase
+			}
+			currentBase = currentBase * currentBase
+			exponent /= 2
 		}
 
 		guard invert else {
-			return base
+			return result
 		}
-		return base.getReciprocal()
+		return result.getReciprocal()
 	}
 	
 	public static func sqrt(_ x: Rational) -> Rational {
