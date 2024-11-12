@@ -115,8 +115,9 @@ extension Rational: RealFunctions {
 			while difference > threshold {
 				iteration += 1
 				term *= -(x - 1)
-				let newResult = result + (term / iteration)
-				difference = abs(newResult - result)
+				let term1 = term / iteration
+				let newResult = result + term1
+				difference = abs(term1)
 				result = newResult
 			}
 			return result
