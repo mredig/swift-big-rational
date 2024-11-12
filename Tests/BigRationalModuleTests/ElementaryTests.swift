@@ -93,6 +93,7 @@ struct ElementaryTests {
 	@Test func cos() {}
 
 	@Test func sin() {
+		Rational.trigPrecision = Rational(1, 10_000_000)
 		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732) {
 			let doubleSin = Double.sin(i)
 

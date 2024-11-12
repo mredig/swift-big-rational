@@ -1,7 +1,27 @@
 import RealModule
 import BigInt
+#if canImport(Foundation)
+import Foundation
+#endif
 
 extension Rational: RealFunctions {
+	#if canImport(Foundation)
+	// Swift 6 might have some locks or something now? That's probably preferred.
+	private static let lock = NSLock()
+	#endif
+	nonisolated(unsafe) private static var _trigPrecision = Rational(1, big: .uIntMax)
+	#if canImport(Foundation)
+	nonisolated(unsafe) public static var trigPrecision: Rational {
+		get { lock.withLock { _trigPrecision } }
+		set { lock.withLock { _trigPrecision = newValue } }
+	}
+	#else
+	nonisolated(unsafe) public static var trigPrecision: Rational {
+		get { _trigPrecision }
+		set { _trigPrecision = newValue }
+	}
+	#endif
+
 	public static func atan2(y: Rational, x: Rational) -> Rational {
 		fatalError("\(#function) not implemented")
 	}
@@ -75,7 +95,7 @@ extension Rational: RealFunctions {
 	public static func cos(_ x: Rational) -> Rational {
 		fatalError("\(#function) not implemented")
 	}
-	
+
 	public static func sin(_ x: Rational) -> Rational {
 		let corrected = x % (.pi * 2)
 
@@ -84,7 +104,7 @@ extension Rational: RealFunctions {
 		var term = corrected
 		var result = term
 		var difference = Rational(10)
-		let precision = Rational(1, big: .uIntMax)
+		let precision = Self.trigPrecision
 		var iteration = 1
 
 		while difference > precision {
