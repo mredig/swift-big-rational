@@ -172,7 +172,23 @@ struct ElementaryTests {
 	@Test func atanh() {}
 	@Test func acos() {}
 	@Test func asin() {}
-	@Test func atan() {}
+
+	@Test func atan() {
+		#expect(Rational.atan(.nan).isNaN)
+		Rational.trigPrecision = Rational(1, 50_000_000)
+		for i in stride(from: -1, through: Double.pi * 6, by: 0.497136 * 2) {
+			let doubleAtan = Double.atan(i)
+
+			guard let rat = Rational(truncating: i) else { continue }
+			let ratAtan = Rational.atan(rat)
+			let doubleResult = ratAtan.doubleValue()
+
+			print("in: \(i)")
+			print("\(doubleResult) == \(doubleAtan)")
+			#expect(doubleResult.isApproximatelyEqual(to: doubleAtan))
+			print("---")
+		}
+	}
 
 	@Test func nthPowerInt() throws {
 		#expect(Rational.pow(2, 2 as Int) == 4)

@@ -237,7 +237,27 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func atan(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		guard x.isNaN == false else { return .nan }
+		guard x <= 1 else { return (.pi / 2) - atan(x.getReciprocal()) }
+		guard x != 1 else { return .pi / 4 }
+
+		guard x.isPositive else {
+			return -atan(-x)
+		}
+
+		guard x <= Rational(1, 2) else {
+			return 2 * atan(x / (1 + sqrt(1 + (x * x))))
+		}
+
+		let negXSquared = -(x * x)
+
+		return taylorSeries(
+			term: x,
+			precision: Self.trigPrecision,
+			startIteration: 1,
+			iterationModifier: { $0 + 2 },
+			termModifier: { term, _ in term * negXSquared },
+			valueForResult: { term, i in term / i })
 	}
 	
 	public static func pow(_ x: Rational, _ y: Rational) -> Rational {
