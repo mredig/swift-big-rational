@@ -146,6 +146,11 @@ extension Rational {
 	}
 
 	@inlinable
+	public static func bigUInt(_ wholeNumber: BigUInt, sign: Sign = .positive) -> Self {
+		Rational(numerator: .bigUInt(wholeNumber), denominator: .bigUInt(1), sign: sign)
+	}
+
+	@inlinable
 	public init<SN: SignedInteger>(_ numerator: SN, _ denominator: SN, reduced: Bool = false) {
 		let numSign = Sign(numerator)
 		let denSign = Sign(denominator)
