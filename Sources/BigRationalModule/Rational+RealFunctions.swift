@@ -117,6 +117,7 @@ extension Rational: RealFunctions {
 	}
 
 	public static func cos(_ x: Rational) -> Rational {
+		guard x.isNaN == false else { return .nan }
 		let corrected = x % (.pi * 2)
 
 		let negCorrectedSquared = -(corrected * corrected)
@@ -132,6 +133,7 @@ extension Rational: RealFunctions {
 	}
 
 	public static func sin(_ x: Rational) -> Rational {
+		guard x.isNaN == false else { return .nan }
 		let corrected = x % (.pi * 2)
 
 		let negCorrectedSquared = -(corrected * corrected)

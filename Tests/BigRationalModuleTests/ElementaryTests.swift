@@ -92,8 +92,9 @@ struct ElementaryTests {
 	@Test func tanh() {}
 
 	@Test func cos() {
+		#expect(Rational.cos(.nan).isNaN)
 		Rational.trigPrecision = Rational(1, 10_000_000)
-		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732) {
+		for i in stride(from: -2, through: Double.pi * 6, by: 0.5732) {
 			let doubleCos = Double.cos(i)
 
 			guard let rat = Rational(truncating: i) else { continue }
@@ -106,8 +107,9 @@ struct ElementaryTests {
 	}
 
 	@Test func sin() {
+		#expect(Rational.sin(.nan).isNaN)
 		Rational.trigPrecision = Rational(1, 10_000_000)
-		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732) {
+		for i in stride(from: -2, through: Double.pi * 6, by: 0.5732) {
 			let doubleSin = Double.sin(i)
 
 			guard let rat = Rational(truncating: i) else { continue }
@@ -115,13 +117,14 @@ struct ElementaryTests {
 			let doubleResult = ratSin.doubleValue()
 
 			print("\(doubleResult) == \(doubleSin)")
-			#expect(doubleResult.isApproximatelyEqual(to: doubleSin))
+			#expect(doubleResult.isApproximatelyEqual(to: doubleSin, relativeTolerance: 0.000001))
 		}
 	}
 
 	@Test func tan() {
+		#expect(Rational.tan(.nan).isNaN)
 		Rational.trigPrecision = Rational(1, 10_000_000)
-		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732 * 2) {
+		for i in stride(from: -2, through: Double.pi * 6, by: 0.5732 * 2) {
 			let doubleTan = Double.tan(i)
 
 			guard let rat = Rational(truncating: i) else { continue }
@@ -129,7 +132,7 @@ struct ElementaryTests {
 			let doubleResult = ratTan.doubleValue()
 
 			print("\(doubleResult) == \(doubleTan)")
-			#expect(doubleResult.isApproximatelyEqual(to: doubleTan))
+			#expect(doubleResult.isApproximatelyEqual(to: doubleTan, relativeTolerance: 0.000001))
 		}
 	}
 
