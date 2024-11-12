@@ -91,26 +91,44 @@ extension Rational: RealFunctions {
 	public static func tanh(_ x: Rational) -> Rational {
 		fatalError("\(#function) not implemented")
 	}
-	
+
+	public static func taylorSeries(
+		term: Rational,
+		precision: Rational,
+		startIteration: Int,
+		iterationModifier: (Int) -> Int = { $0 + 1 },
+		termModifier: (Rational, Int) -> Rational,
+		valueForResult: (Rational, Int) -> Rational = { term, _ in term }
+	) -> Rational {
+		var term = term
+		var result = term
+		var difference = Rational(10)
+		var iteration = startIteration
+
+		while difference > precision {
+			iteration = iterationModifier(iteration)
+			term = termModifier(term, iteration)
+			let term1 = valueForResult(term, iteration)
+			result += term1
+			difference = abs(term1)
+		}
+
+		return result
+	}
+
 	public static func cos(_ x: Rational) -> Rational {
 		let corrected = x % (.pi * 2)
 
 		let negCorrectedSquared = -(corrected * corrected)
 
-		var term: Rational = 1
-		var result: Rational = term
-		var difference = Rational(10)
-		let precision = Rational(1, big: .uIntMax)
-		var iteration = 0
-
-		while difference > precision {
-			iteration += 2
-			term *= negCorrectedSquared / (iteration * (iteration - 1))
-			result += term
-			difference = abs(term)
-		}
-
-		return result
+		return taylorSeries(
+			term: 1,
+			precision: Self.trigPrecision,
+			startIteration: 0,
+			iterationModifier: { $0 + 2 },
+			termModifier: { term, iteration in
+				term * (negCorrectedSquared / (iteration * (iteration - 1)))
+			})
 	}
 
 	public static func sin(_ x: Rational) -> Rational {
@@ -118,20 +136,14 @@ extension Rational: RealFunctions {
 
 		let negCorrectedSquared = -(corrected * corrected)
 
-		var term = corrected
-		var result = term
-		var difference = Rational(10)
-		let precision = Self.trigPrecision
-		var iteration = 1
-
-		while difference > precision {
-			iteration += 2
-			term *= negCorrectedSquared / (iteration * (iteration - 1))
-			result += term
-			difference = abs(term)
-		}
-
-		return result
+		return taylorSeries(
+			term: corrected,
+			precision: Self.trigPrecision,
+			startIteration: 1,
+			iterationModifier: { $0 + 2 },
+			termModifier: { term, iteration in
+				term * (negCorrectedSquared / (iteration * (iteration - 1)))
+			})
 	}
 	
 	public static func tan(_ x: Rational) -> Rational {
@@ -144,20 +156,12 @@ extension Rational: RealFunctions {
 	) -> Rational {
 		guard x.isNegative == false else { return .nan }
 		func compute(x: Rational) -> Rational {
-			var term = x - 1
-			var result = term
-			var iteration = 1
-			var difference: Rational = 10
-			let threshold = precision
-			while difference > threshold {
-				iteration += 1
-				term *= -(x - 1)
-				let term1 = term / iteration
-				let newResult = result + term1
-				difference = abs(term1)
-				result = newResult
-			}
-			return result
+			taylorSeries(
+				term: x - 1,
+				precision: precision,
+				startIteration: 1,
+				termModifier: { term, _ in term * -(x - 1) },
+				valueForResult: { term, i in term / i })
 		}
 
 		var input = x
