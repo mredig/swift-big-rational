@@ -27,16 +27,6 @@ public extension Rational {
 		Rational.computeTaylorSeriesLog(Rational(10), precision: Rational(1, .uIntMax * 9999))
 	}()
 
-	static func genPi2(iterations: Int) -> Rational {
-		let den = (iterations * 2) + 1
-		var value: Rational = Rational(iterations, den) + 2
-		for x in stride(from: iterations, through: 1, by: -1) {
-			let term = Rational(x, x * 2 + 1)
-			value = term * value + 2
-		}
-		return value
-	}
-
 	static func generatePi(decimalPlaces: Int) -> Rational {
 		var q: BigUInt = 1
 		var r: BigUInt = 180
@@ -61,26 +51,8 @@ public extension Rational {
 		}
 		return value
 	}
-	static let pi = { @Sendable (iterations: Int) in
-		var numeratorSum = Rational.zero
 
-		var factorialCalc = BigUIntFactorialCalculator()
-
-		for i in 0..<iterations {
-			let k = BigInt(i)
-			let kk = BigUInt(i)
-			var term = pow(-1, k) * factorialCalc.factorial(of: 6 * kk) * (545140134 * kk + 13591409)
-			let divisor = {
-				let a = factorialCalc.factorial(of: 3 * kk)
-				let b = factorialCalc.factorial(of: kk).power(3)
-				let c1 = Rational(640320)
-				let c2 = Rational(3, 2) + Rational.bigUInt(3 * kk, 1)
-				let c = pow(c1, c2)
-				return Rational.bigUInt(a) * Rational.bigUInt(b) * c
-			}()
-			numeratorSum += term / divisor
-		}
-
-		return (1 / (12 * numeratorSum)).reduced
-	}
+	static let pi = {
+		generatePi(decimalPlaces: 100)
+	}()
 }
