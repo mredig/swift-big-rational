@@ -90,7 +90,20 @@ struct ElementaryTests {
 	@Test func cosh() {}
 	@Test func sinh() {}
 	@Test func tanh() {}
-	@Test func cos() {}
+
+	@Test func cos() {
+		Rational.trigPrecision = Rational(1, 10_000_000)
+		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732) {
+			let doubleCos = Double.cos(i)
+
+			guard let rat = Rational(truncating: i) else { continue }
+			let ratCos = Rational.cos(rat)
+			let doubleResult = ratCos.doubleValue()
+
+			print("\(doubleResult) == \(doubleCos)")
+			#expect(doubleResult.isApproximatelyEqual(to: doubleCos))
+		}
+	}
 
 	@Test func sin() {
 		Rational.trigPrecision = Rational(1, 10_000_000)
@@ -106,7 +119,19 @@ struct ElementaryTests {
 		}
 	}
 
-	@Test func tan() {}
+	@Test func tan() {
+		Rational.trigPrecision = Rational(1, 10_000_000)
+		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732 * 2) {
+			let doubleTan = Double.tan(i)
+
+			guard let rat = Rational(truncating: i) else { continue }
+			let ratTan = Rational.tan(rat)
+			let doubleResult = ratTan.doubleValue()
+
+			print("\(doubleResult) == \(doubleTan)")
+			#expect(doubleResult.isApproximatelyEqual(to: doubleTan))
+		}
+	}
 
 	@Test func log() {
 		#expect(Rational.log(.zero).isNaN)

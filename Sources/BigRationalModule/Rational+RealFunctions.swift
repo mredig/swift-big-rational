@@ -93,7 +93,24 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func cos(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		let corrected = x % (.pi * 2)
+
+		let negCorrectedSquared = -(corrected * corrected)
+
+		var term: Rational = 1
+		var result: Rational = term
+		var difference = Rational(10)
+		let precision = Rational(1, big: .uIntMax)
+		var iteration = 0
+
+		while difference > precision {
+			iteration += 2
+			term *= negCorrectedSquared / (iteration * (iteration - 1))
+			result += term
+			difference = abs(term)
+		}
+
+		return result
 	}
 
 	public static func sin(_ x: Rational) -> Rational {
@@ -118,7 +135,7 @@ extension Rational: RealFunctions {
 	}
 	
 	public static func tan(_ x: Rational) -> Rational {
-		fatalError("\(#function) not implemented")
+		sin(x) / cos(x)
 	}
 
 	public static func computeTaylorSeriesLog(
