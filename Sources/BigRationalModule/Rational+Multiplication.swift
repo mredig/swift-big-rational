@@ -95,4 +95,24 @@ extension Rational {
 		lhs = lhs / rhs
 	}
 
+	@inlinable
+	public static func % (lhs: Self, rhs: Self) -> Self {
+		let lhsSimple = lhs.simplifiedValues
+		let rhsSimple = rhs.simplifiedValues
+
+		let adjustedNumerator = lhsSimple.numerator * rhsSimple.denominator
+		let adjustedRhsNumerator = rhsSimple.numerator * lhsSimple.denominator
+
+		let q = adjustedNumerator / adjustedRhsNumerator
+		let remainderNumerator = adjustedNumerator - q * adjustedRhsNumerator
+		let remainderDenom = lhsSimple.denominator * rhsSimple.denominator
+
+		return Rational.bigUInt(remainderNumerator, remainderDenom, sign: lhs.sign)
+	}
+
+	@inlinable
+	public static func %= (lhs: inout Self, rhs: Self) {
+		let result = lhs % rhs
+		lhs = result
+	}
 }

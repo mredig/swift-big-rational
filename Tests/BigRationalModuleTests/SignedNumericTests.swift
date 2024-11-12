@@ -278,6 +278,46 @@ struct SignedNumericTests {
 		#expect(value == -Rational(2468))
 	}
 
+	@Test func modulus() throws {
+		let base = Rational(2, 3)
+		let gen = (BigUInt.zero..<8).map { Rational.bigUInt($0, 2) % base }
+
+		let expected: [Rational] = [
+			.zero,
+			Rational(1, 2),
+			Rational(1, 3),
+			Rational(1, 6),
+			.zero,
+			Rational(1, 2),
+			Rational(1, 3),
+			Rational(1, 6),
+		]
+
+		#expect(gen == expected)
+	}
+
+	@Test func modulusInPlace() throws {
+		let base = Rational(2, 3)
+
+		let expected: [Rational] = [
+			.zero,
+			Rational(1, 2),
+			Rational(1, 3),
+			Rational(1, 6),
+			.zero,
+			Rational(1, 2),
+			Rational(1, 3),
+			Rational(1, 6),
+		]
+		var value = Rational.zero
+
+		for compare in expected {
+			defer { value += Rational(1, 2) }
+			value %= base
+			#expect(value == compare)
+		}
+	}
+
 	@Test func testDivideByEquivalentFraction() throws {
 		let start = Rational(15, 20)
 		let equivalentFraction = Rational(5, 5)
