@@ -91,7 +91,20 @@ struct ElementaryTests {
 	@Test func sinh() {}
 	@Test func tanh() {}
 	@Test func cos() {}
-	@Test func sin() {}
+
+	@Test func sin() {
+		for i in stride(from: 0, through: Double.pi * 6, by: 0.5732) {
+			let doubleSin = Double.sin(i)
+
+			guard let rat = Rational(truncating: i) else { continue }
+			let ratSin = Rational.sin(rat)
+			let doubleResult = ratSin.doubleValue()
+
+			print("\(doubleResult) == \(doubleSin)")
+			#expect(doubleResult.isApproximatelyEqual(to: doubleSin))
+		}
+	}
+
 	@Test func tan() {}
 
 	@Test func log() {
